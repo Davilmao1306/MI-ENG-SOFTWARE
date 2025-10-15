@@ -1,0 +1,127 @@
+body{
+  margin: 0;
+}
+header{
+  background-color:#ffffff;
+  padding-top: 34px;
+  padding-bottom: 34px;
+  padding-left: 120px;
+  padding-right: 120px;
+  display: flex;
+  justify-content: space-between; 
+  align-items: center;  
+}
+.header-nav{
+  display: flex;
+  align-items: center;
+  gap: 40px;
+}
+
+header p{
+  font-family: sans-serif;
+  font-size: 20px;
+}
+header a{
+  font-size: 12px;  
+  font-family: sans-serif;
+  font-weight: bold;
+  color:#000000;
+  text-decoration: none;
+  background-color: #93D9FA;
+  width: 145px;
+  height: 40px;
+  display: block;
+  text-align: center;
+  line-height: 40px;
+  border-radius:20px;
+}
+
+header a:hover{background-color: #29B4F5;} /* Para mudar de cor ao mouse pousar em cima */
+
+.section-titulo{
+  padding: 12px;
+  padding-left: 120px;
+  padding-right: 150px;
+  background-color: #93D9FA;
+  display: flex;
+  justify-content: space-between; 
+  max-width: 90%;
+}
+
+.section-h1{
+  font-family: sans-serif; 
+  font-size: 15px;
+  margin-top: 50px;
+  font-weight: bold;
+  width: 320px;
+}
+
+.section-p{
+  margin-top: 15px;
+  font-family:sans-serif; 
+  font-size: 15px; 
+  font-weight: 550;
+  width: 367px;
+  margin-bottom: 109px;
+}
+
+.section-subtitulo{
+  padding: 135px 120px;
+  background-color: #ffffff;
+}
+
+.section-texto2{
+  width: 500px;
+  padding-bottom: 40px;
+  font-family:sans-serif; 
+  font-size: 15px;
+}
+.section-image{
+  display: flex;
+  justify-content: space-between; 
+  align-items: center;  
+  font-family:sans-serif; 
+  font-size: 20px;
+  padding-bottom: 117px;
+
+}
+.section-subimage1{
+  background-color: #93D9FA;
+  width: 260px;
+  height: 260px;
+  display: flex;
+  justify-content: center; 
+  align-items: center;
+  border-radius:7px;
+}
+.section-subimage2{
+  margin-left: 30px;
+  background-color: #93D9FA;
+  width: 260px;
+  height: 260px;
+  display: flex;
+  justify-content: center; 
+  align-items: center; 
+  border-radius:7px;
+}
+.section-subimage3{
+  margin-left: 30px;
+  background-color: #93D9FA;
+  width: 260px;
+  height: 260px;
+  display: flex;
+  justify-content: center;
+  align-items:center;
+  border-radius:7px; 
+}
+.footer{
+  
+  display: flex;
+  justify-content: space-between; 
+  align-items: center;  
+  font-family:sans-serif;
+  margin: 0px 120px;
+  border-top: 1px solid #000000;
+}
+
+
