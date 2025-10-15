@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import './App.css'
 
 
@@ -12,9 +13,9 @@ function App() {
           <nav className='nav'>
             <p>Inicio</p>
           </nav>
-          <a href='Login.jsx'>
+          <Link to="/login">
             Acesse sua conta
-          </a>
+          </Link>
         </div>
       </header>
       

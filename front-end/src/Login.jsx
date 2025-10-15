@@ -1,4 +1,4 @@
-
+import { Link } from 'react-router-dom';
 import './Login.css'
 
 
@@ -20,40 +20,56 @@ function Label({children, htmlFor}){
 function CampoDeEntrada(props){
     return <input {...props} />
 }
-function FormLogin(){
-    return(
-        <form className='form-login'>
-            <CampoDeFormulario>
-                <Label htmlFor='email'>
-                    Email
-                </Label>
-                <CampoDeEntrada
-                    type='email'
-                    name = 'loginEmail'
-                    placeholder = 'Digite seu email'
-                />
-            </CampoDeFormulario>
-            <CampoDeFormulario>
-                <Label>
-                    Senha
-                </Label>
-                <CampoDeEntrada 
-                    type='password' 
-                    name='userSenha' 
-                    placeholder='Digite sua senha'
-                />
-            </CampoDeFormulario>
-        </form>
-    )
+function FormLogin() {
+  return (
+
+    <form className='form-login'>
+      <div className="input-group">
+        <input 
+          className="form-input" 
+          type='email'
+          name='loginEmail'
+          placeholder='Email' 
+        />
+      </div>
+
+      <div className="input-group">
+        <input
+          className="form-input" 
+          type='password'
+          name='userSenha'
+          placeholder='Senha'
+        />
+      </div>
+
+      <button type="login" className="login-button">
+        LOGIN
+      </button>
+
+       <Link to="/recuperar-senha" className="forgot-password-link">
+        Esqueceu a senha?
+      </Link>
+
+    </form>
+  )
 }
 function Login(){
     return(
-        <main>
+    
+        <main className="login-page-container">
+          <img 
+              src="/internasaude-mental.png" 
+              alt="Ilustração de cérebros" 
+              className="background-brains-image" 
+            />
+        
             <header>
                 <img src="/neurolink-login.png" alt="imagem do logo neurolink" />
             </header>
+           
             <FormLogin/>
         </main>
     )
 }
+
 export default Login
