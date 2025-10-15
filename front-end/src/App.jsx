@@ -39,23 +39,21 @@ function App() {
         
         <div className='section-subtitulo'>
           <div className='section-texto2'>
-            <h2>
+            <h3>
               Sua jornada conosco em Três Passos Simples
-            </h2>
+            </h3>
           </div>
           <div className='section-image'>
             <div className='section-subimage1'>
-              <img src="/lupa-com-livro.png" alt="" />
-              <legend>
-                Treinamento Familiar de como preprar a Criança para Terapia
-              </legend>
+              <img src="/lupa-com-livro.png" alt="Imagem de um livro com uma lupa" />
+              <figcaption>Treinamento Familiar de como preprar a Criança para Terapia</figcaption>
             </div>
             <div className='section-subimage2'>
-              <img src="/baloes-com-cerebro.png" alt="" />
-              <legend>Entendendo os sinais do seu filho</legend>
+              <img src="/baloes-com-cerebro.png" alt="Imagem de dois balões de dialogo e um deles tem um cérebro" />
+              <p>Entendendo os sinais do seu filho</p>
             </div>
             <div className='section-subimage3'>
-              <img src="/mao-com-plantas.png" alt="" />
+              <img src="/mao-com-plantas.png" alt="Imagem de uma mão com várias plantinhas" />
               <p>Atividades Sensoriais para o Dia Dia</p>
             </div>
           </div>

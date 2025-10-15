@@ -1,26 +1,48 @@
+
 import './Login.css'
 
 
-function Fieldset(props){
+function CampoDeFormulario({children}){
     return(
         <fieldset>
-            
+            {children}
         </fieldset>
     )
     
 }
-function Label(props){}
-function Input(props){}
+function Label({children, htmlFor}){
+    return(
+        <label htmlFor={htmlFor}>
+            {children}
+        </label>
+    )
+}
+function CampoDeEntrada(props){
+    return <input {...props} />
+}
 function FormLogin(){
     return(
         <form className='form-login'>
-            <fieldset>
-                <label htmlFor='Email'>
+            <CampoDeFormulario>
+                <Label htmlFor='email'>
                     Email
-                </label>
-                <input>
-                </input>
-            </fieldset>
+                </Label>
+                <CampoDeEntrada
+                    type='email'
+                    name = 'loginEmail'
+                    placeholder = 'Digite seu email'
+                />
+            </CampoDeFormulario>
+            <CampoDeFormulario>
+                <Label>
+                    Senha
+                </Label>
+                <CampoDeEntrada 
+                    type='password' 
+                    name='userSenha' 
+                    placeholder='Digite sua senha'
+                />
+            </CampoDeFormulario>
         </form>
     )
 }

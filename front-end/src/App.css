@@ -17,9 +17,9 @@ header{
   gap: 40px;
 }
 
-header p{
+.header-nav p{
   font-family: sans-serif;
-  font-size: 20px;
+  font-size: 30px;
 }
 header a{
   font-size: 12px;  
@@ -36,7 +36,7 @@ header a{
   border-radius:20px;
 }
 
-header a:hover{background-color: #29B4F5;} /* Para mudar de cor ao mouse pousar em cima */
+header a:hover{background-color: #29B4F5;} 
 
 .section-titulo{
   padding: 12px;
@@ -71,48 +71,43 @@ header a:hover{background-color: #29B4F5;} /* Para mudar de cor ao mouse pousar 
 }
 
 .section-texto2{
-  width: 500px;
+  width: 800px;
   padding-bottom: 40px;
   font-family:sans-serif; 
-  font-size: 15px;
+  font-size: 25px;
 }
 .section-image{
   display: flex;
-  justify-content: space-between; 
+  justify-content: space-evenly; 
   align-items: center;  
   font-family:sans-serif; 
   font-size: 20px;
-  padding-bottom: 117px;
-
+  padding-bottom: 117px;  
 }
-.section-subimage1{
+.section-subimage1,.section-subimage2, .section-subimage3{
   background-color: #93D9FA;
   width: 260px;
   height: 260px;
   display: flex;
-  justify-content: center; 
+  flex-direction: column;
+  justify-content:center;
   align-items: center;
-  border-radius:7px;
+  border-radius:10px;
+  text-align: center;
+  box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
-.section-subimage2{
-  margin-left: 30px;
-  background-color: #93D9FA;
-  width: 260px;
-  height: 260px;
-  display: flex;
-  justify-content: center; 
-  align-items: center; 
-  border-radius:7px;
+.section-subimage1:hover,
+.section-subimage2:hover,
+.section-subimage3:hover {
+  transform: translateY(-5px);
+  box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.25);
 }
-.section-subimage3{
-  margin-left: 30px;
-  background-color: #93D9FA;
-  width: 260px;
-  height: 260px;
-  display: flex;
-  justify-content: center;
-  align-items:center;
-  border-radius:7px; 
+.section-subimage1 img,
+.section-subimage2 img,
+.section-subimage3 img {
+  width: 100px;
+  margin-bottom: 20px; /* Espaço entre imagem e texto */
 }
 .footer{
   
