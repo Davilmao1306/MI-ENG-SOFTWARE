@@ -1,0 +1,15 @@
+.form-login {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px; 
+  width: 100%;
+}
+
+.campos{
+  gap:20px;
+}
+
+.acoes{
+  padding-top: 10px;
+}
