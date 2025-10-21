@@ -2,14 +2,14 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 16px; 
+  gap: 16px;
   width: 100%;
 }
 
-.campos{
-  gap:20px;
+.campos-login {
+  gap: 20px;
 }
 
-.acoes{
+.acoes-login {
   padding-top: 10px;
 }

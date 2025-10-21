@@ -7,11 +7,11 @@ export function NovaSenha() {
             <header className='header-nova-senha'>
                 <img src="/logo-recuperar-senha.png" alt="imagem do logo neurolink" />
             </header>
-            <section className="form-nova-senha">
+            <section className="formulario-nova-senha">
                 <div>
-                    <h3>
+                    <h2>
                         Por favor, digite a nova senha para sua conta.
-                    </h3>
+                    </h2>
                 </div>
                 <div>
                     <FormNovaSenha />

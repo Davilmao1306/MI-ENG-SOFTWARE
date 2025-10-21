@@ -8,7 +8,7 @@ import './form-login.estilo.css'
 export function FormLogin() {
     return (
         <form className='form-login'>
-            <div className='campos'>
+            <div className='campos-login'>
                 <CampoDeFormulario >
                     <Label htmlFor='Useremail' >
                     </Label>
@@ -29,7 +29,7 @@ export function FormLogin() {
                     />
                 </CampoDeFormulario>
             </div>
-            <div className='acoes'>
+            <div className='acoes-login'>
                 <Botao>
                     LOGIN
                 </Botao>

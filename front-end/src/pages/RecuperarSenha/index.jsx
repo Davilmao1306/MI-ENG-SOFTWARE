@@ -24,7 +24,7 @@ export function RecuperarSenha() {
                     src="/internasaude-mental.png"
                     alt="Ilustração de cérebros"
                     className="background-brains-image"
-                />
+                /> 
             </section>
         </main>
     )
