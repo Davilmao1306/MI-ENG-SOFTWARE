@@ -24,7 +24,7 @@ body {
   display: flex;
   flex-direction: row;
   align-items: center;
-  
+
   gap: 40px;
 }
 
@@ -35,8 +35,7 @@ body {
 }
 
 .landing-page .header-nav p:hover {
-  padding-top: 10px;
-  border-bottom: 2px solid #007AFF;
+  color: #007AFF;
 }
 
 .landing-page .nav-desktop-tablet a {
@@ -88,7 +87,7 @@ body {
 .landing-page .section-subtitulo {
   margin: 135px 10%;
   background-color: #ffffff;
-  
+
 }
 
 .landing-page .section-subtitulo h3 {

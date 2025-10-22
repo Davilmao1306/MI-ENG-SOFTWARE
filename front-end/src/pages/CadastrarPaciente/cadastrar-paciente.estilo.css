@@ -4,7 +4,7 @@
 
     left: 0;
     top: 0;
-    width: 13%;
+    width: 10%;
     height: 100vh;
 }
 
@@ -38,14 +38,10 @@
     position: fixed;
     bottom: 10px;
     left: 10px;
-    margin-left: 25px;
-    margin-bottom: 25px;
 }
 
 .cadastrar-paciente-cabecalho .img-voltar {
     position: fixed;
-    top: 10px;
-    left: 10px;
-    margin-left: 57px;
-    margin-top: 50px;
+    top: 40px;
+    left: 40px;
 }

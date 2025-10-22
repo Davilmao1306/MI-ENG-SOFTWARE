@@ -31,7 +31,9 @@ export function FormLogin() {
             </div>
             <div className='acoes-login'>
                 <Botao>
-                    LOGIN
+                    <Link to="/login/familiar-paciente" className="link-no-estilo">
+                        LOGIN
+                    </Link>
                 </Botao>
             </div>
             <Link to="/login/recuperar-senha" className="forgot-password-link">

@@ -1,0 +1,38 @@
+.campo-detalhes-container {
+  border: 1px solid #CCCCCC; 
+  border-radius: 8px; 
+  margin-bottom: 1.5rem; 
+  padding: 1.5rem;
+  background-color: #FFFFFF; 
+  width: 100%; 
+  box-sizing: border-box; 
+}
+
+.campo-detalhes-titulo {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #333;
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+.campo-detalhes-conteudo {
+  color: #555;
+  line-height: 1.6;
+}
+
+
+.campo-detalhes-conteudo ul {
+  list-style: disc; 
+  padding-left: 20px; 
+  margin: 0;
+}
+.campo-detalhes-conteudo li {
+  margin-bottom: 0.5rem; 
+}
+
+
+.campo-detalhes-conteudo p {
+    margin-top: 0;
+    margin-bottom: 0.5rem; 
+}

@@ -1,0 +1,51 @@
+.main-tela-perfis-paciente {
+    background-color: #ffffff;
+    height: 100vh;
+}
+
+.header-tela-perfis {
+    display: flex;
+    justify-content: center;
+    padding-top: 40px;
+    padding-bottom: 100px;
+}
+
+.header-tela-perfis h1 {
+    font-size: 50px;
+}
+
+.section-tela-perfis {
+    display: flex;
+    justify-content: center;
+    gap: 80px;
+}
+
+.div-perfil {
+    display: grid;
+}
+
+.div-perfil img:hover {
+    background-color: transparent;
+    border-radius: 100%;
+    transform: translateY(-5px);
+    box-shadow: 1px 1px 2px rgba(0, 0, 0, 0.25);
+}
+
+.div-perfil p {
+    display: flex;
+    justify-content: center;
+    margin: 0px;
+}
+
+
+.logout-section-tela-perfis {
+    display: flex;
+    justify-content: center;
+    padding-top: 12%;
+}
+
+.logo-canto-tela-de-perfil {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}

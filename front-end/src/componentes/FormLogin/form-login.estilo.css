@@ -13,3 +13,7 @@
 .acoes-login {
   padding-top: 10px;
 }
+.acoes-login a{
+  text-decoration: none;
+  color: #000000;
+}

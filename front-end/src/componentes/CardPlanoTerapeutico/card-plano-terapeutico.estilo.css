@@ -1,0 +1,60 @@
+/* CÓDIGO ATUALIZADO PARA: src/componentes/PlanoCard/plano-card.estilo.css */
+
+.plano-card-container {
+  /* Estilo base (fechado) */
+  background-color: #F0F0F0; /* Fundo cinza claro */
+  border: 1px solid #E0E0E0; /* Borda cinza claro */
+  border-radius: 8px; 
+  padding: 1rem 1.5rem; /* Padding padrão */
+  width: 100%; 
+  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  margin-bottom: 1rem;
+  box-sizing: border-box;
+  cursor: pointer; /* Indica que é clicável */
+  transition: all 0.3s ease; /* Transição suave */
+}
+
+.plano-card-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.plano-card-titulo {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #333;
+}
+
+.plano-card-toggle-icon {
+  color: #555; /* Cor da seta */
+  line-height: 0; /* Ajuda no alinhamento vertical do ícone */
+}
+
+/* Esconde o corpo por padrão */
+.plano-card-body {
+  display: none; 
+  margin-top: 1rem;
+  color: #666;
+  font-size: 0.9rem;
+  line-height: 1.5;
+}
+
+/* --- ESTILOS QUANDO O CARD ESTÁ ABERTO --- */
+.plano-card-container.is-open {
+  background-color: #FFFFFF; /* Fundo branco */
+  border-color: #007AFF; /* Borda azul */
+  padding-top: 1.5rem; /* Aumenta o padding vertical */
+  padding-bottom: 1.5rem;
+  box-shadow: 0 4px 12px rgba(0, 122, 255, 0.15); /* Sombra azulada sutil */
+}
+
+/* Mostra o corpo quando está aberto */
+.plano-card-container.is-open .plano-card-body {
+  display: block; 
+}
+
+/* Muda a cor da seta quando aberto (opcional) */
+.plano-card-container.is-open .plano-card-toggle-icon {
+  color: #007AFF; 
+}

@@ -1,0 +1,53 @@
+.main-tela-inicio-terapeuta{
+    background-color: #ffffff;
+    height: 100vh;
+}
+.header-tela-inicio-terapeuta{
+    background-color: #ffffff;
+    padding: 40px 40px 80px 120px;
+    display: flex;
+    justify-content: space-between;
+}
+.header-tela-inicio-terapeuta .header-div-icons {
+    display: flex;
+    gap: 20px;
+}
+.header-tela-inicio-terapeuta h2{
+    margin: 0px;
+}
+.sec-filtro-tela-inicio-terapeuta{
+    display: flex;
+    gap: 30px;
+    padding: 0px 40px 0px 120px;
+}
+.sec-filtro-tela-inicio-terapeuta .div-filtragem{
+    display: flex;
+    flex-direction: column;
+    width: 214px;
+    border: 1px solid #000000 ;
+    border-radius: 10px;
+}
+.div-filtragem .label-checkbox-idade input,
+.div-filtragem .label-checkbox-neurodivergencia input{
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    margin: 10px;
+}
+.div-filtragem p {
+    
+    margin:0px;
+    border-bottom: 1px solid #000000;
+    margin: 10px ;
+}
+.div-exibe-pacientes {
+    display: flex;
+    justify-content: center;
+    
+}
+.div-exibe-pacientes input{
+    height: 44px;
+    width: 200px;
+    border-radius: 100px;
+    background-color: #93d9fa;   
+}
