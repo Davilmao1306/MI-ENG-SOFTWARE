@@ -14,42 +14,55 @@ const planos = [
 ];
 
 
-export function PlanosPacientePage() {
+export function PlanosFamiliar() {
   return (
-    <main className="planos-page-container">
-      <div className='barra-lateral-planos'>
-        <Link to="/escolher-perfil" className='link-voltar'> 
-          <IoArrowBack /> 
-        </Link>
-        <Link to='/login' className='link-sair'>
-          <PiSignOutBold /> Sair
-        </Link>
-      </div>
-
-      <div className="planos-main-content">
-        <header className="planos-header">
-          <div className="planos-titulos">
-            <h1>Planos Terapêuticos </h1>
-            <h2>Paciente Matheus</h2> 
-          </div>
-          <button className="acessar-plano-btn">
-            <IoChevronForwardOutline size={24}/> Acessar Plano
-          </button>
-        </header>
-
-        <section className="lista-de-planos">
-          {planos.map(plano => (
-            <PlanoCard 
-              key={plano.id}
-              data={plano.data}
-              status={plano.status}
-              descricao={plano.descricao}
-            />
-          ))}
-        </section>
-      </div>
-      
-    </main>
-  );
+    <main className="planos-terapeuta-container">
+         
+         {/* 1. Barra Lateral Fixa */}
+         <div className='barra-lateral-planos'>
+           <Link to="/escolher-perfil" className='link-voltar'> 
+             <IoArrowBack /> {/* Ícone Voltar */}
+           </Link>
+           <Link to='/login' className='link-sair'>
+             <PiSignOutBold /> Sair {/* Ícone Sair */}
+           </Link>
+         </div>
+   
+         {/* 2. Conteúdo Principal */}
+         <div className="planos-terapeuta-main">
+           
+           <h1 className="titulo-principal">Planos terapêuticos sendo usado</h1>
+   
+           {/* Layout dividido: Lista à esquerda, Botões à direita */}
+           <div className="conteudo-dividido">
+             
+             {/* Coluna da Lista de Planos */}
+             <section className="coluna-planos">
+               <h2 className="subtitulo-historico">Paciente Matheus</h2>
+               <div className="lista-de-planos-terapeuta">
+                 {planos.map(plano => (
+                   <PlanoCard 
+                     key={plano.id}
+                     data={plano.data}
+                     status={plano.status}
+                     descricao={plano.descricao}
+                   />
+                 ))}
+               </div>
+             </section>
+   
+             {/* Coluna dos Botões de Ação */}
+             <aside className="coluna-acoes">
+              
+               {/* O botão "Acessar Plano" que você tinha no header agora vai aqui */}
+               <button className="botao-acao"> 
+                 <IoChevronForwardOutline /> Acessar Plano 
+               </button>
+              
+             </aside>
+           </div>
+         </div>
+       </main>
+     );
 }
 

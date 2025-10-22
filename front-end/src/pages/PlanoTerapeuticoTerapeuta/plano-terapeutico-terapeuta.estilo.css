@@ -64,7 +64,7 @@
 }
 
 .planos-header {
-display: flex;
+   display: flex;
   justify-content: space-between;
   align-items: center;
   margin-bottom: 2rem;
@@ -76,12 +76,10 @@ display: flex;
   text-align: left; 
 }
 
-.subtitulo-plano {
+.subtitulo-historico {
   font-size: 20px;
-  font-weight: normal;
-  color: #757575;
-  margin-top: 0;
-  margin-bottom: 20px
+  color: #555;
+  margin-top: 20px;
  
 }
 /* --- Layout Dividido (Lista | Botões) --- */

@@ -13,7 +13,8 @@ import {NovaSenha} from './pages/NovaSenha/index.jsx'; // Página de nova senha
 import { CadastrarFamiliar } from './pages/CadastrarFamiliar/index.jsx'; // Página de cadastro de familiar
 import {CadastrarPaciente} from './pages/CadastrarPaciente/index.jsx'; // Página de cadastro de paciente
 import {CadastrarTerapeuta} from './pages/CadastrarTerapeuta/index.jsx'; // Página de cadastro de terapeuta
-import {PlanosPacientePage} from './pages/PlanoTerapeuticoFamiliar/index.jsx'; 
+import {PlanosFamiliar} from './pages/PlanoTerapeuticoFamiliar/index.jsx'; 
+import { PlanosTerapeuta } from './pages/PlanoTerapeuticoTerapeuta/index.jsx';
 
 // Ativamos o roteador
 createRoot(document.getElementById('root')).render(
@@ -27,7 +28,8 @@ createRoot(document.getElementById('root')).render(
         <Route path="/clinica/cadastrar-familiar" element={<CadastrarFamiliar />} />
         <Route path="/clinica/cadastrar-paciente" element={<CadastrarPaciente />} />
         <Route path="/clinica/cadastrar-terapeuta" element={<CadastrarTerapeuta />} />
-        <Route path="/plano-terapeutico-familiar" element={<PlanosPacientePage />} />
+        <Route path="/plano-terapeutico-familiar" element={<PlanosFamiliar />} />
+        <Route path="/plano-terapeutico-terapeuta" element={<PlanosTerapeuta />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>,
