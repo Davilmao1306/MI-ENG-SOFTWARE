@@ -21,7 +21,6 @@
   z-index: 10; 
 }
 
-/* Estilo para os links/ícones na barra lateral */
 .barra-lateral-planos .link-voltar{
     display: block;
     color: black;
@@ -55,9 +54,9 @@
 }
 
 
-/* --- Conteúdo Principal (Com margem esquerda) --- */
+
 .planos-terapeuta-main {
-  padding-left: 160px; /* Margem para a barra lateral */
+  padding-left: 160px; 
   padding-top: 3rem;
   padding-right: 5rem;
   padding-bottom: 3rem;
@@ -84,16 +83,16 @@ display: flex;
   margin-bottom: 20px
  
 }
-/* --- Layout Dividido (Lista | Botões) --- */
+
 .conteudo-dividido {
   display: flex;
   gap: 3rem; 
   align-items: flex-start; 
 }
 
-/* --- Coluna da Lista de Planos --- */
+
 .coluna-planos {
-  flex-grow: 1; /* Ocupa o espaço disponível */
+  flex-grow: 1; 
 }
 
 .lista-de-planos-terapeuta {
@@ -105,9 +104,9 @@ display: flex;
   max-width: 700px; 
 }
 
-/* Ajusta o estilo do PlanoCard (opcional) */
+
 .lista-de-planos-terapeuta .plano-card-container {
-   max-width: none; /* Remove limitação de largura se houver */
+   max-width: none; 
    width: 100%; 
 }
 .lista-de-planos-terapeuta .plano-card-container:nth-child(odd) {
@@ -118,7 +117,7 @@ display: flex;
 }
 
 
-/* --- Coluna dos Botões de Ação --- */
+
 .coluna-acoes {
   display: flex;
   flex-direction: column;
@@ -143,7 +142,7 @@ display: flex;
   transition: background-color 0.2s ease;
   width: 150px;
   height: 60px;
-  flex-shrink: 0;
+  text-decoration: none;
 }
 
 .botao-acao:hover {

@@ -15,27 +15,23 @@ const planos = [
 ];
 
 
-export function PlanosTerapeuta() { // Renomeado para Page no final (convenção)
+export function PlanosTerapeuta() { 
   return (
-    // Container principal da página
     <main className="planos-terapeuta-container">
-      
-      {/* 1. Barra Lateral Fixa */}
       <div className='barra-lateral-planos'>
         <Link to="/escolher-perfil" className='link-voltar'> 
-          <IoArrowBack /> {/* Ícone Voltar */}
+          <IoArrowBack /> 
         </Link>
         <Link to='/login' className='link-sair'>
-          <PiSignOutBold /> Sair {/* Ícone Sair */}
+          <PiSignOutBold /> Sair 
         </Link>
       </div>
 
-      {/* 2. Conteúdo Principal */}
+  
       <div className="planos-terapeuta-main">
         
         <h1 className="titulo-principal">Plano terapêutico de terapia ocupacional</h1>
 
-        {/* Layout dividido: Lista à esquerda, Botões à direita */}
         <div className="conteudo-dividido">
           
           {/* Coluna da Lista de Planos */}
@@ -61,7 +57,7 @@ export function PlanosTerapeuta() { // Renomeado para Page no final (convenção
             <button className="botao-acao">
               <FiEdit /> Editar Plano
             </button>
-            {/* O botão "Acessar Plano" que você tinha no header agora vai aqui */}
+      
             <button className="botao-acao"> 
               <IoChevronForwardOutline /> Acessar Plano 
             </button>

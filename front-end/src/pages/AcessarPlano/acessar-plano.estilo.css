@@ -1,0 +1,65 @@
+.plano-detalhe-container {
+  max-width: 800px; 
+  margin: 0 auto; 
+  padding: 2rem;
+  font-family: Arial, sans-serif;
+  background-color: #FFFFFF; 
+}
+
+.plano-detalhe-header {
+  display: flex;
+  align-items: center;
+  gap: 1.5rem; 
+  border-bottom: 2px solid #000000; 
+  padding-bottom: 1rem;
+  margin-bottom: 2.5rem; 
+}
+
+.back-button {
+  color: #000000; 
+  text-decoration: none;
+  line-height: 0; 
+}
+
+.plano-detalhe-header h1 {
+  font-size: 1.6rem; 
+  color: #000000; 
+  margin: 0;
+  font-weight: bold;
+}
+
+
+.assinatura-section {
+  margin-top: 2.5rem;
+  margin-bottom: 2rem;
+}
+.assinatura-section h3 {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 0.5rem;
+}
+.assinatura-section hr {
+  border: none;
+  border-top: 1px solid #CCCCCC; 
+  margin-bottom: 2rem; 
+}
+
+
+.link-imagem-section {
+  margin-top: 2rem;
+  text-align: left; 
+}
+.link-imagem-section a {
+  display: block; 
+  margin-bottom: 1rem;
+  color: #007AFF;
+  word-break: break-all; 
+  text-decoration: underline; 
+}
+.link-imagem-section img {
+  max-width: 100%; 
+  height: auto;
+  margin-top: 1rem;
+  border: 1px solid #eee; 
+}

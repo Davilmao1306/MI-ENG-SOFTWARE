@@ -15,6 +15,7 @@ import {CadastrarPaciente} from './pages/CadastrarPaciente/index.jsx'; // Págin
 import {CadastrarTerapeuta} from './pages/CadastrarTerapeuta/index.jsx'; // Página de cadastro de terapeuta
 import {PlanosFamiliar} from './pages/PlanoTerapeuticoFamiliar/index.jsx'; 
 import { PlanosTerapeuta } from './pages/PlanoTerapeuticoTerapeuta/index.jsx';
+import { AcessarPlano } from './pages/AcessarPlano/index.jsx';
 
 // Ativamos o roteador
 createRoot(document.getElementById('root')).render(
@@ -30,6 +31,8 @@ createRoot(document.getElementById('root')).render(
         <Route path="/clinica/cadastrar-terapeuta" element={<CadastrarTerapeuta />} />
         <Route path="/plano-terapeutico-familiar" element={<PlanosFamiliar />} />
         <Route path="/plano-terapeutico-terapeuta" element={<PlanosTerapeuta />} />
+        <Route path="/acessar-plano" element={<AcessarPlano />} />  
+
       </Routes>
     </BrowserRouter>
   </StrictMode>,
