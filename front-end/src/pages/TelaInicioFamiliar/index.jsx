@@ -1,27 +1,24 @@
 import './tela-inicio-familiar.estilo.css'
 import { Link } from 'react-router-dom';
+import { IconVoltar } from '../../componentes/IconVoltar'
+import { IconSair } from '../../componentes/IconSair'
 
 export function TelaInicioFamiliar() {
     return (
         <main>
             <header className='header-tela-inicio-familiar'>
                 <div className='um'>
-                    <Link to="/" className='img-voltar-tela-inicio-familiar'>
-                        <img src="/rowback.png" alt="imagem de voltar" />
-                    </Link>
-                    <Link to="/" className='img-sair-tela-inicio-familiar'>
-                        <img src="/logout.png" alt="imagem de sair para o inicio do site" />
-                    </Link>
+                    <IconVoltar to='/login/familiar-perfis' />
+                    <IconSair to='/login'/>
                 </div>
                 <div className='dois'>
-                    <Link to="/" className='img-diario-tela-inicio-familiar'>
+                    <Link to="/plano-terapeutico-familiar" className='img-diario-tela-inicio-familiar'>
                         <img src="/livro-plano-30px.png" alt="imagem de acessar o diario compartilhado" />
                         Plano terapeutico
                     </Link>
-                    <Link to="/" className='img-plano-tela-inicio-familiar'>
+                    <Link to="/diario-compartilhado-familiar" className='img-plano-tela-inicio-familiar'>
                         <img src="/icone-diario-30px.png" alt="imagem de acessar o plano terapeutico" />Diário compartilhado
                     </Link>
-                    
                 </div>
             </header>
             <section className='section-tela-inicio-familiar'>
@@ -33,11 +30,11 @@ export function TelaInicioFamiliar() {
                     </div>
                 </div>
                 <div className='section-bottom'>
-                    <Link to="/plano-terapeutico-familiar" >
+                    <Link to="/diario-compartilhado-familiar" >
                         <img src="/livro-plano-50px.png" alt="" />
                         Diário compartilhado
                     </Link>
-                    <Link to="/diario-compartilhado-familiar" >
+                    <Link to="/plano-terapeutico-familiar" >
                         <img src="/icone-diario-50px.png" alt="" />
                         Plano terapeutico
                     </Link>

@@ -1,8 +1,10 @@
 .header-tela-inicio-familiar {
     background-color: #93D9FA;
-    height: 100vh;
+    position: fixed;
+    left: 0;
+    top: 0;
     width: 120px;
-    position: relative;
+    height: 100vh;
     z-index: 1;
 }
 
@@ -18,7 +20,7 @@
     justify-content: center;
 }
 
-.header-tela-inicio-familiar a {
+.header-tela-inicio-familiar .dois a {
     display: inline-block;
     align-items: center;
     text-decoration: none;
@@ -26,13 +28,6 @@
     font-size: 14px;
     width: 90px;
     text-align: -webkit-center;
-}
-
-.header-tela-inicio-familiar .img-voltar-tela-inicio-familiar {
-    position: absolute;
-    top: 55px;
-    right: 45px;
-    left: 15px;
 }
 
 .header-tela-inicio-familiar .img-plano-tela-inicio-familiar {
@@ -49,20 +44,13 @@
     left: 15px;
 }
 
-.header-tela-inicio-familiar .img-sair-tela-inicio-familiar {
-    position: absolute;
-    bottom: 20px;
-    right: 45px;
-    left: 15px;
-}
-
 .section-tela-inicio-familiar {
     width: 100%;
     height: 100%;
     position: absolute;
     top: 0;
 }
- 
+
 .logo-canto-tela-inicio {
     position: absolute;
     right: 0;
@@ -90,6 +78,8 @@
     display: flex;
     flex-direction: row;
     justify-content: space-around;
+    margin-top: 100px;
+    flex-wrap: wrap;
 }
 
 .section-tela-inicio-familiar .section-bottom a {
@@ -100,18 +90,17 @@
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    flex-wrap: wrap;
-    width: 20%;
+    width: 270px;
     height: 350px;
     gap: 30px;
-    margin: 145px 50px 0px 0px;
     border-radius: 10px;
     box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2);
     transition: transform 0.2s ease, box-shadow 0.2s ease;
 }
 
+
 .section-tela-inicio-familiar .section-bottom a:hover {
-    background-color: #007AFF;
+    background-color: #29B4F5;
     transform: translateY(-5px);
     box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.25);
 }

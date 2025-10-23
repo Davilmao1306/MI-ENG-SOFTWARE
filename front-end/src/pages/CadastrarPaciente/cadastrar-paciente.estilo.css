@@ -1,11 +1,10 @@
 .cadastrar-paciente-cabecalho .barra-lateral {
     background-color: #93D9FA;
     position: fixed;
-
     left: 0;
     top: 0;
-    width: 10%;
-    height: 100vh;
+    width: 100px;
+    height: 100vh; 
 }
 
 .cadastrar-paciente-cabecalho {

@@ -1,4 +1,4 @@
-import React, { useState } from 'react'; 
+import { useState } from 'react'; 
 import { IoChevronDownOutline, IoChevronUpOutline } from 'react-icons/io5'; 
 import './card-plano-terapeutico.estilo.css';
 
@@ -18,13 +18,10 @@ export function PlanoCard({ data, status, descricao }) {
         <div className="plano-card-titulo">
           Plano dia {data} - {status}
         </div>
-       
         <span className="plano-card-toggle-icon">
-
           {isOpen ? <IoChevronUpOutline size={20} /> : <IoChevronDownOutline size={20} />}
         </span>
       </header>
-
       {isOpen && (
         <section className="plano-card-body">
           <p>{descricao}</p>

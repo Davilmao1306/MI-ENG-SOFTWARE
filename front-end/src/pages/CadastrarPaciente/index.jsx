@@ -1,17 +1,16 @@
 import './cadastrar-paciente.estilo.css'
 import { FormCadastrarPaciente } from '../../componentes/FormCadastrarPaciente'
-import { Link } from 'react-router-dom'
+
+import {IconSair} from '../../componentes/IconSair'
+import {IconVoltar} from '../../componentes/IconVoltar'
 
 export function CadastrarPaciente() {
   return (
     <main className='cadastar-paciente'>
       <header className="cadastrar-paciente-cabecalho">
         <div className='barra-lateral'>
-          <img src="/rowback.png" alt="" className='img-voltar' />
-
-          <Link to='/login'>
-            <img src="/sair.png" alt="" className='img-sair' />
-          </Link>
+          <IconVoltar to='/clinica'/>
+          <IconSair to='/login'/>
         </div>
         <h1>Olá Clínica,<br></br> Cadastre o Paciente!</h1>
 

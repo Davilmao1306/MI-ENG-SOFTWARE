@@ -3,7 +3,7 @@
     position: fixed;
     left: 0;
     top: 0;
-    width: 10%;
+    width: 100px;
     height: 100vh;
 }
 
@@ -33,15 +33,20 @@
     margin-bottom: 10px;
 }
 
-.cadastrar-terapeuta-cabecalho .img-sair {
+.cadastrar-terapeuta-cabecalho .icon-sair {
     position: fixed;
-    bottom: 10px;
+    bottom: 40px;
     left: 10px;
+    text-decoration: none;
+    color: #000000;
+    font-size: 20px;
 }
 
-.cadastrar-terapeuta-cabecalho .img-voltar {
+.cadastrar-terapeuta-cabecalho .icon-voltar {
     position: fixed;
     top: 40px;
-    left: 40px;
-
+    left: 30px;
+    text-decoration: none;
+    color: #000000;
+    font-size: 30px;
 }

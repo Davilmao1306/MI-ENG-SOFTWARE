@@ -1,27 +1,39 @@
 .main-tela-inicio-clinica {
-    background-color: #ffffff;
-
+    background-color: var(--background-color-secundary);
 }
-
+.main-tela-inicio-clinica .section-tela-inicio-clinica{
+    display: flex;
+    justify-content: center;
+}
 .header-tela-inicio-clinica {
     padding: 30px 0px 70px 140px;
 }
 
 .section-tela-inicio-clinica {
     display: flex;
-    gap: 70px;
-    justify-content: space-around;
-    padding: 0px 120px;
+    flex-direction: row;
+    padding-left: 140px;
+    gap: 20px;
+    justify-content: start;
     flex-wrap: wrap;
-    height: auto;
+    width: auto;
 }
 
 .div-cadastrar-paciente,
 .div-cadastrar-familiar,
-.div-cadastrar-terapeuta {
-    background-color: #93D9FA;
-    min-width: 15%;
-    min-height: 100%;
+.div-cadastrar-terapeuta,
+.div-acessar-terapeutas {
+    background-color: var(--background-color-primary); 
+    width: 250px;
+    height: 200px;
+    display: flex;
+    justify-content: center;
+}
+.section-tela-inicio-clinica .icon-cadastrar {
+    font-size: 40px;
+}
+.section-tela-inicio-clinica div:hover{
+    background-color: #29B4F5;
 }
 
 .div-cadastrar-paciente a,
@@ -43,35 +55,29 @@
     text-align: center;
 }
 
-.section-acessar-terapeutas {
-    padding: 54px 0px 0px 140px;
-    display: flex;
-    flex-direction: column;
-    gap: 24px;
-
-}
-
-.section-acessar-terapeutas input {
-    border-radius: 10px;
-    border-color: #000000;
-    width: 330px;
-    height: 52px;
-}
-
-.section-acessar-terapeutas a {
+.div-acessar-terapeutas a {
     text-decoration: none;
-    color: #000000;
-    background-color: #93D9FA;
-    width: 245px;
-    height: 35px;
+    color: var(--background-color-tertiary);
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 10px;
+    font-size: 20px;
 }
 
-.img-tela-inicial-clinica {
+.img-tela-inicial-clinica{
+    position: fixed;
+    background-color: var(--background-color-primary);
+    left: 0;
+    top:0;
+    width: 100px;
+    height: 100vh;
+}
+.img-tela-inicial-clinica a {
     position: absolute;
     left: 10px;
     bottom: 20px;
+    text-decoration: none;
+    color: #000000;
+    font-size: 20px;
 }
