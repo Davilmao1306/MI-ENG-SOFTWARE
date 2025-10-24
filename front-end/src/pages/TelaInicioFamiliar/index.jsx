@@ -2,6 +2,11 @@ import './tela-inicio-familiar.estilo.css'
 import { Link } from 'react-router-dom';
 import { IconVoltar } from '../../componentes/IconVoltar'
 import { IconSair } from '../../componentes/IconSair'
+import { IoBookOutline } from "react-icons/io5";
+import { FiMessageSquare } from "react-icons/fi";
+import { IoMdNotificationsOutline } from "react-icons/io";
+import { CgProfile } from "react-icons/cg";
+import { RxAvatar } from "react-icons/rx";
 
 export function TelaInicioFamiliar() {
     return (
@@ -9,15 +14,16 @@ export function TelaInicioFamiliar() {
             <header className='header-tela-inicio-familiar'>
                 <div className='um'>
                     <IconVoltar to='/login/familiar-perfis' />
-                    <IconSair to='/login'/>
+                    <IconSair to='/login' />
                 </div>
                 <div className='dois'>
                     <Link to="/plano-terapeutico-familiar" className='img-diario-tela-inicio-familiar'>
-                        <img src="/livro-plano-30px.png" alt="imagem de acessar o diario compartilhado" />
-                        Plano terapeutico
+                        <IoBookOutline style={{ fontSize: "30px" }} />
+                        Diario terapeutico
                     </Link>
                     <Link to="/diario-compartilhado-familiar" className='img-plano-tela-inicio-familiar'>
-                        <img src="/icone-diario-30px.png" alt="imagem de acessar o plano terapeutico" />Diário compartilhado
+                        <FiMessageSquare style={{fontSize: "30px"}}/>
+                        Plano terapeutico
                     </Link>
                 </div>
             </header>
@@ -25,17 +31,17 @@ export function TelaInicioFamiliar() {
                 <div className='section-top'>
                     <h1>Olá, Usuário</h1>
                     <div className='div-sectio-top-tela-inicio-familiar'>
-                        <Link to="/"><img src="/notifications.jpg" alt="imagem de acessar o plano terapeutico" /></Link>
-                        <Link to="/"><img src="/avatar.jpg" alt="imagem de acessar o diario compartilhado" /></Link>
+                        <Link to="/"><IoMdNotificationsOutline  style={{fontSize: "45px"}}/></Link>
+                        <Link to="/perfil-familiar"><RxAvatar  style={{fontSize: "45px", background:"#93D9FA", color: "#000000", borderRadius: "100px"}}/></Link>
                     </div>
                 </div>
                 <div className='section-bottom'>
                     <Link to="/diario-compartilhado-familiar" >
-                        <img src="/livro-plano-50px.png" alt="" />
+                        <IoBookOutline style={{ fontSize: "50px" }} />
                         Diário compartilhado
                     </Link>
                     <Link to="/plano-terapeutico-familiar" >
-                        <img src="/icone-diario-50px.png" alt="" />
+                        <FiMessageSquare style={{ fontSize: "50px" }} />
                         Plano terapeutico
                     </Link>
                 </div>

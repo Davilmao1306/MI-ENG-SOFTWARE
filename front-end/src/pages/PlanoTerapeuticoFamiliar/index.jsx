@@ -18,20 +18,14 @@ export function PlanosFamiliar() {
   return (
     <main className="planos-terapeuta-container">
 
-
       <div className='barra-lateral-planos'>
         <IconVoltar to='/login/familiar-paciente' />
         <IconSair to='/login' />
       </div>
 
-
       <div className="planos-terapeuta-main">
-
         <h1 className="titulo-principal">Planos terapêuticos sendo usado</h1>
-
-
         <div className="conteudo-dividido">
-
           {/* Coluna da Lista de Planos */}
           <section className="coluna-planos">
             <h2 className="subtitulo-historico">Paciente Matheus</h2>
@@ -46,14 +40,11 @@ export function PlanosFamiliar() {
               ))}
             </div>
           </section>
-
           {/* Coluna dos Botão de Ação */}
           <aside className="coluna-acoes">
-
             <Link to="/acessar-plano" className="botao-acao"> {/* Ajuste o link de volta */}
               <IoChevronForwardOutline /> Acessar Plano
             </Link>
-
           </aside>
         </div>
       </div>

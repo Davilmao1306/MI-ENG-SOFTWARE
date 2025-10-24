@@ -14,7 +14,6 @@ export function TelaInicioClinica() {
         <main className='main-tela-inicio-clinica'>
             <header className='header-tela-inicio-clinica'>
                 <h1>Olá Clínica</h1>
-
             </header>
             <section className='section-tela-inicio-clinica'>
                 <div className='div-cadastrar-paciente'>
@@ -39,10 +38,10 @@ export function TelaInicioClinica() {
                     <Link to="/clinica/lista-de-terapeutas">Ver todos os terapeutas <FaArrowRight style={{ fontSize: '10px' }} /> </Link>
                 </div>
             </section>
-
             <section className='img-tela-inicial-clinica'>
                 <IconSair to='/login' />
             </section>
+            <img src="/neurolink-cadastrar-svg.svg" className="logo-canto-tela-inicio" alt="" />
         </main>
     )
 }

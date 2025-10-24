@@ -19,7 +19,8 @@ import {PlanosFamiliar} from './pages/PlanoTerapeuticoFamiliar/index.jsx';
 import { PlanosTerapeuta } from './pages/PlanoTerapeuticoTerapeuta/index.jsx';
 import { AcessarPlano } from './pages/AcessarPlano/index.jsx';
 import { TelaInicioClinica } from './pages/TelaInicioClinica/index.jsx';
-import { TelaInicioTerapeuta } from './pages/TelaInicioTerapeuta/index.jsx'
+import { TelaInicioTerapeuta } from './pages/TelaInicioTerapeuta/index.jsx';
+import {ListaTerapeutas} from './pages/ListaTerapeutas/index.jsx';
 
 
 // Ativamos o roteador
@@ -41,6 +42,7 @@ createRoot(document.getElementById('root')).render(
         <Route path="/login/familiar-perfis" element={<TelaPerfilPaciente />} />
         <Route path="/clinica" element={<TelaInicioClinica />} />
         <Route path="/terapeuta" element={<TelaInicioTerapeuta />} />
+        <Route path="/clinica/lista-de-terapeutas" element={<ListaTerapeutas/>} />
       </Routes>
     </BrowserRouter>
   </StrictMode>,

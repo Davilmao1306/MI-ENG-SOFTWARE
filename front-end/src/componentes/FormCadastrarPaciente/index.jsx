@@ -41,12 +41,11 @@ export function FormCadastrarPaciente() {
                     />
                 </CampoDeFormulario>
                 <CampoDeFormulario>
-                    <CampoDeEntrada
-                        type='text'
-                        name='sexoPaciente'
-                        placeholder='Digite seu sexo'
-                        required
-                    />
+                    <select className='lista-suspensa'>
+                        <option value="none">Selecione</option>
+                        <option value="feminino">Feminino</option>
+                        <option value="masculino">Masculino</option>
+                    </select>
                 </CampoDeFormulario>
                 
             </div>

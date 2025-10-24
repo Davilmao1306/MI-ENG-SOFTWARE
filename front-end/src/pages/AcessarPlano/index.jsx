@@ -51,13 +51,6 @@ export function AcessarPlano() {
                 {planoExemplo.metodologia.map((item, index) => <li key={index}>{item}</li>)}
               </ul>
             </CampoDetalhes>
-
-            <CampoDetalhes titulo="Cronograma das atividades">
-              <ul>
-                {planoExemplo.cronograma.map((item, index) => <li key={index}>{item}</li>)}
-              </ul>
-            </CampoDetalhes>
-
             <CampoDetalhes titulo="Objetivos do tratamento">
               <p>{planoExemplo.objetivos || "Nenhum objetivo definido."}</p>
             </CampoDetalhes>
@@ -66,10 +59,15 @@ export function AcessarPlano() {
               <p>{planoExemplo.abordagemFamilia || "Nenhuma abordagem definida."}</p>
             </CampoDetalhes>
 
-            <CampoDetalhes titulo="Sobre o plano:">
+            <CampoDetalhes titulo="Instruções Gerais:">
               <p>{planoExemplo.sobrePlano || "Nenhuma informação adicional."}</p>
             </CampoDetalhes>
 
+            <CampoDetalhes titulo="Cronograma das atividades">
+              <ul>
+                {planoExemplo.cronograma.map((item, index) => <li key={index}>{item}</li>)}
+              </ul>
+            </CampoDetalhes>
 
             <div className="assinatura-section">
               <h3>Assinatura dos envolvidos</h3>
