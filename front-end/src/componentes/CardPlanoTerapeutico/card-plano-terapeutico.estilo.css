@@ -2,16 +2,21 @@
 
 .plano-card-container {
   /* Estilo base (fechado) */
-  background-color: #F0F0F0; /* Fundo cinza claro */
-  border: 1px solid #E0E0E0; /* Borda cinza claro */
-  border-radius: 8px; 
-  padding: 1rem 1.5rem; /* Padding padrão */
-  width: 100%; 
-  box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+  background-color: #F0F0F0;
+  /* Fundo cinza claro */
+  border: 1px solid #E0E0E0;
+  /* Borda cinza claro */
+  border-radius: 8px;
+  padding: 1rem 1.5rem;
+  /* Padding padrão */
+  width: 100%;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.05);
   margin-bottom: 1rem;
   box-sizing: border-box;
-  cursor: pointer; /* Indica que é clicável */
-  transition: all 0.3s ease; /* Transição suave */
+  cursor: pointer;
+  /* Indica que é clicável */
+  transition: all 0.3s ease;
+  /* Transição suave */
 }
 
 .plano-card-header {
@@ -27,13 +32,15 @@
 }
 
 .plano-card-toggle-icon {
-  color: #555; /* Cor da seta */
-  line-height: 0; /* Ajuda no alinhamento vertical do ícone */
+  color: #555;
+  /* Cor da seta */
+  line-height: 0;
+  /* Ajuda no alinhamento vertical do ícone */
 }
 
 /* Esconde o corpo por padrão */
 .plano-card-body {
-  display: none; 
+  display: none;
   margin-top: 1rem;
   color: #666;
   font-size: 0.9rem;
@@ -42,19 +49,56 @@
 
 /* --- ESTILOS QUANDO O CARD ESTÁ ABERTO --- */
 .plano-card-container.is-open {
-  background-color: #FFFFFF; /* Fundo branco */
-  border-color: #007AFF; /* Borda azul */
-  padding-top: 1.5rem; /* Aumenta o padding vertical */
+  background-color: #FFFFFF;
+  /* Fundo branco */
+  border-color: #007AFF;
+  /* Borda azul */
+  padding-top: 1.5rem;
+  /* Aumenta o padding vertical */
   padding-bottom: 1.5rem;
-  box-shadow: 0 4px 12px rgba(0, 122, 255, 0.15); /* Sombra azulada sutil */
+  box-shadow: 0 4px 12px rgba(0, 122, 255, 0.15);
+  /* Sombra azulada sutil */
 }
 
 /* Mostra o corpo quando está aberto */
 .plano-card-container.is-open .plano-card-body {
-  display: block; 
+  display: flex;
+  flex-direction: column;
+  gap:10px;
 }
 
 /* Muda a cor da seta quando aberto (opcional) */
 .plano-card-container.is-open .plano-card-toggle-icon {
-  color: #007AFF; 
+  color: #007AFF;
+}
+
+.coluna-acoes {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  width: 120px;
+  flex-shrink: 0;
+}
+
+.botao-acao {
+  background-color: #93D9FA;
+  color: black;
+  border: none;
+  border-radius: 25px;
+
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  transition: background-color 0.2s ease;
+  width: 150px;
+  height: 40px;
+  text-decoration: none;
+}
+
+.botao-acao:hover {
+  background-color: #8ABED9;
 }

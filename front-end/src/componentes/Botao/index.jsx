@@ -1,8 +1,8 @@
 import './botao.estilo.css'
 
-export function Botao({ children }) {
+export function Botao({ tipo, children}) {
     return (
-        <button className='botao'>
+        <button type={tipo} className='botao'>
             {children}
         </button>
     )

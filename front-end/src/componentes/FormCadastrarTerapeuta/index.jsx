@@ -6,10 +6,23 @@ import { Botao } from '../Botao'
 import './form-cadastrar-terapeuta.estilo.css'
 
 export function FormCadastrarTerapeuta() {
+    function dadosTerapeuta(formData) {
+        const dados = {
+            nome: formData.get('cadastrarNomeTerapeuta'),
+            email: formData.get('loginEmail'),
+            data: new Date(formData.get("dataNascimentoTerapeuta")),
+            registro: formData.get('CRP/CRM'),
+            telefone: formData.get('telTerapeuta'),
+            senha: formData.get('firstPasswordTerapeuta'),
+            senharepiater: formData.get('passwordTerapeuta'),
+        }
+        console.log("dados do terapeuta", dados)
+    }
     return (
-        <form className='campos-cadastrar-terapeuta'>
+        <form className='campos-cadastrar-terapeuta' action={dadosTerapeuta}>
             <div className='formulario-cadastrar-terapeuta'>
                 <CampoDeFormulario>
+                    <Label htmlFor="NomeTerapeuta"></Label>
                     <CampoDeEntrada
                         type='text'
                         name='cadastrarNomeTerapeuta'
@@ -18,6 +31,7 @@ export function FormCadastrarTerapeuta() {
                     />
                 </CampoDeFormulario>
                 <CampoDeFormulario>
+                    <Label htmlFor="EmailTerapeuta"></Label>
                     <CampoDeEntrada
                         type='email'
                         name='loginEmail'
@@ -26,6 +40,7 @@ export function FormCadastrarTerapeuta() {
                     />
                 </CampoDeFormulario>
                 <CampoDeFormulario>
+                    <Label htmlFor="DataNascimentoTerapeuta"></Label>
                     <CampoDeEntrada
                         type='date'
                         name='dataNascimentoTerapeuta'
@@ -34,6 +49,7 @@ export function FormCadastrarTerapeuta() {
                     />
                 </CampoDeFormulario>
                 <CampoDeFormulario>
+                    <Label htmlFor="CRP/CRMTerapeuta"></Label>
                     <CampoDeEntrada
                         type='text'
                         name='CRP/CRM'
@@ -42,6 +58,7 @@ export function FormCadastrarTerapeuta() {
                     />
                 </CampoDeFormulario>
                 <CampoDeFormulario>
+                    <Label htmlFor="TelefoneTerapeuta"></Label>
                     <CampoDeEntrada
                         type='tel'
                         name='telTerapeuta'
@@ -50,6 +67,7 @@ export function FormCadastrarTerapeuta() {
                     />
                 </CampoDeFormulario>
                 <CampoDeFormulario>
+                    <Label htmlFor="SenhaTerapeuta"></Label>
                     <CampoDeEntrada
                         type='password'
                         name='firstPasswordTerapeuta'
@@ -58,6 +76,7 @@ export function FormCadastrarTerapeuta() {
                     />
                 </CampoDeFormulario>
                 <CampoDeFormulario>
+                    <Label htmlFor="SenhaTerapeuta"></Label>
                     <CampoDeEntrada
                         type='password'
                         name='passwordTerapeuta'

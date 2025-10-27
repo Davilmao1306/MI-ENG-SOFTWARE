@@ -15,51 +15,7 @@ export function ListaTerapeutas() {
             nome: "Dr Fulano de tal",
             formacao: "Psicologo",
             idTerapeuta: "12"
-        },
-        {
-            id: 2,
-            icon: <RxAvatar fontSize={"40px"} />,
-            nome: "Dr Fulano de tal",
-            formacao: "Psicologo",
-            idTerapeuta: "12"
-        },
-        {
-            id: 3,
-            icon: <RxAvatar fontSize={"40px"} />,
-            nome: "Dr Fulano de tal",
-            formacao: "Psicologo",
-            idTerapeuta: "12"
-        },
-        {
-            id: 4,
-            icon: <RxAvatar fontSize={"40px"} />,
-            nome: "Dr Fulano de tal",
-            formacao: "Psicologo",
-            idTerapeuta: "12"
-        },
-        {
-            id: 5,
-            icon: <RxAvatar fontSize={"40px"} />,
-            nome: "Dr Fulano de tal",
-            formacao: "Psicologo",
-            idTerapeuta: "12"
-        },
-        {
-            id: 6,
-            icon: <RxAvatar fontSize={"40px"} />,
-            nome: "Dr Fulano de tal",
-            formacao: "Psicologo",
-            idTerapeuta: "12"
-        },
-        {
-            id: 7,
-            icon: <RxAvatar fontSize={"40px"} />,
-            nome: "Dr Fulano de tal",
-            formacao: "Psicologo",
-            idTerapeuta: "12"
-        },
-
-
+        }
     ]
     return (
         <main>

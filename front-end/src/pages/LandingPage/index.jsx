@@ -14,7 +14,7 @@ export function LandingPage() {
 
                 <div className='header-nav'>
                     <div className='nav'>
-                        <label for='menu'>
+                        <label htmlFor='menu'>
                             <img src="/Menu.png" alt="menu bar"/>
                         </label>
                         <input type='checkbox' id='menu' hidden />

@@ -117,7 +117,7 @@
 
 
 /* --- Coluna dos Botões de Ação --- */
-.coluna-acoes {
+/*.coluna-acoes {
   display: flex;
   flex-direction: column;
   gap: 1rem; 
@@ -146,4 +146,4 @@
 
 .botao-acao:hover {
   background-color: #8ABED9;
-}
+}*/

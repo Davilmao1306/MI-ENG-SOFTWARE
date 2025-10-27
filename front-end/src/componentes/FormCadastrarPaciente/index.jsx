@@ -5,8 +5,18 @@ import { Botao } from '../Botao'
 import './form-cadastrar-paciente.estilo.css'
 
 export function FormCadastrarPaciente() {
+    function dadosPaciente(formData) {
+        const dados = {
+            nome: formData.get('cadastrarNomePaciente'),
+            cpf: formData.get('cpfPaciente'),
+            data: new Date(formData.get("dataNascimentoPaciente")),
+            telefone: formData.get('telResponsavelPaciente'),
+            genero: formData.get('genero')
+        }
+        console.log("dados do paciente", dados)
+    }
     return (
-        <form className='campos-cadastrar-paciente'>
+        <form className='campos-cadastrar-paciente' action={dadosPaciente}>
             <div className='formulario-cadastrar-paciente'>
                 <CampoDeFormulario>
                     <CampoDeEntrada
@@ -41,8 +51,8 @@ export function FormCadastrarPaciente() {
                     />
                 </CampoDeFormulario>
                 <CampoDeFormulario>
-                    <select className='lista-suspensa'>
-                        <option value="none">Selecione</option>
+                    <select className='lista-suspensa' id='genero' defaultValue="" name='genero'>
+                        <option value="" disabled>Selecione</option>
                         <option value="feminino">Feminino</option>
                         <option value="masculino">Masculino</option>
                     </select>

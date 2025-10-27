@@ -40,12 +40,6 @@ export function PlanosFamiliar() {
               ))}
             </div>
           </section>
-          {/* Coluna dos Botão de Ação */}
-          <aside className="coluna-acoes">
-            <Link to="/acessar-plano" className="botao-acao"> {/* Ajuste o link de volta */}
-              <IoChevronForwardOutline /> Acessar Plano
-            </Link>
-          </aside>
         </div>
       </div>
     </main>

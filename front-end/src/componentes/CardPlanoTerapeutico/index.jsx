@@ -1,6 +1,7 @@
-import { useState } from 'react'; 
-import { IoChevronDownOutline, IoChevronUpOutline } from 'react-icons/io5'; 
+import { useState } from 'react';
+import { IoChevronDownOutline, IoChevronForwardOutline, IoChevronUpOutline } from 'react-icons/io5';
 import './card-plano-terapeutico.estilo.css';
+import { Link } from 'react-router-dom';
 
 export function PlanoCard({ data, status, descricao }) {
   // Estado para controlar se o card está aberto
@@ -9,11 +10,10 @@ export function PlanoCard({ data, status, descricao }) {
   const toggleOpen = () => {
     setIsOpen(!isOpen);
   };
-  
-  return (
-  
-    <div className={`plano-card-container ${isOpen ? 'is-open' : ''}`}>
 
+  return (
+
+    <div className={`plano-card-container ${isOpen ? 'is-open' : ''}`}>
       <header className="plano-card-header" onClick={toggleOpen}>
         <div className="plano-card-titulo">
           Plano dia {data} - {status}
@@ -25,6 +25,12 @@ export function PlanoCard({ data, status, descricao }) {
       {isOpen && (
         <section className="plano-card-body">
           <p>{descricao}</p>
+          <Link to="/acessar-plano" className="botao-acao">
+            <IoChevronForwardOutline /> Acessar Plano
+          </Link>
+          <Link to="/adicionar-feedback-plano" className="botao-acao">
+            <IoChevronForwardOutline /> Feedbacks
+          </Link>
         </section>
       )}
     </div>

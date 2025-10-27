@@ -1,12 +1,23 @@
-import { Link } from 'react-router-dom';
 import { CampoDeEntrada } from '../CampoDeEntrada'
 import { CampoDeFormulario } from '../CampoDeFormulario'
 import { Botao } from '../Botao'
 import './form-cadastrar-familiar.estilo.css'
 
 export function FormCadastrarFamiliar() {
+    function dadosFamiliar(formData) {
+        const dados = {
+            nome: formData.get('cadastrarNomeFamiliar'),
+            email: formData.get('loginEmail'),
+            data: new Date(formData.get("dataNascimentoFamiliar")),
+            parentesco: formData.get('grauParentescoFamiliar'),
+            telefone: formData.get('telResponsavel'),
+            senha: formData.get('firstPasswordFamiliar'),
+            senharepiater: formData.get('passwordFamiliar'),
+        }
+        console.log("dados do familiar", dados)
+    }
     return (
-        <form className='campos-cadastrar-familiar'>
+        <form className='campos-cadastrar-familiar' action={dadosFamiliar}>
             <div className='formulario-cadastrar-familiar'>
                 <CampoDeFormulario>
                     <CampoDeEntrada
