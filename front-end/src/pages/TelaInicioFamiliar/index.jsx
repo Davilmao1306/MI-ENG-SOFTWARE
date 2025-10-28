@@ -7,10 +7,21 @@ import { FiMessageSquare } from "react-icons/fi";
 import { IoMdNotificationsOutline } from "react-icons/io";
 import { CgProfile } from "react-icons/cg";
 import { RxAvatar } from "react-icons/rx";
+import { Dialog } from '../../componentes/Dialog';
+import { useState } from 'react';
 
 export function TelaInicioFamiliar() {
+    const [showDialog, setShowDialog] = useState(true)
+
+    const toggleDialog = () => {
+        setShowDialog(!showDialog)
+    }
     return (
         <main>
+            <Dialog isOpen={showDialog} onClose={toggleDialog}>
+                <h3>Bem vindo!</h3>
+                <p>Seja bem vindo ao espaço de acompanhamento do paciente X</p>
+            </Dialog>
             <header className='header-tela-inicio-familiar'>
                 <div className='um'>
                     <IconVoltar to='/login/familiar-perfis' />
@@ -22,7 +33,7 @@ export function TelaInicioFamiliar() {
                         Diario terapeutico
                     </Link>
                     <Link to="/diario-compartilhado-familiar" className='img-plano-tela-inicio-familiar'>
-                        <FiMessageSquare style={{fontSize: "30px"}}/>
+                        <FiMessageSquare style={{ fontSize: "30px" }} />
                         Plano terapeutico
                     </Link>
                 </div>
@@ -31,8 +42,8 @@ export function TelaInicioFamiliar() {
                 <div className='section-top'>
                     <h1>Olá, Usuário</h1>
                     <div className='div-sectio-top-tela-inicio-familiar'>
-                        <Link to="/"><IoMdNotificationsOutline  style={{fontSize: "45px"}}/></Link>
-                        <Link to="/perfil-familiar"><RxAvatar  style={{fontSize: "45px", background:"#93D9FA", color: "#000000", borderRadius: "100px"}}/></Link>
+                        <Link to="/"><IoMdNotificationsOutline style={{ fontSize: "45px" }} /></Link>
+                        <Link to="/perfil-familiar"><RxAvatar style={{ fontSize: "45px", background: "#93D9FA", color: "#000000", borderRadius: "100px" }} /></Link>
                     </div>
                 </div>
                 <div className='section-bottom'>

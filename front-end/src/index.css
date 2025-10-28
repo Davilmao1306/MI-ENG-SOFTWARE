@@ -1,8 +1,11 @@
+
+
 body {
     margin: 0;
     font-family: sans-serif;
 }
-:root{
+
+:root {
     --background-color-primary: #93D9FA;
     --background-color-secundary: #ffffff;
     --background-color-tertiary: #000000;

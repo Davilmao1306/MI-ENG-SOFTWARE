@@ -1,10 +1,10 @@
 import './botao.estilo.css'
 
-export function Botao({ tipo, children}) {
+export function Botao({ children, ...rest}) {
     return (
-        <button type={tipo} className='botao'>
+        <button className='botao' {...rest}>
             {children}
         </button>
     )
 
-}
+} 

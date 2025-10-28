@@ -1,7 +1,8 @@
 import './tela-inicio-terapeuta.estilo.css'
 import { BsPersonCircle } from "react-icons/bs";
 import { IoMdNotificationsOutline } from "react-icons/io";
-import {IconSair} from '../../componentes/IconSair'
+import { IconSair } from '../../componentes/IconSair'
+import { Link } from 'react-router-dom';
 
 export function TelaInicioTerapeuta() {
     const terapeutas = [
@@ -19,8 +20,8 @@ export function TelaInicioTerapeuta() {
                     <p>Rodrigo Tripodi</p>
                 </div>
                 <div>
-                    <IoMdNotificationsOutline fontSize={"40px"} color='#055175' />
-                    <BsPersonCircle fontSize={"40px"} color='#055175' />
+                    <IoMdNotificationsOutline fontSize={"40px"} color='#000000' />
+                    <BsPersonCircle fontSize={"40px"} color='#000000' />
                 </div>
             </header>
             <section className='sec-tela-inicio-terapeuta'>
@@ -45,21 +46,26 @@ export function TelaInicioTerapeuta() {
                     </div>
                 </div>
                 <div className='acoes-terapeuta'>
-                    <div>
-                        <h3>Sessões</h3>
-                        <p>Visualise e gerencie suas sessões</p>
-                    </div>
-                    <div>
-                        <h3>Ver pacientes</h3>
-                        <p>Gerencie e acompanhe o progresso</p>
-                    </div>
+                    <Link to="/terapeuta/sessao">
+                        <div>
+                            <h3>Sessões</h3>
+                            <p>Visualise e gerencie suas sessões</p>
+                        </div>
+                    </Link>
+                    <Link to="/terapeuta/pacientes">
+                        <div>
+                            <h3>Ver pacientes</h3>
+                            <p>Gerencie e acompanhe o progresso</p>
+                        </div>
+                    </Link>
+
                 </div>
             </section>
             <section className='sec-sair'>
-                <IconSair/>
+                <IconSair />
             </section>
-            
-            
+
+
         </main>
     )
 }

@@ -15,12 +15,15 @@ import { CadastrarPaciente } from './pages/CadastrarPaciente/index.jsx'; // Pág
 import { CadastrarTerapeuta } from './pages/CadastrarTerapeuta/index.jsx'; // Página de cadastro de terapeuta
 import { TelaPerfilPaciente } from './pages/TelaPerfisPaciente/index.jsx'; // Página de cadastro de terapeuta
 import { TelaInicioFamiliar } from './pages/TelaInicioFamiliar/index.jsx'; // Página de cadastro de terapeuta
-import {PlanosFamiliar} from './pages/PlanoTerapeuticoFamiliar/index.jsx'; 
+import { PlanosFamiliar } from './pages/PlanoTerapeuticoFamiliar/index.jsx';
 import { PlanosTerapeuta } from './pages/PlanoTerapeuticoTerapeuta/index.jsx';
 import { AcessarPlano } from './pages/AcessarPlano/index.jsx';
 import { TelaInicioClinica } from './pages/TelaInicioClinica/index.jsx';
 import { TelaInicioTerapeuta } from './pages/TelaInicioTerapeuta/index.jsx';
-import {ListaTerapeutas} from './pages/ListaTerapeutas/index.jsx';
+import { ListaTerapeutas } from './pages/ListaTerapeutas/index.jsx';
+import { TelaNovaSessao } from './pages/TelaNovaSessao/index.jsx';
+import { AcessarPacientes } from './pages/AcessarPacientes/index.jsx';
+import { DiarioTerapeuta } from './pages/DiarioTerapeuta/index';
 
 
 // Ativamos o roteador
@@ -37,12 +40,15 @@ createRoot(document.getElementById('root')).render(
         <Route path="/clinica/cadastrar-terapeuta" element={<CadastrarTerapeuta />} />
         <Route path="/plano-terapeutico-familiar" element={<PlanosFamiliar />} />
         <Route path="/plano-terapeutico-terapeuta" element={<PlanosTerapeuta />} />
-        <Route path="/acessar-plano" element={<AcessarPlano />} />  
+        <Route path="/acessar-plano" element={<AcessarPlano />} />
         <Route path="/login/familiar-paciente" element={<TelaInicioFamiliar />} />
         <Route path="/login/familiar-perfis" element={<TelaPerfilPaciente />} />
         <Route path="/clinica" element={<TelaInicioClinica />} />
         <Route path="/terapeuta" element={<TelaInicioTerapeuta />} />
-        <Route path="/clinica/lista-de-terapeutas" element={<ListaTerapeutas/>} />
+        <Route path="/terapeuta/sessao" element={<TelaNovaSessao />} />
+        <Route path="/terapeuta/pacientes" element={<AcessarPacientes />} />
+        <Route path="/clinica/lista-de-terapeutas" element={<ListaTerapeutas />} />
+        <Route path='/terapeuta/diario' element={<DiarioTerapeuta />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>,
