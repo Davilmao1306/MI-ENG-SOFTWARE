@@ -1,5 +1,7 @@
 import { useState } from 'react';
 import { IoChevronDownOutline, IoChevronForwardOutline, IoChevronUpOutline } from 'react-icons/io5';
+import { PiChatCircleDots } from 'react-icons/pi';
+import { FiEdit } from 'react-icons/fi';
 import './card-plano-terapeutico.estilo.css';
 import { Link } from 'react-router-dom';
 
@@ -25,14 +27,20 @@ export function PlanoCard({ data, status, descricao }) {
       {isOpen && (
         <section className="plano-card-body">
           <p>{descricao}</p>
-          <Link to="/acessar-plano" className="botao-acao">
-            <IoChevronForwardOutline /> Acessar Plano
-          </Link>
-          <Link to="/adicionar-feedback-plano" className="botao-acao">
-            <IoChevronForwardOutline /> Feedbacks
-          </Link>
-        </section>
-      )}
+          
+         <div className="plano-card-acoes">
+            <Link to="/acessar-plano" className="plano-card-botao-acao">
+                <IoChevronForwardOutline /> Acessar Plano
+            </Link>
+            <Link to="/adicionar-feedback-plano" className="plano-card-botao-acao">
+                <PiChatCircleDots /> Feedbacks
+            </Link>
+            <Link to="/editar-plano" className="plano-card-botao-acao">
+                <FiEdit /> Editar Plano
+            </Link>
+        </div>
+    </section>
+)}
     </div>
   );
 }

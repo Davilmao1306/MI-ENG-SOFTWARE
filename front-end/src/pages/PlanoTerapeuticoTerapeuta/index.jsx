@@ -20,7 +20,7 @@ const planos = [
 export function PlanosTerapeuta() {
   return (
     <main className="planos-terapeuta-container">
-      <div className='barra-lateral-planos'>
+      <div className='sidebar-plano'>
         <IconVoltar to='/terapeuta' />
         <IconSair to='/login' />
       </div>
@@ -46,19 +46,11 @@ export function PlanosTerapeuta() {
 
           {/* Coluna dos Botões de Ação */}
           <aside className="coluna-acoes">
-            <button className="botao-acao">
+            <Link to="/terapeuta/criar-plano" className="botao-acao">
               <FiPlusCircle /> Criar plano
-            </button>
-            <button className="botao-acao">
-              <FiEdit /> Editar Plano
-            </button>
-
-            <button className="botao-acao">
-              <IoChevronForwardOutline /> Acessar Plano
-            </button>
-            <button className="botao-acao">
-              <PiChatCircleDots /> Ver Feedbacks
-            </button>
+            </Link>
+         
+         
           </aside>
         </div>
       </div>
