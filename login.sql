@@ -1,3 +1,6 @@
+-- Habilita a extensão pgcrypto para uso de funções de criptografia
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
+
 
 -- O concentimento LGDP é inicialmente FALSE ao cadastrar um novo usuário. Quando o usuário aceitar os termos, a função registrar_consentimento deve ser chamada para atualizar esse valor para TRUE.
 -- Função: cadastrar_familiar
