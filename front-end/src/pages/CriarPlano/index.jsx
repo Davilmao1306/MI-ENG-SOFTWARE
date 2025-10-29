@@ -1,23 +1,17 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom'; // Para os links da sidebar
-import { IoArrowBack } from 'react-icons/io5'; // Ícone de seta para voltar
-import { PiSignOutBold } from 'react-icons/pi'; // Ícone de sair
+import { useState } from 'react';
 import { PiUploadSimpleBold } from "react-icons/pi";
 import { PiLinkBold } from "react-icons/pi";
-import { BsUpload, BsLink45Deg } from 'react-icons/bs';
 import { CampoBuscaPaciente } from '../../componentes/CampoBuscaPaciente';
-import './criar-plano.estilo.css';
 import { IconVoltar } from '../../componentes/IconVoltar';
 import { IconSair } from '../../componentes/IconSair';
+import './criar-plano.estilo.css';
 
 export function CriarPlanoPage() {
-  // ... (seus estados e funções, como neuroSelecionadas, handleChipClick, etc.)
-  const neurodivergencias = ["TEA", "TAB", "TDAH", "TPN", "TOC", "Dislexia", "Discaústica", "Disgrafia", "Outros"];
+  const neurodivergencias = ["TEA", "TAB", "TDAH", "TPN", "TOC", "Dislexia", "Discalculia", "Disgrafia", "Outros"];
   const metodos = ["Treinamento Parental", "Comunicação assistiva", "Terapia ocupacional", "Fonoaudiologia", "Terapia Comportamental Cognitiva"];
   const [neuroSelecionadas, setNeuroSelecionadas] = useState([]);
-  const [pacienteSelecionado, setPacienteSelecionado] = useState(null);
 
-  const [descNeuro, setDescNeuro] = useState(''); // Para o textarea de descrição da neuro
+  const [descNeuro, setDescNeuro] = useState(''); // Para o textarea de descrição da neurodivergencia
   const [metodosInput, setMetodosInput] = useState(''); // Para o input de métodos
 
   const handleChipClick = (item) => {
@@ -32,18 +26,6 @@ export function CriarPlanoPage() {
     setPacienteSelecionado(paciente);
   };
 
-  // --- NOVAS FUNÇÕES PARA ADICIONAR TEXTO DOS CHIPS ---
-
-  // Adicionar neurodivergência ao textarea
-  const addNeuroToTextarea = (item) => {
-      setDescNeuro(prev => {
-          // Verifica se o item já está no textarea para evitar duplicatas exatas
-          if (prev.includes(item)) return prev;
-
-          // Adiciona ao final, com um espaço ou quebra de linha se já houver texto
-          return prev ? `${prev}, ${item}` : item;
-      });
-  };
 
   // Adicionar método ao input de métodos, separados por vírgula
   const addMethodToInput = (item) => {
@@ -63,7 +45,7 @@ export function CriarPlanoPage() {
 
   return (
     <div className="criar-plano-page-container">
-      {/* ... Sidebar ... */}
+  
       <div className='sidebar-plano'>
         <IconVoltar to="/plano-terapeutico-terapeuta" className='link-voltar-sidebar'/>
         <IconSair to='/login' className='link-sair-sidebar' /> 
@@ -78,7 +60,6 @@ export function CriarPlanoPage() {
         <div className="criar-plano-form-wrapper">
           <form className="criar-plano-form">
 
-            {/* --- Secção: Selecionar Paciente --- */}
             <fieldset className="form-section">
               <CampoBuscaPaciente
                 label="Selecione o paciente"
@@ -86,7 +67,7 @@ export function CriarPlanoPage() {
               />
             </fieldset>
 
-            {/* --- Secção: Neurodivergência (Chips) --- */}
+  
             <fieldset className="form-section">
               <label>Selecione a neurodivergência do seu paciente:</label>
               <div className="chip-group">
@@ -95,8 +76,8 @@ export function CriarPlanoPage() {
                     type="button"
                     key={item}
                     className={`chip neuro-chip ${neuroSelecionadas.includes(item) ? 'active' : ''}`}
-                    // <<< CORRIGIDO: Remover 'addNeuroToTextarea(item);' daqui
-                    onClick={() => handleChipClick(item)} // Apenas seleciona/desseleciona o chip visualmente
+            
+                    onClick={() => handleChipClick(item)} 
                   >
                     {item}
                   </button>
@@ -104,7 +85,6 @@ export function CriarPlanoPage() {
               </div>
             </fieldset>
 
-            {/* --- Secção: Descrição Neurodivergência --- */}
             <fieldset className="form-section">
                <label htmlFor="descNeuro">Descreva o grau da(s) neurodivergência(s) do paciente:</label>
                <textarea
@@ -112,20 +92,20 @@ export function CriarPlanoPage() {
                     className="form-textarea"
                     placeholder="Descrição..."
                     rows={3}
-                    value={descNeuro} // O usuário digitará livremente aqui
+                    value={descNeuro} 
                     onChange={(e) => setDescNeuro(e.target.value)}
                 ></textarea>
             </fieldset>
 
-            {/* --- Secção: Métodos (Chips) --- */}
+
             <fieldset className="form-section">
               <label>Selecione os métodos a serem usados durante o acompanhamento</label>
                <input
                     type="text"
                     className="form-input-text"
                     placeholder="Digite os métodos separando por vírgula"
-                    value={metodosInput} // <<< NOVO: Conecta o estado
-                    onChange={(e) => setMetodosInput(e.target.value)} // <<< NOVO: Atualiza o estado ao digitar
+                    value={metodosInput} // Conecta o estado
+                    onChange={(e) => setMetodosInput(e.target.value)} // Atualiza o estado ao digitar
                 />
               <div className="chip-group method-chips">
                 {metodos.map((item, index) => (
@@ -133,7 +113,7 @@ export function CriarPlanoPage() {
                     type="button"
                     key={index}
                     className="chip method-chip"
-                    onClick={() => addMethodToInput(item)} // <<< NOVO: Adiciona ao input
+                    onClick={() => addMethodToInput(item)} // Adiciona ao input
                   >
                     {item}
                   </button>
@@ -141,7 +121,7 @@ export function CriarPlanoPage() {
               </div>
             </fieldset>
 
-            {/* --- Secções de Descrição (Textarea) --- */}
+      
             <fieldset className="form-section">
                <label htmlFor="cronograma">Cronograma das atividade</label>
                <textarea id="cronograma" className="form-textarea" placeholder="Breve descrição sobre o cronograma das atividades a serem desenvolvidas com o paciente." rows={4}></textarea>
@@ -159,7 +139,7 @@ export function CriarPlanoPage() {
                <textarea id="sobre" className="form-textarea" placeholder="Mensagem" rows={5}></textarea>
             </fieldset>
 
-            {/* --- Secção: Assinaturas --- */}
+      
              <fieldset className="form-section assinatura-section">
                <label>Clientes envolvidos</label>
                <p>Assinatura do terapeuta:</p>

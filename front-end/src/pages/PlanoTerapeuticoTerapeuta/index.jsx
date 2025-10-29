@@ -1,11 +1,7 @@
 import { Link } from 'react-router-dom';
 import { PlanoCard } from '../../componentes/CardPlanoTerapeutico';
 import './plano-terapeutico-terapeuta.estilo.css';
-import { IoChevronForwardOutline } from 'react-icons/io5';
-import { PiSignOutBold } from 'react-icons/pi';
-import { IoArrowBack } from 'react-icons/io5';
-import { FiPlusCircle, FiEdit } from 'react-icons/fi';
-import { PiChatCircleDots } from 'react-icons/pi';
+import { FiPlusCircle } from 'react-icons/fi';
 import { IconVoltar } from '../../componentes/IconVoltar';
 import { IconSair } from '../../componentes/IconSair';
 

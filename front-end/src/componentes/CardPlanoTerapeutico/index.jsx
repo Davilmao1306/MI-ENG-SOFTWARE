@@ -35,7 +35,7 @@ export function PlanoCard({ data, status, descricao }) {
             <Link to="/adicionar-feedback-plano" className="plano-card-botao-acao">
                 <PiChatCircleDots /> Feedbacks
             </Link>
-            <Link to="/editar-plano" className="plano-card-botao-acao">
+            <Link to="/terapeuta/criar-plano" className="plano-card-botao-acao">
                 <FiEdit /> Editar Plano
             </Link>
         </div>
