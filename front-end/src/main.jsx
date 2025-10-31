@@ -25,6 +25,7 @@ import { TelaNovaSessao } from './pages/TelaNovaSessao/index.jsx';
 import { AcessarPacientes } from './pages/AcessarPacientes/index.jsx';
 import { DiarioTerapeuta } from './pages/DiarioTerapeuta/index';
 import { CriarPlanoPage } from './pages/CriarPlano/index.jsx';
+import Consent from './pages/Consentimento/consent.jsx';
 
 
 // Ativamos o roteador
@@ -51,6 +52,7 @@ createRoot(document.getElementById('root')).render(
         <Route path="/clinica/lista-de-terapeutas" element={<ListaTerapeutas />} />
         <Route path='/terapeuta/diario' element={<DiarioTerapeuta />} />
         <Route path='/terapeuta/criar-plano' element={<CriarPlanoPage />} />
+        <Route path="/consentimento" element={<Consent />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>,
