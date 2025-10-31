@@ -246,3 +246,72 @@
     background-color: #b0b0b0;
     box-shadow: 0 4px 8px rgba(0,0,0,0.15);
 }
+
+
+.anexos-section {
+    margin-top: 20px;
+    border-top: 1px solid #eee;
+    padding-top: 15px;
+}
+
+.anexos-list {
+    margin-top: 2px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.anexos-list h4 {
+    margin-bottom: 5px;
+    color: #076C9C;
+    font-size: 0.95rem;
+}
+
+.anexos-list h4:first-child { 
+    margin-top: 0; /* Garante que o primeiro h4 não tenha margem superior */
+    margin-bottom: 5px; /* Pode ser útil manter esta aqui também, se for diferente do padrão */
+}
+.anexo-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #f9f9f9;
+    border: 1px solid #eee;
+    border-radius: 5px;
+    padding: 8px 12px;
+    font-size: 0.9rem;
+    color: #333;
+}
+
+.anexo-item a {
+    color: #076C9C;
+    text-decoration: none;
+    margin-right: 10px; /* Espaço entre link e botão de remover */
+}
+
+.anexo-item a:hover {
+    text-decoration: underline;
+}
+
+.anexo-item.file-item span {
+    flex-grow: 1; /* Para o nome do arquivo ocupar o espaço */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.remove-anexo-btn {
+    background: none;
+    border: none;
+    color: #dc3545;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-left: 10px;
+    padding: 2px 5px;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+}
+
+.remove-anexo-btn:hover {
+    background-color: #ffe0e3;
+}

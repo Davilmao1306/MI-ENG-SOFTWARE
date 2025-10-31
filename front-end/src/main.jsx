@@ -51,7 +51,6 @@ createRoot(document.getElementById('root')).render(
         <Route path="/clinica/lista-de-terapeutas" element={<ListaTerapeutas />} />
         <Route path='/terapeuta/diario' element={<DiarioTerapeuta />} />
         <Route path='/terapeuta/criar-plano' element={<CriarPlanoPage />} />
-        <Route path='/terapeuta/editar-plano/:idDoPlano' element={<CriarPlanoPage />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>,
