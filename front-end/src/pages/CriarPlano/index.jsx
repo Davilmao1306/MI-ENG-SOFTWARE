@@ -11,7 +11,7 @@ import './criar-plano.estilo.css';
 
 export function CriarPlanoPage() {
 
-  const [pacienteSelecionado, setPacienteSelecionado] = useState(null); 
+  
   const [neuroSelecionadas, setNeuroSelecionadas] = useState([]);
   const [descNeuro, setDescNeuro] = useState('');
   const [metodosInput, setMetodosInput] = useState('');
@@ -33,9 +33,21 @@ export function CriarPlanoPage() {
   const metodosOpcoes = ["Treinamento Parental", "Comunicação assistiva", "Terapia ocupacional", "Fonoaudiologia", "Terapia Comportamental Cognitiva"];
 
 
-  const { idDoPlano } = useParams();
+  const { idDoPlano, idPaciente } = useParams();
   const isEditing = !!idDoPlano;
   const navigate = useNavigate();
+
+const [pacienteInfo, setPacienteInfo] = useState(null);
+
+  useEffect(() => {
+    // Se temos um idPaciente na URL, podemos buscar os dados dele
+    if (idPaciente) {
+      // Aqui você faria uma chamada API para buscar os dados do paciente
+      // Por enquanto, vou simular um objeto paciente
+      setPacienteInfo({ id: idPaciente, nome: `Paciente ${idPaciente}` });
+    }
+    // TODO: Se isEditing, buscar os dados do plano com idDoPlano
+  }, [idPaciente, idDoPlano]); // Adicionado idDoPlano aqui também para efeito de edição
 
   // FUNÇÕES DE MANIPULAÇÃO DE ESTADO
   const handleChipClick = (item) => {
@@ -44,10 +56,6 @@ export function CriarPlanoPage() {
         ? prev.filter(n => n !== item)
         : [...prev, item]
     );
-  };
-
-  const handleSelectPaciente = (paciente) => {
-    setPacienteSelecionado(paciente);
   };
 
   const addMethodToInput = (item) => {
@@ -82,7 +90,7 @@ export function CriarPlanoPage() {
   const handleSubmit = (e) => {
     e.preventDefault();
     console.log("Dados do Plano:", {
-      paciente: pacienteSelecionado,
+      pacienteId: idPaciente,
       neurodivergenciasSelecionadas: neuroSelecionadas,
       descricaoNeuro: descNeuro,
       metodosAplicados: metodosInput,
@@ -94,31 +102,24 @@ export function CriarPlanoPage() {
       arquivosAnexados
     });
     alert("Plano criado com sucesso!");
-    navigate('/plano-terapeutico-terapeuta'); 
+    navigate('/plano-terapeutico-terapeuta/${idPaciente}'); 
   };
 
   return (
     <div className="criar-plano-page-container">
       <div className='sidebar-plano'>
-        <IconVoltar to="/plano-terapeutico-terapeuta" className='link-voltar-sidebar'/>
+        <IconVoltar to={idPaciente ? `/pacientes/${idPaciente}/detalhes` : "/plano-terapeutico-terapeuta"} className='link-voltar-sidebar'/>
         <IconSair to='/login' className='link-sair-sidebar' />
       </div>
 
       <main className="criar-plano-main-content">
         <header className="plano-header">
-          <h1>{isEditing ? `Editar Plano Terapêutico #${idDoPlano}` : "Criar plano terapêutico"}</h1>
+          <h1>{isEditing ? `Editar Plano Terapêutico #${idDoPlano}` : "Criar plano terapêutico"}
+           </h1>
         </header>
 
         <div className="criar-plano-form-wrapper">
           <form className="criar-plano-form" onSubmit={handleSubmit}>
-
-            <fieldset className="form-section">
-              <CampoBuscaPaciente
-                label="Selecione o paciente"
-                onSelectPaciente={handleSelectPaciente}
-                initialPatient={pacienteSelecionado} 
-              />
-            </fieldset>
 
             <fieldset className="form-section">
               <label>Selecione a neurodivergência do seu paciente:</label>

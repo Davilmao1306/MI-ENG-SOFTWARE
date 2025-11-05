@@ -17,11 +17,12 @@ export function Modal({ isOpen, onClose, title, children }) {
     return null; // Evita o erro "Target container is not a DOM element"
   }
 
-  return ReactDOM.createPortal(
+ return ReactDOM.createPortal(
     <div className="modal-overlay">
       <div className="modal-content">
         <div className="modal-header">
-          <h2>{title}</h2>
+          {/* CORREÇÃO AQUI: Usar <p> com a classe modal-title */}
+          <p className="modal-title">{title}</p>
           <button className="modal-close-button" onClick={onClose}>
             &times;
           </button>
@@ -31,6 +32,6 @@ export function Modal({ isOpen, onClose, title, children }) {
         </div>
       </div>
     </div>,
-    portalRoot // Agora portalRoot é o elemento DOM ou null
+    portalRoot
   );
 }

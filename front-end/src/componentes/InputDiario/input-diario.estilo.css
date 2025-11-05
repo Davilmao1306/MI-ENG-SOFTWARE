@@ -1,0 +1,238 @@
+/* src/componentes/InputDiario/input-diario.estilo.css */
+
+.input-diario-compositor {
+    background-color: #fcfcfc;
+    border: 1px solid #ddd;
+    border-radius: 12px;
+    margin-bottom: 1.5rem;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+    transition: all 0.3s ease-in-out;
+    max-height: 0;
+    opacity: 0;
+    transform: translateY(-20px);
+    visibility: hidden;
+}
+
+.input-diario-compositor.open {
+    max-height: 650px; /* Ajustado para acomodar a seção de anexo */
+    opacity: 1;
+    transform: translateY(0);
+    visibility: visible;
+}
+
+.compositor-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #eee;
+    background-color: #f7f7f7;
+}
+
+.compositor-header h3 {
+    margin: 0;
+    font-size: 1.2rem;
+    color: #333;
+}
+
+.compositor-close-btn {
+    background: none;
+    border: none;
+    font-size: 1.5rem;
+    color: #777;
+    cursor: pointer;
+    transition: color 0.2s ease;
+}
+.compositor-close-btn:hover {
+    color: #333;
+}
+
+.compositor-tabs {
+    display: flex;
+    border-bottom: 1px solid #eee;
+    padding: 0 1.5rem;
+}
+
+.compositor-tab-btn {
+    background: none;
+    border: none;
+    padding: 0.8rem 1rem;
+    cursor: pointer;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: #666;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s ease;
+}
+
+.compositor-tab-btn:hover:not(.active) {
+    color: #333;
+}
+
+.compositor-tab-btn.active {
+    color: #055175;
+    border-bottom: 3px solid #055175;
+    font-weight: bold;
+}
+
+.compositor-content {
+    padding: 1.5rem;
+}
+
+/* Novo estilo para o wrapper combinado de Entrada */
+.compositor-entrada-combined {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem; /* Espaço entre o textarea e a seção de anexos */
+}
+
+
+.compositor-textarea, .compositor-input {
+    width: 100%;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 0.8rem;
+    font-size: 1rem;
+    font-family: "Roboto", sans-serif;
+    box-sizing: border-box;
+    resize: vertical;
+    min-height: 100px;
+}
+
+.compositor-input {
+    min-height: auto;
+    height: 40px;
+}
+
+/* --- Seção de Anexos INLINE (dentro da aba de Entrada) --- */
+.compositor-anexo-inline {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+    background-color: #f9f9f9; /* Fundo leve para destacar */
+    border: 1px solid #eee;
+    border-radius: 8px;
+    padding: 1rem;
+}
+
+.btn-anexo-upload {
+    background-color: #e6f7ff; /* Azul claro */
+    border: 1px solid #055175;
+    padding: 0.8rem 1.2rem;
+    border-radius: 8px;
+    cursor: pointer;
+    text-align: center;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    color: #055175;
+    font-weight: 500;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+.btn-anexo-upload:hover {
+    background-color: #bae7ff;
+    border-color: #055175;
+}
+
+.anexo-file-name {
+    font-size: 0.9rem;
+    color: #666;
+    text-align: center;
+    word-break: break-all;
+}
+
+.anexo-url-group {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    padding: 0 0.8rem;
+    background-color: #fff;
+}
+.anexo-url-group .compositor-input {
+    border: none;
+    padding: 0.8rem 0;
+    height: auto;
+}
+.anexo-url-group svg {
+    color: #999;
+    font-size: 1.2rem;
+}
+
+/* --- Checklist --- */
+.compositor-checklist {
+    display: flex;
+    flex-direction: column;
+    gap: 0.8rem;
+}
+
+.checklist-item-row {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.checklist-item-row .compositor-input {
+    flex-grow: 1;
+}
+
+.btn-remove-item {
+    background: none;
+    border: none;
+    color: #ff4d4d;
+    font-size: 1.2rem;
+    cursor: pointer;
+    padding: 0.2rem;
+    transition: color 0.2s ease;
+}
+.btn-remove-item:hover {
+    color: #cc0000;
+}
+
+.btn-add-item {
+    background-color: #e6f7ff;
+    color: #055175;
+    border: 1px solid #91d5ff;
+    padding: 0.6rem 1rem;
+    border-radius: 8px;
+    cursor: pointer;
+    align-self: flex-start;
+    transition: background-color 0.2s ease, border-color 0.2s ease;
+}
+.btn-add-item:hover {
+    background-color: #bae7ff;
+    border-color: #055175;
+}
+
+.compositor-footer {
+    padding: 1rem 1.5rem;
+    border-top: 1px solid #eee;
+    display: flex;
+    justify-content: flex-end;
+    background-color: #f7f7f7;
+}
+
+.compositor-post-btn {
+    background-color: #93D9FA;
+    color: black;
+    border: none;
+    border-radius: 25px;
+    padding: 0.8rem 1.8rem;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+}
+.compositor-post-btn:hover {
+    background-color: #8ABED9;
+    transform: translateY(-1px);
+}
+.compositor-post-btn:active {
+    transform: translateY(0);
+}

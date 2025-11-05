@@ -1,0 +1,250 @@
+/* src/pages/DiarioCompartilhado/diario-compartilhado.estilo.css */
+
+/* --- Layout Geral e Sidebar Fixa --- */
+.diario-page-container {
+  display: flex;
+  min-height: 100vh;
+  font-family: "Roboto", sans-serif; /* Assumindo que você tem Roboto importado */
+  background-color: #F8F9FA; /* Um cinza bem claro */
+  color: #333;
+}
+
+.sidebar-diario {
+  background-color: #93D9FA; 
+  position: fixed; 
+  left: 0;
+  top: 0;
+  width: 90px;
+  height: 100vh;
+  padding: 2rem 1rem;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 10;
+}
+
+.sidebar-diario .link-voltar-sidebar,
+.sidebar-diario .link-sair-sidebar {
+  display: block;
+  color: black;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 2rem; /* Ícone maior para voltar */
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  line-height: 1;
+  transition: color 0.2s ease;
+}
+.sidebar-diario .link-sair-sidebar {
+   font-size: 1.2rem; /* Texto "Sair" menor */
+}
+.sidebar-diario .link-voltar-sidebar:hover,
+.sidebar-diario .link-sair-sidebar:hover {
+  color: rgb(63, 63, 63); /* Azul claro no hover */
+}
+
+
+/* --- Conteúdo Principal --- */
+.diario-main-content {
+  flex-grow: 1;
+  margin-left: 90px; /* Compensa a largura da sidebar */
+  padding: 2rem 3rem; /* Espaçamento interno */
+  background-color: #FFFFFF; /* Fundo branco para a área de conteúdo */
+  display: flex;
+  flex-direction: column;
+  box-sizing: border-box;
+  /* Não definir height: 100vh aqui se você quer rolagem natural */
+}
+
+/* --- Cabeçalho da Página com Info do Paciente e Botão "+ Nova Entrada" --- */
+.diario-header-paciente {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1.5rem;
+    padding-bottom: 1rem;
+    border-bottom: 1px solid #eee;
+    flex-shrink: 0; /* Impede que encolha */
+}
+
+.paciente-info h2 {
+    font-size: 1.8rem;
+    color: #333;
+    margin: 0;
+}
+
+.paciente-info p {
+    font-size: 0.9rem;
+    color: #666;
+    margin: 0.2rem 0 0 0;
+}
+
+.btn-nova-entrada {
+    background-color: #93D9FA; /* Azul da sua paleta */
+    color: black;
+    border: none;
+    border-radius: 25px; /* Botão arredondado */
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: background-color 0.2s ease, transform 0.1s ease;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+}
+
+.btn-nova-entrada:hover {
+    background-color: #8ABED9;
+    transform: translateY(-1px);
+}
+.btn-nova-entrada:active {
+    transform: translateY(0);
+}
+
+/* --- Abas Globais: Diário Compartilhado / Tarefas --- */
+.diario-tabs {
+    display: flex;
+    margin-bottom: 1.5rem;
+    border-bottom: 1px solid #ddd;
+    flex-shrink: 0; /* Impede que encolha */
+}
+
+.diario-tab-btn {
+    background: none;
+    border: none;
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #777;
+    cursor: pointer;
+    border-bottom: 3px solid transparent;
+    transition: all 0.2s ease;
+    margin-right: 1rem; /* Espaço entre as abas */
+}
+
+
+/* --- Wrapper para o conteúdo do diário (compositor, filtros, feed) --- */
+.diario-content-wrapper {
+    flex-grow: 1; /* Permite que o wrapper ocupe o espaço restante */
+    display: flex;
+    flex-direction: column;
+    overflow-y: hidden; /* O feed terá sua própria rolagem */
+}
+
+/* --- Barra de Busca e Filtros --- */
+.filtro-diario-container {
+    display: flex;
+    gap: 1rem;
+    margin-bottom: 1.5rem;
+    flex-shrink: 0; /* Impede que encolha */
+}
+.search-bar {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    border: 1px solid #ddd;
+    border-radius: 25px; /* Mais arredondado */
+    padding: 0.5rem 1rem;
+    flex-grow: 1;
+    background-color: #f9f9f9;
+}
+.search-bar input {
+    border: none;
+    outline: none;
+    width: 100%;
+    background: none;
+    font-size: 0.95rem;
+}
+.filtro-btn {
+    background-color: #f0f0f0;
+    border: 1px solid #ddd;
+    border-radius: 25px; /* Mais arredondado */
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    white-space: nowrap;
+    font-size: 0.95rem;
+    color: #555;
+    transition: background-color 0.2s ease;
+}
+.filtro-btn:hover {
+    background-color: #e0e0e0;
+}
+
+
+/* --- Feed de Atividades (com rolagem) --- */
+.feed-container {
+  flex-grow: 1; /* Ocupa todo o espaço vertical disponível */
+  overflow-y: auto; /* A rolagem acontece AQUI */
+  padding-right: 10px; /* Espaço para a barra de rolagem */
+  display: flex;
+  flex-direction: column; /* Para os itens ficarem em coluna */
+  gap: 1rem; /* Espaço entre os cards */
+}
+
+.feed-item-placeholder {
+    background-color: #fdfdfd;
+    border: 1px solid #eee;
+    border-radius: 8px;
+    padding: 1rem;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+}
+
+.feed-vazio-msg {
+    text-align: center;
+    color: #888;
+    margin-top: 3rem;
+    font-size: 1.1rem;
+    line-height: 1.6;
+}
+.feed-vazio-msg p {
+    margin: 0.5rem 0;
+}
+
+/* --- Estilos para a aba de Tarefas (exemplo) --- */
+.tarefas-content-wrapper {
+  padding: 1rem;
+  text-align: center;
+  color: #666;
+  font-size: 1.2rem;
+}
+
+/* src/pages/DiarioCompartilhado/diario-compartilhado.estilo.css */
+
+.filtro-select {
+    background-color: #f0f0f0; /* Fundo cinza claro */
+    border: 1px solid #ddd;
+    border-radius: 25px; /* Arredondado como os botões */
+    padding: 0.5rem 1rem;
+    cursor: pointer;
+    font-size: 0.95rem;
+    color: #555;
+    white-space: nowrap;
+    transition: background-color 0.2s ease;
+
+    /* Remove a seta padrão do select e adiciona uma customizada */
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23555' width='18px' height='18px'%3E%3Cpath d='M7 10l5 5 5-5z'/%3E%3Cpath d='M0 0h24v24H0z' fill='none'/%3E%3C/svg%3E");
+    background-repeat: no-repeat;
+    background-position: right 0.8rem center;
+    padding-right: 2.5rem; /* Espaço para a seta customizada */
+}
+
+.filtro-select:hover {
+    background-color: #e0e0e0;
+}
+
+/* Estilo para os botões de filtro/ordenação quando ativos */
+.filtro-btn.active {
+    background-color: #93D9FA; /* Azul da sua paleta */
+    color: black; /* Texto preto */
+    border-color: #93D9FA; /* Borda azul também */
+}
