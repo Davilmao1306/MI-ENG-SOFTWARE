@@ -69,6 +69,7 @@
   transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
   width: 100%;
   box-sizing: border-box;
+  cursor: pointer;
 }
 
 .paciente-card-botao-acao.edit {
@@ -95,4 +96,15 @@
 
 .paciente-card-botao-acao svg {
   font-size: 1rem; 
+}
+
+.paciente-card-actions .terapeuta-button {
+  background-color: #3498db; /* Azul */
+  color: white;
+  border: 1px solid #3498db;
+}
+
+.paciente-card-actions .terapeuta-button:hover {
+  background-color: #2980b9;
+  border-color: #2980b9;
 }

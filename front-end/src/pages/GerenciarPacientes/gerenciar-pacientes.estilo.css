@@ -22,25 +22,23 @@
   justify-content: space-between;
   align-items: center;
   margin-bottom: 2rem;
-  flex-wrap: wrap; 
-  gap: 1rem; 
-}
-
-.search-filter-group {
-    display: flex;
-    gap: 1rem;
-    flex-grow: 1; 
-    max-width: 700px; 
+  flex-wrap: wrap;
+  gap: 1rem;
 }
 
 .search-input-wrapper {
     position: relative;
-    flex-grow: 1;
+}
+
+.search-input-wrapper.expanded {
+    flex-grow: 1; 
+
+    max-width: 600px; 
 }
 
 .search-input {
-  width: 100%;
-  padding: 0.8rem 1rem 0.8rem 2.5rem; 
+  width: 100%; 
+  padding: 0.8rem 1rem 0.8rem 2.5rem;
   border: 1px solid #ccc;
   border-radius: 8px;
   font-size: 1rem;
@@ -54,8 +52,6 @@
     transform: translateY(-50%);
     color: #888;
 }
-
-
 
 .add-button {
   display: flex;
