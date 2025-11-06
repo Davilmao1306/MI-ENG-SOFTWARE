@@ -1,0 +1,317 @@
+.criar-plano-page-container {
+  display: flex;
+  min-height: 100vh;
+  font-family: Arial, sans-serif;
+  background-color: white; 
+}
+
+
+.sidebar-plano {
+  background-color: #93D9FA; 
+  position: fixed; 
+  left: 0;
+  top: 0;
+  width: 90px;
+  height: 100vh;
+  padding: 2rem 1rem;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  z-index: 10;
+}
+.sidebar-plano .link-voltar-sidebar, .sidebar-plano .link-sair-sidebar {
+  display: block;
+  color: black;
+  text-decoration: none;
+  font-weight: bold;
+  font-size: 2rem;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  line-height: 1;
+}
+.sidebar-plano .link-sair-sidebar { font-size: 1.2rem; } 
+.sidebar-plano .link-voltar-sidebar:hover, .sidebar-plano .link-sair-sidebar:hover {
+    color: #eee;
+}
+
+
+
+.criar-plano-main-content {
+  flex-grow: 1; 
+  padding-left: 120px; 
+  padding-top: 2rem;
+  padding-right: 3rem;
+  padding-bottom: 2rem;
+  background-color: white; 
+  display: flex;
+  flex-direction: column;
+  height: 100vh; 
+  box-sizing: border-box;
+  overflow-y: auto; /* Adiciona rolagem se o conteúdo for muito longo */
+}
+
+/* Cabeçalho da página (Título) */
+.plano-header {
+    margin-bottom: 1.5rem;
+    padding-left: 3rem; 
+}
+.plano-header h1 {
+    font-size: 2rem;
+    color: #333;
+    margin: 0;
+}
+
+
+.criar-plano-form-wrapper {
+    max-width: 95.5%; /* Largura máxima do FORMULÁRIO */
+    width: 100%;
+    margin: 0 auto; 
+    padding: 2.5rem 3rem;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.05);
+    box-sizing: border-box; 
+}
+
+
+.criar-plano-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.8rem;
+}
+
+.form-section {
+  border: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.8rem;
+}
+
+.form-section label {
+  font-weight: bold;
+  color: black;
+  margin-bottom: 0.2rem;
+  background-color: white;
+}
+
+.form-select,
+.form-textarea,
+.form-input-text {
+  width: 100%;
+  padding: 0.8rem 1rem;
+  border: 1px solid #D0D0D0;
+  border-radius: 8px;
+  font-size: 1rem;
+  background-color: #ECECEC;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+  resize: none;
+}
+.form-textarea::placeholder {
+  color: #757575;
+}
+
+/* Grupo de Escolhas (Neurodivergência) */
+.chip-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.6rem;
+}
+
+
+.chip.neuro-chip { 
+  padding: 0.4rem 1.2rem;
+  border: 1px solid #E0E0E0; 
+  border-radius: 20px;
+  background-color: #F8F8F8; 
+  color: #555;
+  cursor: pointer;
+  font-size: 0.9rem;
+  transition: all 0.2s ease;
+}
+.chip.neuro-chip:hover {
+    border-color: #007AFF;
+    background-color: #E0F0FF;
+}
+
+.chip.neuro-chip.active {
+  background-color: #93D9FA; 
+  color: #333; 
+  border-color: #93D9FA;
+}
+
+
+/* Botões de escolha de métodos */
+.method-chips .chip {
+   background-color: rgba(103, 80, 164, 0.75);
+   color: white;
+   border-radius: 30px;
+   cursor: pointer;
+   border: none;
+   font-weight: 500; 
+   padding: 0.4rem 1.2rem; 
+}
+.method-chips .chip:hover {
+    background-color: #6750A4;
+}
+.method-chips .chip.active {
+    background-color: #5A3696;
+    box-shadow: 0 0 0 2px #c5b0f0;
+}
+
+
+.assinatura-section p {
+    margin: 0.2rem 0;
+    color: #555;
+    font-size: 0.9rem;
+}
+
+/*Barra de ações no final do formulário*/
+.action-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 2.5rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid #eee;
+}
+
+.action-bar-left {
+  display: flex;
+  gap: 1.2rem; 
+}
+
+
+.action-icon-btn {
+  background-color: #93D9FA; 
+  border: none;
+  border-radius: 8px;
+  width: 45px; 
+  height: 45px;
+  display: flex; 
+  justify-content: center; 
+  align-items: center; 
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
+}
+.action-icon-btn:hover {
+    background-color: #8ABED9; 
+}
+
+
+.action-icon-btn svg { 
+  font-size: 1.6rem; 
+  color: #333;
+}
+
+.action-bar-right {
+  display: flex;
+  gap: 1rem; 
+}
+
+.botao-cancelar-plano, .botao-criar-plano {
+  padding: 0.8rem 2.2rem;
+  border-radius: 25px; 
+  border: none;
+  font-size: 1.05rem; 
+  font-weight: bold; 
+  cursor: pointer;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1); 
+}
+
+.botao-criar-plano {
+  background-color: #93D9FA; 
+  color: #333; 
+  font-size: 14px;
+}
+.botao-criar-plano:hover {
+    background-color: #8ABED9;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+.botao-cancelar-plano {
+  background-color: #D3D3D3;
+  color: #666; 
+  font-size: 14px;
+}
+.botao-cancelar-plano:hover {
+    background-color: #b0b0b0;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}
+
+
+.anexos-section {
+    margin-top: 20px;
+    border-top: 1px solid #eee;
+    padding-top: 15px;
+}
+
+.anexos-list {
+    margin-top: 2px;
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.anexos-list h4 {
+    margin-bottom: 5px;
+    color: #076C9C;
+    font-size: 0.95rem;
+}
+
+.anexos-list h4:first-child { 
+    margin-top: 0; /* Garante que o primeiro h4 não tenha margem superior */
+    margin-bottom: 5px; /* Pode ser útil manter esta aqui também, se for diferente do padrão */
+}
+.anexo-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #f9f9f9;
+    border: 1px solid #eee;
+    border-radius: 5px;
+    padding: 8px 12px;
+    font-size: 0.9rem;
+    color: #333;
+}
+
+.anexo-item a {
+    color: #076C9C;
+    text-decoration: none;
+    margin-right: 10px; /* Espaço entre link e botão de remover */
+}
+
+.anexo-item a:hover {
+    text-decoration: underline;
+}
+
+.anexo-item.file-item span {
+    flex-grow: 1; /* Para o nome do arquivo ocupar o espaço */
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.remove-anexo-btn {
+    background: none;
+    border: none;
+    color: #dc3545;
+    font-size: 1rem;
+    cursor: pointer;
+    margin-left: 10px;
+    padding: 2px 5px;
+    border-radius: 4px;
+    transition: background-color 0.2s ease;
+}
+
+.remove-anexo-btn:hover {
+    background-color: #ffe0e3;
+}

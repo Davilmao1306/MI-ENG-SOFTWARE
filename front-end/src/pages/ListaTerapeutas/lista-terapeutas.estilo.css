@@ -1,0 +1,218 @@
+/* Define cores e fontes globais */
+:root {
+    --cor-fundo: #FFFFFF;
+    --cor-borda: #D9D9D9;
+    --cor-texto-principal: #000000;
+    --cor-texto-secundario: #000000;
+    --cor-azul-claro: #93D9FA; /* Para fundos de input/botão */
+    --cor-azul-medio: #93D9FA; /* Para o botão "Ver perfil" */
+    --cor-azul-texto: #0056b3; /* Para links de paginação */
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: var(--cor-fundo);
+    color: var(--cor-texto-principal);
+    margin: 0;
+    padding: 0;
+}
+
+/* Container principal */
+.terapeutas-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+/* Cabeçalho */
+.header-lista-terapeutas {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    margin-bottom: 24px;
+}
+.header-lista-terapeutas a{
+    text-decoration: none;
+    color:#000000;
+}
+.header-lista-terapeutas h1 {
+    margin: 0;
+    font-size: 2.5rem;
+}
+
+.icone-voltar a {
+    cursor: pointer; 
+}
+
+/* Barra de Busca e Ordenação */
+.search-bar-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 24px;
+}
+
+.search-input-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    flex-grow: 1;
+    max-width: 400px;
+}
+
+.search-input-wrapper .search-icon {
+    position: absolute;
+    left: 12px;
+    color: var(--cor-texto-secundario);
+}
+
+.search-input-wrapper input {
+    background-color: var(--cor-azul-claro);
+    border: none;
+    border-radius: 8px;
+    padding: 10px 10px 10px 40px; /* Espaço para o ícone */
+    font-size: 1rem;
+    width: 100%;
+    outline: none;
+}
+
+.ordenar-btn {
+    background-color: var(--cor-azul-claro);
+    border: none;
+    border-radius: 8px;
+    padding: 10px 16px;
+    font-size: 1rem;
+    font-weight: 500;
+    cursor: pointer;
+}
+
+/* Layout Principal (Filtros + Grid) */
+.terapeutas-layout {
+    display: flex;
+    gap: 24px;
+}
+
+/* Barra Lateral de Filtros */
+.filtros-sidebar {
+    width: 250px;
+    border: 1px solid var(--cor-borda);
+    border-radius: 8px;
+    padding: 16px;
+    height: fit-content;
+}
+
+.filtros-sidebar h3 {
+    margin-top: 0;
+    border-bottom: 1px solid var(--cor-borda);
+    padding-bottom: 8px;
+}
+
+.filtro-section {
+    margin-bottom: 16px;
+}
+
+.filtro-section p {
+    font-weight: bold;
+    margin-bottom: 8px;
+}
+
+.label-checkbox {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    margin-bottom: 8px;
+    color: var(--cor-texto-secundario);
+    font-size: 0.9rem;
+}
+
+/* Container do Grid e Paginação */
+.terapeutas-grid-container {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Grid de Terapeutas */
+.terapeutas-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 24px;
+    margin-bottom: 32px;
+}
+
+/* Card Individual do Terapeuta */
+.terapeuta-card {
+    border: 1px solid var(--cor-borda);
+    border-radius: 8px;
+    padding: 16px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    background-color: var(--cor-fundo);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+    text-align: center;
+}
+
+.terapeuta-avatar {
+    color: var(--cor-texto-secundario);
+    margin-bottom: 8px;
+}
+
+.terapeuta-card strong {
+    font-size: 1.1rem;
+}
+
+.terapeuta-card span {
+    color: var(--cor-texto-secundario);
+    font-size: 0.9rem;
+    margin-bottom: 8px;
+}
+
+.ver-perfil-btn {
+    background-color: var(--cor-azul-medio);
+    border: none;
+    border-radius: 8px;
+    padding: 10px;
+    width: 100%;
+    font-size: 1rem;
+    font-weight: 600;
+    cursor: pointer;
+    margin-top: auto; /* Empurra o botão para baixo */
+}
+
+/* Paginação */
+.pagination {
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 12px;
+    font-size: 0.9rem;
+    color: var(--cor-texto-secundario);
+}
+
+.pagination a {
+    text-decoration: none;
+    color: var(--cor-azul-texto);
+    font-weight: bold;
+    padding: 4px 8px;
+    border-radius: 4px;
+}
+
+.pagination a.active,
+.pagination a:hover {
+    background-color: var(--cor-azul-claro);
+}
+
+/* Rodapé / Botão Sair */
+.footer-sair a {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    cursor: pointer;
+    margin-top: 32px;
+    font-size: 1.1rem;
+    font-weight: 500;
+    text-decoration: none;
+    color: #000000;
+}

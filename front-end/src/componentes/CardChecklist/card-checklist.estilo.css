@@ -1,0 +1,81 @@
+/* src/componentes/CardChecklist/card-checklist.estilo.css */
+.card-checklist {
+  background-color: #e0f0ff; /* Fundo azul claro para checklists */
+  border: 1px solid #a0c0ff; /* Borda azul suave */
+  border-radius: 8px;
+  padding: 1rem;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+}
+
+.card-header-checklist {
+  display: flex;
+  align-items: baseline;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+}
+
+.card-autor-checklist {
+  font-weight: bold;
+  color: #333;
+  margin-right: 0.3rem;
+}
+
+.card-data-checklist {
+  color: #777;
+  font-size: 0.85rem;
+}
+
+.card-titulo-checklist {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: #007AFF; /* Azul forte para o título */
+  margin: 0.5rem 0 1rem 0;
+}
+
+.checklist-itens {
+  margin-bottom: 1rem;
+}
+
+.checklist-item {
+  display: flex;
+  align-items: center;
+  margin-bottom: 0.5rem;
+  cursor: pointer; /* Indica que é interativo */
+}
+
+.checklist-item input[type="checkbox"] {
+  margin-right: 0.8rem;
+  transform: scale(1.2); /* Deixa o checkbox um pouco maior */
+  accent-color: #007AFF; /* Cor do checkbox quando marcado */
+}
+
+.checklist-item-text {
+  color: #444;
+  font-size: 1rem;
+}
+
+.btn-salvar-respostas {
+  background-color: #007AFF;
+  color: white;
+  border: none;
+  border-radius: 20px;
+  padding: 0.6rem 1.2rem;
+  font-size: 0.9rem;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+  align-self: flex-end; /* Alinha à direita */
+}
+.btn-salvar-respostas:hover {
+  background-color: #0056b3;
+}
+
+.checklist-tera-summary {
+    font-size: 0.9rem;
+    color: #666;
+    margin-top: 1rem;
+    border-top: 1px dashed #c0d9ed;
+    padding-top: 0.8rem;
+}

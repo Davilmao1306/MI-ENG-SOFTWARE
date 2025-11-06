@@ -1,0 +1,35 @@
+.login-page-container {
+  min-height: 100vh;
+  background-color: #93D9FA;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 30px;
+  position: relative;
+  overflow: hidden;
+}
+
+.image-section-login {
+  position: absolute;
+  bottom: 0px;
+  left: -30px;
+  opacity: 90%;
+  width: 439px;
+}
+
+.login-page-container header {
+  position: relative;
+  background-color: transparent;
+}
+
+.forgot-password-link {
+  color: #000000;
+  text-decoration: underline;
+  font-family: Sans-serif;
+  font-size: 14px;
+}
+
+.forgot-password-link:hover {
+  opacity: 0.8;
+}

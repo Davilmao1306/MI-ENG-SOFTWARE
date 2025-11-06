@@ -1,0 +1,84 @@
+.main-tela-inicio-clinica {
+    background-color: var(--background-color-secundary);
+}
+.main-tela-inicio-clinica .section-tela-inicio-clinica{
+    display: flex;
+    justify-content: center;
+}
+.header-tela-inicio-clinica {
+    padding: 30px 0px 70px 140px;
+}
+
+.section-tela-inicio-clinica {
+    display: flex;
+    flex-direction: row;
+    padding-left: 140px;
+    gap: 20px;
+    justify-content: start;
+    flex-wrap: wrap;
+    width: auto;
+}
+ 
+.div-cadastrar-paciente,
+.div-cadastrar-familiar,
+.div-cadastrar-terapeuta,
+.div-acessar-terapeutas {
+    background-color: var(--background-color-primary); 
+    width: 250px;
+    height: 200px;
+    display: flex;
+    justify-content: center;
+}
+.section-tela-inicio-clinica .icon-cadastrar {
+    font-size: 40px;
+}
+.section-tela-inicio-clinica div:hover{
+    background-color: #29B4F5;
+}
+
+.div-cadastrar-paciente a,
+.div-cadastrar-familiar a,
+.div-cadastrar-terapeuta a {
+    padding-top: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-decoration: none;
+    color: black;
+}
+
+.div-cadastrar-paciente p,
+.div-cadastrar-familiar p,
+.div-cadastrar-terapeuta p {
+    width: 100px;
+    text-align: center;
+}
+
+.div-acessar-terapeutas a {
+    text-decoration: none;
+    color: var(--background-color-tertiary);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+    font-size: 20px;
+}
+
+.img-tela-inicial-clinica{
+    position: fixed;
+    background-color: var(--background-color-primary);
+    left: 0;
+    top:0;
+    width: 100px;
+    height: 100vh;
+}
+.img-tela-inicial-clinica a {
+    position: absolute;
+    left: 10px;
+    bottom: 20px;
+    text-decoration: none;
+    color: #000000;
+    font-size: 20px;
+}
+

@@ -1,0 +1,140 @@
+/* CÓDIGO ATUALIZADO PARA: src/componentes/CampoBuscaPaciente/campo-busca-paciente.estilo.css */
+.campo-busca-paciente-wrapper {
+  position: relative;
+  width: 100%;
+}
+
+.campo-label {
+  font-weight: bold;
+  color: #0987C3; /* Cor roxa */
+  position: absolute; /* Torna o label flutuante */
+  top: -10px; /* Ajusta para cima da borda */
+  left: 15px; /* Posição horizontal */
+  background-color: #f0f2f5; /* Fundo do label para "recortar" o branco do input */
+  padding: 0 5px;
+  font-size: 0.85rem;
+  z-index: 2;
+}
+
+.input-container-busca {
+  position: relative;
+  display: flex;
+  align-items: center;
+  border: 1px solid #0987C3; /* Borda roxa */
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  background-color: #FFFFFF; /* Fundo branco para o input */
+  box-sizing: border-box;
+  z-index: 1;
+}
+
+.paciente-input {
+  flex-grow: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 1rem;
+  padding: 0.4rem 0.5rem;
+  color: #333;
+}
+.paciente-input::placeholder {
+  color: #888;
+}
+
+.clear-icon, .menu-icon { /* Ícone de menu adicionado */
+  color: #0987C3; /* Ícones roxos */
+  font-size: 1.2rem;
+  cursor: pointer;
+  margin-left: 0.5rem;
+}
+
+
+.input-container-busca {
+  position: relative;
+  display: flex;
+  align-items: center;
+  border: 1px solid #0987C3;
+  border-radius: 8px;
+  padding: 0.5rem 1rem;
+  background-color: #FFFFFF;
+  box-sizing: border-box;
+  z-index: 1;
+}
+
+.paciente-input {
+  flex-grow: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 1rem;
+  padding: 0.4rem 0.5rem;
+  color: #333;
+}
+.paciente-input::placeholder {
+  color: #888;
+}
+
+/* Estilo para o ícone de busca fixo à esquerda */
+.search-icon {
+  color: #0987C3;
+  font-size: 1.2rem;
+  margin-right: 0.5rem; /* Espaço entre a lupa e o texto */
+}
+
+/* Estilo para o ícone de limpar (BsXCircle) ou lista (BsListUl) */
+.clear-icon, .list-icon {
+  color: #0987C3;
+  font-size: 1.2rem;
+  cursor: pointer;
+  margin-left: 0.5rem; /* Espaço entre o texto e o ícone */
+}
+
+/* --- Lista de Resultados --- */
+.paciente-results-list {
+  position: absolute;
+  top: 100%;
+  left: 0;
+  width: 100%;
+  background-color: #FFFFFF;
+  border: 1px solid #0987C3; /* Cinza claro do protótipo */
+; /* Borda roxa para a lista */
+  border-top: none;
+  border-bottom-left-radius: 8px;
+  border-bottom-right-radius: 8px;
+  list-style: none;
+  padding: 0;
+  margin-top: -1px;
+  max-height: 200px;
+  overflow-y: auto;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+  z-index: 10;
+}
+
+.paciente-list-item {
+  padding: 0.8rem 1.5rem;
+  cursor: pointer;
+  color: #333;
+  border-bottom: 1px solid #f0f0f0;
+}
+.paciente-list-item:last-child {
+  border-bottom: none;
+}
+.paciente-list-item:hover {
+  background-color: #93D9FA;
+}
+
+.no-results {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: #F7F7F7;
+    border: 1px solid #E0E0E0;
+    border-top: none;
+    border-bottom-left-radius: 8px;
+    border-bottom-right-radius: 8px;
+    padding: 0.8rem 1.5rem;
+    color: #555;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    z-index: 10;
+}

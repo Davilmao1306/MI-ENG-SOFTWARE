@@ -1,0 +1,25 @@
+.tela-exibe-pacientes{
+    background-color: #E0F2FE;
+    height: 100%;
+}
+.header-acessar-pacientes{
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #D9D9D9;
+}
+.header-acessar-pacientes div{
+    display: flex;
+    gap: 20px;
+}
+.section-exibe-pacientes{
+    display: flex;
+    flex-direction: column;
+}
+.div-titulos{
+    margin-left: 60px;
+}
+.voltar-tela-pacientes{
+    position: relative;
+    left: 10px;
+    top: 50px;
+}

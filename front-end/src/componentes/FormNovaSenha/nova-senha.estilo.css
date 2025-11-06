@@ -1,0 +1,28 @@
+.form-nova-senha{
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px; 
+  width: 100%;
+}
+
+.campos-nova-senha {
+  gap:20px;
+}
+
+.acoes-nova-senha {
+  padding-top: 10px;
+}
+
+.acoes-nova-senha .link-login-nova-senha {
+  text-decoration: none;
+}
+
+.confirmar-nova-senha{
+  background-color: #ffffff;
+  border-radius: 30px;
+  padding:10px;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+}

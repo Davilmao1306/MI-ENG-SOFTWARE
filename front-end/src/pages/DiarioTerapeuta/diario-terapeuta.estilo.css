@@ -1,0 +1,25 @@
+.diario-terapeuta {
+    width: 150px;
+    background-color: #ffffff;
+    position: fixed;
+    left: 0;
+    top: 0;
+    height: 100vh;
+}
+.diario-terapeuta div {
+    margin-left:210px;
+    width: 100vw;
+}
+.section-diario-terapeuta {
+    padding-left: 210px;
+    padding-top: 100px;
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+    background-color: #E0F2FE;
+}
+.footer img{
+    position: relative;
+    right: 0;
+    bottom: 0;
+}

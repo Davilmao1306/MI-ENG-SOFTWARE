@@ -1,0 +1,119 @@
+.header-tela-inicio-familiar {
+    background-color: #93D9FA;
+    position: fixed;
+    left: 0;
+    top: 0;
+    width: 120px;
+    height: 100vh;
+    z-index: 1;
+}
+
+.header-tela-inicio-familiar img {
+    display: flex;
+    flex-direction: column;
+}
+
+.header-tela-inicio-familiar div {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.header-tela-inicio-familiar .dois a {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-decoration: none;
+    color: #000000;
+    font-size: 14px;
+    width: 90px;
+    text-align: -webkit-center;
+}
+
+
+
+.header-tela-inicio-familiar .img-plano-tela-inicio-familiar {
+    position: absolute;
+    top: 50%;
+    right: 45px;
+    left: 15px;
+}
+
+.header-tela-inicio-familiar .img-diario-tela-inicio-familiar {
+    position: absolute;
+    top: 30%;
+    right: 45px;
+    left: 15px;
+}
+
+.section-tela-inicio-familiar {
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    top: 0;
+}
+
+.logo-canto-tela-inicio {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+}
+
+.section-tela-inicio-familiar .section-top {
+    margin: 25px 60px 25px 216px;
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.section-tela-inicio-familiar .section-top .div-sectio-top-tela-inicio-familiar {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 100px;
+}
+.div-sectio-top-tela-inicio-familiar a {
+    text-decoration: none;
+    color: #000000;
+    display: inline-block;
+}
+.section-tela-inicio-familiar .section-bottom {
+    margin-left: 15%;
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    margin-top: 100px;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.section-bottom .book-50px {
+    font-size: 50px;
+}
+
+.section-tela-inicio-familiar .section-bottom a {
+    background-color: #93D9FA;
+    text-decoration: none;
+    color: black;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 270px;
+    height: 350px;
+    gap: 30px;
+    border-radius: 10px;
+    box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+
+.section-tela-inicio-familiar .section-bottom a:hover {
+    background-color: #29B4F5;
+    transform: translateY(-5px);
+    box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.25);
+}
+
