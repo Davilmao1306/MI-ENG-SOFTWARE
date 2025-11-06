@@ -1,12 +1,12 @@
-import { Link, useLocation } from 'react-router-dom'; 
-import { FiHome, FiUsers, FiUser, FiClipboard } from 'react-icons/fi'; 
+import { Link, useLocation } from 'react-router-dom';
+import { FiHome, FiUsers, FiUser, FiClipboard } from 'react-icons/fi';
 import { RiPsychotherapyLine } from "react-icons/ri";
 import './sidebar.estilo.css';
 
 export function Sidebar() {
   const location = useLocation(); // Obtém o objeto de localização atual
 
-  
+
   const isActive = (path) => location.pathname === path;
 
   return (
@@ -18,13 +18,13 @@ export function Sidebar() {
         <ul>
           <li>
             {/* Aplica 'active' se o pathname for '/dashboard' */}
-            <Link to="/dashboard-inicial" className={`sidebar-nav-item ${isActive('/dashboard-inicial') ? 'active' : ''}`}>
+            <Link to="/clinica" className={`sidebar-nav-item ${isActive('/clinica') ? 'active' : ''}`}>
               <FiHome /> Dashboard
             </Link>
           </li>
           <li>
             {/* Aplica 'active' se o pathname for '/terapeutas' */}
-            <Link to="/terapeutas" className={`sidebar-nav-item ${isActive('/terapeutas') ? 'active' : ''}`}>
+            <Link to="/clinica/lista-de-terapeutas" className={`sidebar-nav-item ${isActive('/clinica/lista-de-terapeutas') ? 'active' : ''}`}>
               <RiPsychotherapyLine /> Terapeutas
             </Link>
           </li>
@@ -40,7 +40,7 @@ export function Sidebar() {
               <FiUsers /> Familiares
             </Link>
           </li>
-      
+
         </ul>
       </nav>
     </aside>
