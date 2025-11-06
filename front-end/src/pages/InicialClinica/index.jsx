@@ -123,6 +123,6 @@ export function DashboardInicial() {
         </section>
 
       </main>
-    </div>
+    </div> 
   );
 }

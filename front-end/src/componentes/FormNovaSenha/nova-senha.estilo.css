@@ -17,3 +17,12 @@
 .acoes-nova-senha .link-login-nova-senha {
   text-decoration: none;
 }
+
+.confirmar-nova-senha{
+  background-color: #ffffff;
+  border-radius: 30px;
+  padding:10px;
+  border: none;
+  font-weight: bold;
+  cursor: pointer;
+}

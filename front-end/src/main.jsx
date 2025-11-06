@@ -48,17 +48,16 @@ createRoot(document.getElementById('root')).render(
         <Route path="/acessar-plano" element={<AcessarPlano />} />
         <Route path="/login/familiar-paciente" element={<TelaInicioFamiliar />} />
         <Route path="/login/familiar-perfis" element={<TelaPerfilPaciente />} />
-        <Route path="/clinica" element={<TelaInicioClinica />} />
         <Route path="/terapeuta" element={<TelaInicioTerapeuta />} />
         <Route path="/terapeuta/sessao" element={<TelaNovaSessao />} />
         <Route path="/terapeuta/pacientes" element={<AcessarPacientes />} />
         <Route path="/clinica/lista-de-terapeutas" element={<ListaTerapeutas />} />
         <Route path='/terapeuta/diario' element={<DiarioTerapeuta />} />
-       <Route path="/pacientes/:idPaciente/criar-plano" element={<CriarPlanoPage />} />
-       <Route path='/consentimento' element={<Consent />} />
+        <Route path="/pacientes/:idPaciente/criar-plano" element={<CriarPlanoPage />} />
+        <Route path='/consentimento' element={<Consent />} />
         <Route path='/diario-compartilhado' element={<DiarioCompartilhadoPage />} />
-        <Route path='/dashboard-inicial' element={<DashboardInicial />} />
-       <Route path="/pacientes" element={<GerenciarPacientes />} /> {/* Rota para a lista de pacientes */}
+        <Route path='/clinica' element={<DashboardInicial />} />
+        <Route path="/pacientes" element={<GerenciarPacientes />} /> {/* Rota para a lista de pacientes */}
         <Route path="/pacientes/novo" element={<div>Tela de Adicionar Paciente</div>} /> {/* Rota para o formulário de adição */}
         <Route path="/pacientes/editar/:id" element={<div>Tela de Editar Paciente</div>} /> {/* Rota para editar */}
         <Route path="/pacientes/:id/vincular-familiar" element={<div>Tela de Vincular Familiar</div>} /> {/* Rota para vincular familiar */}

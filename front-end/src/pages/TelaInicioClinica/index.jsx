@@ -29,7 +29,7 @@ export function TelaInicioClinica() {
                     </Link>
                 </div>
                 <div className='div-cadastrar-terapeuta'>
-                    <Link to="/clinica/cadastrar-terapeuta">
+                    <Link to="/clinica/cadastrar-terapeuta"> 
                         <MdPsychology className='icon-cadastrar' />
                         <p>Cadastrar Terapeuta</p>
                     </Link>

@@ -17,6 +17,7 @@ export function RecuperarSenha() {
                 </div>
                 <div>
                     <FormRecuperarSenha />
+                    
                 </div>
             </section> 
             <section className='section-img-recuperar-senha'>

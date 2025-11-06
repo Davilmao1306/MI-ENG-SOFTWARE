@@ -1,5 +1,3 @@
-// src/componentes/Modal/index.jsx
-import React from 'react'; // << MUDANÇA AQUI: Remover useState e useEffect, não são mais necessários para este método
 import ReactDOM from 'react-dom';
 import './modal.estilo.css';
 
@@ -21,7 +19,6 @@ export function Modal({ isOpen, onClose, title, children }) {
     <div className="modal-overlay">
       <div className="modal-content">
         <div className="modal-header">
-          {/* CORREÇÃO AQUI: Usar <p> com a classe modal-title */}
           <p className="modal-title">{title}</p>
           <button className="modal-close-button" onClick={onClose}>
             &times;
