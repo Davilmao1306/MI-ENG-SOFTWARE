@@ -1,0 +1,231 @@
+body {
+  width: 100%;
+}
+
+.landing-page header {
+  background-color: #ffffff;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+  padding: 20px 20%;
+}
+
+.landing-page .header-logo {
+  display: inline-block;
+
+}
+
+.landing-page .header-img-menu {
+  display: inline-block;
+}
+
+.landing-page .header-nav {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  
+  gap: 40px;
+}
+
+
+.landing-page .header-nav p {
+  font-family: sans-serif;
+  font-size: 30px;
+}
+
+.landing-page .header-nav p:hover {
+  padding-top: 10px;
+  border-bottom: 2px solid #007AFF;
+}
+
+.landing-page .nav-desktop-tablet a {
+  font-size: 12px;
+  font-family: sans-serif;
+  font-weight: bold;
+  color: #000000;
+  text-decoration: none;
+  background-color: #93D9FA;
+  width: 145px;
+  height: 40px;
+  display: block;
+  text-align: center;
+  line-height: 40px;
+  border-radius: 20px;
+}
+
+.landing-page .header-nav a:hover {
+  background-color: #29B4F5;
+}
+
+.landing-page .section-titulo {
+  padding: 12px;
+  padding-left: 10%;
+  padding-right: 15%;
+  background-color: #93D9FA;
+  display: flex;
+  justify-content: space-between;
+  min-width: auto;
+}
+
+.landing-page .section-titulo h1 {
+  font-family: sans-serif;
+  font-size: 32px;
+  margin-top: 50px;
+  font-weight: bold;
+  width: 360px;
+}
+
+.landing-page .section-titulo p {
+  margin-top: 15px;
+  font-family: sans-serif;
+  font-size: 15px;
+  font-weight: 360px;
+  width: 367px;
+  margin-bottom: 109px;
+}
+
+.landing-page .section-subtitulo {
+  margin: 135px 10%;
+  background-color: #ffffff;
+  
+}
+
+.landing-page .section-subtitulo h3 {
+  width: 100%;
+  padding-bottom: 40px;
+  font-family: sans-serif;
+  font-size: 25px;
+}
+
+.landing-page .section-image {
+  background-color: #ffffff;
+  display: flex;
+  justify-content: space-evenly;
+  align-items: center;
+  font-family: sans-serif;
+  font-size: 20px;
+  padding-bottom: 117px;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.landing-page .section-subimage1,
+.landing-page .section-subimage2,
+.landing-page .section-subimage3 {
+  background-color: #93D9FA;
+  min-width: 260px;
+  min-height: 260px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  border-radius: 5px;
+  text-align: center;
+  box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  margin: 0px 30px;
+}
+
+.landing-page .section-subimage1:hover,
+.landing-page .section-subimage2:hover,
+.landing-page .section-subimage3:hover {
+  transform: translateY(-5px);
+  box-shadow: 6px 6px 12px rgba(0, 0, 0, 0.25);
+}
+
+.landing-page .section-subimage1 img,
+.landing-page .section-subimage2 img,
+.landing-page .section-subimage3 img {
+  width: 100px;
+  margin: 20px 20px;
+}
+
+.landing-page .section-subimage1 p,
+.landing-page .section-subimage2 p,
+.landing-page .section-subimage3 p {
+  width: 200px;
+  margin-bottom: 20px;
+}
+
+.landing-page .footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: sans-serif;
+  margin: 0px 120px;
+  border-top: 1px solid #000000;
+}
+
+/* desktop*/
+
+.landing-page header {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  gap: 20px;
+  padding: 30px 10%;
+}
+
+.header-nav .nav {
+  display: none;
+}
+
+.header-nav .nav-desktop-tablet {
+  display: flex;
+  flex-direction: row;
+  width: 250px;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.header-nav .nav-desktop-tablet p {
+  font-size: 24px;
+  position: relative;
+}
+
+.landing-page .section-titulo {
+  padding: 12px 10%;
+}
+
+
+
+.landing-page .footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  font-family: sans-serif;
+  margin: 0px 120px;
+  border-top: 1px solid #000000;
+}
+
+
+/* tela tablet
+@media screen and (max-width: 768px) {
+  .landing-page header {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+    align-items: center;
+  }
+  .landing-page .section-image{
+    flex-direction: column;
+    gap: 20px;
+    display: center;
+    width: 100%;
+  }
+  .landing-page .section-titulo {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    min-width: auto;
+    padding: 0px;
+  }
+  .landing-page .footer {
+    
+    display: grid;
+    flex-direction: row;
+    align-items: center; 
+  }
+  
+}*/

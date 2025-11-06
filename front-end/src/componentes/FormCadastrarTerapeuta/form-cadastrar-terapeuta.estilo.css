@@ -1,0 +1,19 @@
+.campos-cadastrar-terapeuta {
+    display: flex;
+    flex-direction: column;
+}
+
+.formulario-cadastrar-terapeuta {
+    background-color: #ffffff;
+    margin-left: 239px;
+}
+
+.formulario-cadastrar-terapeuta .form-input {
+    background-color: #93D9FA;
+}
+
+.acoes-cadastrar-terapeuta .botao {
+    margin-left: 355px;
+    background-color: #93D9FA;
+    margin-top: 34px;
+}

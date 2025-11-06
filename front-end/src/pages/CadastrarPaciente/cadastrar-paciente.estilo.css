@@ -1,0 +1,51 @@
+.cadastrar-paciente-cabecalho .barra-lateral {
+    background-color: #93D9FA;
+    position: fixed;
+
+    left: 0;
+    top: 0;
+    width: 13%;
+    height: 100vh;
+}
+
+.cadastrar-paciente-cabecalho {
+    display: inline-block;
+    align-items: center;
+    position: relative;
+    background-color: #ffffff;
+}
+
+.cadastrar-paciente-cabecalho h1 {
+    font-family: sans-serif;
+    max-width: 250px;
+    font-size: 24px;
+    margin-left: 160px;
+}
+
+.imagem-neurolink {
+    position: relative;
+}
+
+.imagem-neurolink img {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    margin-right: 10px;
+    margin-bottom: 10px;
+}
+
+.cadastrar-paciente-cabecalho .img-sair {
+    position: fixed;
+    bottom: 10px;
+    left: 10px;
+    margin-left: 25px;
+    margin-bottom: 25px;
+}
+
+.cadastrar-paciente-cabecalho .img-voltar {
+    position: fixed;
+    top: 10px;
+    left: 10px;
+    margin-left: 57px;
+    margin-top: 50px;
+}

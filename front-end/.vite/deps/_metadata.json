@@ -1,0 +1,43 @@
+{
+  "hash": "592fd447",
+  "configHash": "caa5e74d",
+  "lockfileHash": "efe70cdf",
+  "browserHash": "7e780353",
+  "optimized": {
+    "react": {
+      "src": "../../node_modules/react/index.js",
+      "file": "react.js",
+      "fileHash": "1525f672",
+      "needsInterop": true
+    },
+    "react-dom/client": {
+      "src": "../../node_modules/react-dom/client.js",
+      "file": "react-dom_client.js",
+      "fileHash": "0b6a6c89",
+      "needsInterop": true
+    },
+    "react-router-dom": {
+      "src": "../../node_modules/react-router-dom/dist/index.mjs",
+      "file": "react-router-dom.js",
+      "fileHash": "89b1d13a",
+      "needsInterop": false
+    },
+    "react-router": {
+      "src": "../../node_modules/react-router/dist/development/index.mjs",
+      "file": "react-router.js",
+      "fileHash": "08c8337d",
+      "needsInterop": false
+    }
+  },
+  "chunks": {
+    "chunk-VXOXVU3I": {
+      "file": "chunk-VXOXVU3I.js"
+    },
+    "chunk-QS7ZE27V": {
+      "file": "chunk-QS7ZE27V.js"
+    },
+    "chunk-OBOR3357": {
+      "file": "chunk-OBOR3357.js"
+    }
+  }
+}

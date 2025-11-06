@@ -1,0 +1,33 @@
+.Nova-senha {
+    min-height: 100vh;
+    background-color: #93D9FA;
+
+}
+
+.header-nova-senha {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 23px;
+}
+
+.formulario-nova-senha {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-bottom: 20px;
+    font-family: sans-serif;
+}
+
+.form-nova-senha h3 {
+    max-width: 238px;
+    font-size: 14px;
+}
+
+.section-img-recuperar-senha {
+    position: absolute;
+    bottom: 0px;
+    left: 0px;
+    opacity: 90%;
+    width: 439px;
+}
