@@ -1,0 +1,40 @@
+.clinica-container {
+  text-align: center;
+  margin-top: 60px;
+  font-family: Arial, sans-serif;
+}
+
+.clinica-titulo {
+  color: #007bff;
+  font-size: 2em;
+  margin-bottom: 10px;
+}
+
+.clinica-subtitulo {
+  color: #555;
+  font-size: 1.1em;
+  margin-bottom: 30px;
+}
+
+.clinica-botoes {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
+}
+
+.clinica-botoes button {
+  background-color: #007bff;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  padding: 12px 24px;
+  font-size: 16px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  width: 220px;
+}
+
+.clinica-botoes button:hover {
+  background-color: #0056b3;
+}

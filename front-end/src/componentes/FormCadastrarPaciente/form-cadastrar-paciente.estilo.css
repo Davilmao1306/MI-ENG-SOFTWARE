@@ -1,0 +1,29 @@
+.campos-cadastrar-paciente {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    max-width: 500px;
+    margin: 0 auto;
+    background: #fff;
+    padding: 1.5rem;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.1);
+}
+
+.formulario-cadastrar-paciente {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.acoes-cadastrar-paciente {
+    display: flex;
+    justify-content: center;
+}
+
+@media (max-width: 600px) {
+    .campos-cadastrar-paciente {
+        padding: 1rem;
+        max-width: 90%;
+    }
+}

@@ -1,0 +1,33 @@
+.cadastrar-terapeuta {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 2rem;
+}
+
+.cadastrar-terapeuta-cabecalho {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+
+.form-cadastrar-terapeuta {
+    width: 100%;
+    max-width: 600px;
+    margin-bottom: 2rem;
+}
+
+.lista-terapeutas-section {
+    width: 100%;
+    max-width: 1000px;
+}
+
+.imagem-neurolink {
+    margin-top: 3rem;
+    text-align: center;
+}
+
+.imagem-neurolink img {
+    max-width: 200px;
+    height: auto;
+    opacity: 0.85;
+}
