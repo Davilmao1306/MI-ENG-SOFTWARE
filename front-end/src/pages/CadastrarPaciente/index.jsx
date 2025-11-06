@@ -9,7 +9,7 @@ export function CadastrarPaciente() {
     <main className='cadastar-paciente'>
       <header className="cadastrar-paciente-cabecalho">
         <div className='barra-lateral'>
-          <IconVoltar to='/clinica'/>
+          <IconVoltar to='/pacientes'/>
           <IconSair to='/login'/>
         </div>
         <h1>Olá Clínica,<br></br> Cadastre o Paciente!</h1>

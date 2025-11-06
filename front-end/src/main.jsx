@@ -27,6 +27,8 @@ import { DiarioTerapeuta } from './pages/DiarioTerapeuta/index';
 import { CriarPlanoPage } from './pages/CriarPlano/index.jsx';
 import Consent from './componentes/Consentimento/index.jsx';
 import { DiarioCompartilhadoPage } from './pages/DiarioCompartilhado/index.jsx';
+import { DashboardInicial } from './pages/InicialClinica/index.jsx';
+import { GerenciarPacientes } from './pages/GerenciarPacientes';
 
 
 // Ativamos o roteador
@@ -55,6 +57,12 @@ createRoot(document.getElementById('root')).render(
        <Route path="/pacientes/:idPaciente/criar-plano" element={<CriarPlanoPage />} />
        <Route path='/consentimento' element={<Consent />} />
         <Route path='/diario-compartilhado' element={<DiarioCompartilhadoPage />} />
+        <Route path='/dashboard-inicial' element={<DashboardInicial />} />
+       <Route path="/pacientes" element={<GerenciarPacientes />} /> {/* Rota para a lista de pacientes */}
+        <Route path="/pacientes/novo" element={<div>Tela de Adicionar Paciente</div>} /> {/* Rota para o formulário de adição */}
+        <Route path="/pacientes/editar/:id" element={<div>Tela de Editar Paciente</div>} /> {/* Rota para editar */}
+        <Route path="/pacientes/:id/vincular-familiar" element={<div>Tela de Vincular Familiar</div>} /> {/* Rota para vincular familiar */}
+        <Route path="/pacientes/:id/vincular-terapeuta" element={<div>Tela de Vincular Terapeuta</div>} /> {/* Rota para vincular terapeuta */}
       </Routes>
     </BrowserRouter>
   </StrictMode>,

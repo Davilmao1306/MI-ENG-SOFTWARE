@@ -51,7 +51,7 @@
   line-height: 1.5;
 }
 
-/* Contêiner para os botões de ação dentro do card */
+
 .plano-card-acoes {
   display: flex;         
   flex-wrap: wrap;      
@@ -62,7 +62,7 @@
 
 }
 
-/* Estilo para cada botão de ação */
+
 .plano-card-botao-acao {
   display: inline-flex; 
   align-items: center;

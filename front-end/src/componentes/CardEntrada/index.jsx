@@ -1,7 +1,6 @@
-// src/componentes/CardEntrada/index.jsx
-import React, { useEffect } from 'react';
+import { useEffect } from 'react';
 import { BsLink45Deg, BsFileEarmark } from 'react-icons/bs';
-import './card-entrada.estilo.css'; // CERTIFIQUE-SE QUE O NOME DO ARQUIVO CSS ESTÁ CORRETO NO DISCO!
+import './card-entrada.estilo.css'; 
 
 export function CardEntrada({ autor, data, texto, attachments = [] }) {
   const horaFormatada = new Date(data).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
@@ -67,8 +66,7 @@ export function CardEntrada({ autor, data, texto, attachments = [] }) {
         <span className="card-data-combinada">({horaFormatada})</span>
       </div>
       {texto && texto.trim() !== '' && <p className="card-texto-combinada">{texto}</p>}
-      
-      {/* Renderiza os anexos AQUI! */}
+    
       {renderAttachments()}
     </div>
   );

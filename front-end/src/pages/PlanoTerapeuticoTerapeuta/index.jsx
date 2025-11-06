@@ -4,12 +4,13 @@ import './plano-terapeutico-terapeuta.estilo.css';
 import { FiPlusCircle } from 'react-icons/fi';
 import { IconVoltar } from '../../componentes/IconVoltar';
 import { IconSair } from '../../componentes/IconSair';
+import { User } from 'lucide-react';
 
 // Dados fictícios
 const planos = [
-  { id: 1, data: "25/09/2025", status: "Em uso", descricao: "Plano do paciente X..." },
-  { id: 2, data: "10/09/2025", status: "Finalizado", descricao: "Plano feito pelo terapeuta Paulo Mascarenhas..." },
-  { id: 3, data: "07/07/2025", status: "Em uso", descricao: "Plano feito pelo terapeuta Paulo Mascarenhas..." }
+  { id: 1, data: "25/09/2025", status: "Em uso", descricao: "Plano do paciente X...", UserRole: 'terapeuta' },
+  { id: 2, data: "10/09/2025", status: "Finalizado", descricao: "Plano feito pelo terapeuta Paulo Mascarenhas...", UserRole: 'terapeuta' },
+  { id: 3, data: "07/07/2025", status: "Em uso", descricao: "Plano feito pelo terapeuta Paulo Mascarenhas...", UserRole: 'terapeuta' },
 ];
 
 
@@ -35,6 +36,7 @@ export function PlanosTerapeuta() {
                   data={plano.data}
                   status={plano.status}
                   descricao={plano.descricao}
+                  userRole={plano.UserRole}
                 />
               ))}
             </div>
@@ -42,7 +44,7 @@ export function PlanosTerapeuta() {
 
           {/* Coluna dos Botões de Ação */}
           <aside className="coluna-acoes">
-            <Link to="/terapeuta/criar-plano" className="botao-acao">
+            <Link to="/pacientes/:idPaciente/criar-plano" className="botao-acao">
               <FiPlusCircle /> Criar plano
             </Link>
          

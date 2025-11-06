@@ -1,0 +1,120 @@
+.gerenciar-pacientes-layout {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f0f2f5;
+}
+
+.gerenciar-pacientes-main-content {
+  flex-grow: 1;
+  padding: 2rem;
+  overflow-y: auto;
+}
+
+.gerenciar-pacientes-title {
+  font-size: 2.2rem;
+  color: #333;
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+}
+
+.acoes-gerenciamento {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 2rem;
+  flex-wrap: wrap; 
+  gap: 1rem; 
+}
+
+.search-filter-group {
+    display: flex;
+    gap: 1rem;
+    flex-grow: 1; 
+    max-width: 700px; 
+}
+
+.search-input-wrapper {
+    position: relative;
+    flex-grow: 1;
+}
+
+.search-input {
+  width: 100%;
+  padding: 0.8rem 1rem 0.8rem 2.5rem; 
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  font-size: 1rem;
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+}
+
+.search-icon {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: #888;
+}
+
+
+
+.add-button {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.8rem 1.5rem;
+  background-color: #93D9FA; 
+  color: black;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+}
+
+.add-button:hover {
+  background-color: #8ABED9;
+}
+
+.add-button svg {
+  font-size: 1.2rem;
+}
+
+.pacientes-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); 
+  gap: 0.8rem;
+}
+
+.no-pacientes-found {
+  grid-column: 1 / -1; 
+  text-align: center;
+  color: #777;
+  font-size: 1.1rem;
+  padding: 2rem;
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+}
+
+/* Responsividade */
+@media (max-width: 768px) {
+  .acoes-gerenciamento {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .search-filter-group {
+      flex-direction: column;
+      gap: 0.8rem;
+  }
+  .search-input, .filter-select, .add-button {
+    width: 100%;
+  }
+}
+
+@media (max-width: 480px) {
+  .pacientes-grid {
+    grid-template-columns: 1fr; /* Uma coluna em telas muito pequenas */
+  }
+}

@@ -1,32 +1,30 @@
-// src/componentes/InputDiario/index.jsx
 import React, { useState, useEffect } from 'react';
 import { BsChatText, BsUpload, BsListCheck, BsLink45Deg, BsX } from 'react-icons/bs';
 import './input-diario.estilo.css';
 
 export function InputDiario({ isOpen, onClose, onPost, isTerapeuta }) {
-  const [activeTab, setActiveTab] = useState('entrada'); // 'entrada' ou 'checklist'
+  const [activeTab, setActiveTab] = useState('entrada'); 
   const [textoEntrada, setTextoEntrada] = useState('');
-  const [uploadedFile, setUploadedFile] = useState(null); // Armazena o objeto File
-  const [uploadedFileUrl, setUploadedFileUrl] = useState(''); // Armazena a URL temporária do arquivo
-  const [linkAnexoUrl, setLinkAnexoUrl] = useState(''); // Armazena o link digitado
-  const [linkAnexoName, setLinkAnexoName] = useState(''); // Armazena o nome opcional do link
+  const [uploadedFile, setUploadedFile] = useState(null); 
+  const [uploadedFileUrl, setUploadedFileUrl] = useState(''); 
+  const [linkAnexoUrl, setLinkAnexoUrl] = useState(''); 
+  const [linkAnexoName, setLinkAnexoName] = useState(''); 
   const [checklistTitle, setChecklistTitle] = useState('');
   const [checklistItems, setChecklistItems] = useState([{ id: 1, text: '' }]);
 
-  // Efeito para criar e revogar Object URLs para o arquivo enviado
+
   useEffect(() => {
     if (uploadedFile) {
       const objectUrl = URL.createObjectURL(uploadedFile);
       setUploadedFileUrl(objectUrl);
-      return () => URL.revokeObjectURL(objectUrl); // Limpa a URL quando o componente desmonta ou o arquivo muda
+      return () => URL.revokeObjectURL(objectUrl); 
     } else {
-      setUploadedFileUrl(''); // Limpa a URL se nenhum arquivo estiver selecionado
+      setUploadedFileUrl(''); 
     }
   }, [uploadedFile]);
 
   useEffect(() => {
     if (!isOpen) {
-      // Reseta todos os estados quando o compositor é fechado
       setTextoEntrada('');
       setUploadedFile(null);
       setUploadedFileUrl('');
@@ -34,7 +32,7 @@ export function InputDiario({ isOpen, onClose, onPost, isTerapeuta }) {
       setLinkAnexoName('');
       setChecklistTitle('');
       setChecklistItems([{ id: 1, text: '' }]);
-      setActiveTab('entrada'); // Volta para a aba padrão 'entrada'
+      setActiveTab('entrada');
     }
   }, [isOpen]);
 
@@ -45,7 +43,7 @@ export function InputDiario({ isOpen, onClose, onPost, isTerapeuta }) {
     if (activeTab === 'entrada') {
       const attachments = [];
 
-      if (uploadedFileUrl && uploadedFile) { // Se há um arquivo anexado
+      if (uploadedFileUrl && uploadedFile) { 
         attachments.push({
           type: 'file',
           url: uploadedFileUrl,
@@ -53,21 +51,20 @@ export function InputDiario({ isOpen, onClose, onPost, isTerapeuta }) {
         });
       }
 
-      if (linkAnexoUrl.trim()) { // Se há um link anexado
+      if (linkAnexoUrl.trim()) {
         attachments.push({
           type: 'link',
           url: linkAnexoUrl.trim(),
-          name: linkAnexoName.trim() || linkAnexoUrl.trim() // Usa o nome ou a própria URL como nome
+          name: linkAnexoName.trim() || linkAnexoUrl.trim() 
         });
       }
 
-      // Validação: deve ter texto OU qualquer anexo
       if (textoEntrada.trim() || attachments.length > 0) {
         entryData = {
           type: 'entrada',
           texto: textoEntrada.trim(),
-          attachments: attachments, // Passa o array de attachments formatado!
-          autor: 'Nome do Usuário Logado' // Você pode querer obter isso de um contexto de autenticação
+          attachments: attachments, 
+          autor: 'Nome do Usuário Logado' 
         };
         isValid = true;
       }
@@ -76,7 +73,7 @@ export function InputDiario({ isOpen, onClose, onPost, isTerapeuta }) {
         type: 'checklist',
         titulo: checklistTitle.trim(),
         itens: checklistItems.filter(item => item.text.trim()).map(item => ({ text: item.text.trim(), checked: false })),
-        autor: 'Nome do Usuário Logado', // Você pode querer obter isso de um contexto de autenticação
+        autor: 'Nome do Usuário Logado', 
       };
       isValid = true;
     }
@@ -102,10 +99,10 @@ export function InputDiario({ isOpen, onClose, onPost, isTerapeuta }) {
     setChecklistItems(prev => prev.filter(item => item.id !== idToRemove));
   };
 
-  // Funções para remover anexos individuais na UI do InputDiario
+ 
   const handleRemoveFileAttachment = () => {
     setUploadedFile(null);
-    // setUploadedFileUrl('') é tratado pelo useEffect
+ 
   };
 
   const handleRemoveLinkAttachment = () => {
@@ -130,7 +127,7 @@ export function InputDiario({ isOpen, onClose, onPost, isTerapeuta }) {
         >
           <BsChatText /> Entrada
         </button>
-        {isTerapeuta && ( // Checklist visível apenas para terapeuta
+        {isTerapeuta && ( 
           <button
             className={`compositor-tab-btn ${activeTab === 'checklist' ? 'active' : ''}`}
             onClick={() => setActiveTab('checklist')}
@@ -151,7 +148,7 @@ export function InputDiario({ isOpen, onClose, onPost, isTerapeuta }) {
               onChange={(e) => setTextoEntrada(e.target.value)}
             />
 
-            {/* --- Seção de Anexos AGORA DENTRO da aba de Entrada --- */}
+        
             <div className="compositor-anexo-inline">
                 <label htmlFor="file-upload" className="btn-anexo-upload">
                   <BsUpload /> Enviar Foto/Arquivo
@@ -159,11 +156,11 @@ export function InputDiario({ isOpen, onClose, onPost, isTerapeuta }) {
                     id="file-upload"
                     type="file"
                     style={{ display: 'none' }}
-                    onChange={(e) => setUploadedFile(e.target.files[0])} // Armazena o File
-                    onClick={(e) => e.target.value = null} // Permite selecionar o mesmo arquivo novamente
+                    onChange={(e) => setUploadedFile(e.target.files[0])}
+                    onClick={(e) => e.target.value = null} 
                   />
                 </label>
-                {uploadedFile && ( // Mostra o nome do arquivo e botão de remover
+                {uploadedFile && ( 
                   <span className="anexo-preview-item">
                       {uploadedFile.name}
                       <button type="button" onClick={handleRemoveFileAttachment}><BsX /></button>
@@ -180,7 +177,7 @@ export function InputDiario({ isOpen, onClose, onPost, isTerapeuta }) {
                         onChange={(e) => setLinkAnexoUrl(e.target.value)}
                     />
                    
-                    {linkAnexoUrl && ( // Botão para remover o link
+                    {linkAnexoUrl && (
                       <button type="button" onClick={handleRemoveLinkAttachment} className="btn-remove-link"><BsX /></button>
                     )}
                 </div>

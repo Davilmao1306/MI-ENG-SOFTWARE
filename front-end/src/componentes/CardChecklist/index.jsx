@@ -1,17 +1,16 @@
-// src/componentes/CardChecklist/index.jsx
-import React, { useState } from 'react';
+import  { useState } from 'react';
 import './card-checklist.estilo.css';
 
 export function CardChecklist({ autor, data, titulo, itens, onSaveResponse, isTerapeutaView = false }) {
   const horaFormatada = new Date(data).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
   
-  // Estado para gerenciar as respostas do checklist (se não for visualização do terapeuta)
+
   const [respostas, setRespostas] = useState(() =>
-    itens.map(item => ({ ...item, checked: item.checked || false })) // Usa o estado inicial se já tiver
+    itens.map(item => ({ ...item, checked: item.checked || false })) 
   );
 
   const handleCheckboxChange = (index) => {
-    if (isTerapeutaView) return; // Terapeuta não interage diretamente aqui
+    if (isTerapeutaView) return; 
 
     setRespostas(prevRespostas =>
       prevRespostas.map((item, i) =>
@@ -22,9 +21,8 @@ export function CardChecklist({ autor, data, titulo, itens, onSaveResponse, isTe
 
   const handleSaveResponse = () => {
     if (onSaveResponse) {
-      onSaveResponse(respostas); // Envia as respostas para a função pai
-      alert('Respostas salvas!'); // Feedback simples
-      // Em um app real, aqui você faria uma chamada API para salvar as respostas
+      onSaveResponse(respostas); 
+      alert('Respostas salvas!'); 
     }
   };
 
@@ -42,22 +40,22 @@ export function CardChecklist({ autor, data, titulo, itens, onSaveResponse, isTe
               type="checkbox"
               checked={item.checked}
               onChange={() => handleCheckboxChange(index)}
-              disabled={isTerapeutaView} // Desabilita se for visão do terapeuta
+              disabled={isTerapeutaView} 
             />
             <span className="checklist-item-text">{item.text}</span>
           </label>
         ))}
       </div>
-      {!isTerapeutaView && ( // Botão de salvar apenas para quem pode responder
+      {!isTerapeutaView && ( 
         <button className="btn-salvar-respostas" onClick={handleSaveResponse}>
           Salvar Resposta
         </button>
       )}
-      {/* Se for visão do terapeuta, pode adicionar uma seção para respostas dos familiares */}
+  
       {isTerapeutaView && (
         <div className="checklist-tera-summary">
             <p>Status: {respostas.filter(i => i.checked).length} de {respostas.length} itens completos.</p>
-            {/* Aqui poderia haver um link para ver as respostas detalhadas do familiar */}
+        
         </div>
       )}
     </div>

@@ -1,0 +1,98 @@
+.paciente-card-container {
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  padding: 0.8rem; 
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem; 
+  text-align: center;
+  border: 1px solid #e0e0e0;
+
+  max-width: 370px; 
+  width: 100%;
+}
+
+.paciente-card-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem; 
+  margin-bottom: 0.5rem;
+}
+
+.paciente-icon {
+  color: #3499db;
+  font-size: 15px; 
+}
+
+.paciente-nome {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+}
+
+.paciente-card-info {
+  text-align: left;
+  line-height: 1.2; 
+  font-size: 0.9rem; 
+  color: #555;
+  margin-bottom: 0.2rem; 
+}
+
+.paciente-card-info p {
+  margin: 0.1rem 0;
+}
+
+.paciente-card-info strong {
+  color: #333;
+}
+
+.paciente-card-acoes {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem; 
+  margin-top: auto;
+}
+
+.paciente-card-botao-acao {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.4rem 1rem; 
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.8rem; 
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  width: 100%;
+  box-sizing: border-box;
+}
+
+.paciente-card-botao-acao.edit {
+  background-color: #f0f8ff;
+  color: #2196F3;
+  border: 1px solid #bbdefb;
+}
+
+.paciente-card-botao-acao.edit:hover {
+  background-color: #e0f2f7;
+  border-color: #90caf9;
+}
+
+.paciente-card-botao-acao.vincular {
+  background-color: #e8f5e9;
+  color: #4CAF50;
+  border: 1px solid #c8e6c9;
+}
+
+.paciente-card-botao-acao.vincular:hover {
+  background-color: #dcedc8;
+  border-color: #a5d6a7;
+}
+
+.paciente-card-botao-acao svg {
+  font-size: 1rem; 
+}

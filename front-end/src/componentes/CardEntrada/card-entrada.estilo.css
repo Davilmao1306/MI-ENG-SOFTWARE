@@ -1,29 +1,29 @@
 
 .card-entrada-combinada {
-    background-color: #fcfcfc; /* Fundo branco para texto puro */
-    border: 1px solid #e0e0e0; /* Borda sutil para texto puro */
+    background-color: #fcfcfc; 
+    border: 1px solid #e0e0e0; 
     border-radius: 8px;
     padding: 1rem;
     box-shadow: 0 2px 5px rgba(0, 0, 0, 0.05);
     display: flex;
     flex-direction: column;
-    gap: 0.8rem; /* Espaçamento entre os elementos do card (header, texto, anexos) */
-    transition: background-color 0.2s ease, border-color 0.2s ease; /* Transição suave */
+    gap: 0.8rem;
+    transition: background-color 0.2s ease, border-color 0.2s ease; 
 }
 
-/* Sobrescreve os estilos de fundo e borda QUANDO houver um anexo */
+
 .card-entrada-combinada.has-anexo {
-    background-color: #e6ffe6; /* Fundo verde claro para entradas com anexo */
-    border-color: #aaddaa; /* Borda verde suave para entradas com anexo */
+    background-color: #e6ffe6; 
+    border-color: #aaddaa; 
 }
 
 .card-header-combinada {
     display: flex;
     align-items: baseline;
-    margin-bottom: 0.5rem; /* Espaço abaixo do cabeçalho */
+    margin-bottom: 0.5rem; 
     font-size: 0.9rem;
-    padding-bottom: 0.5rem; /* Adicionado padding para a linha */
-    border-bottom: 1px solid #eee; /* Linha sutil abaixo do cabeçalho */
+    padding-bottom: 0.5rem; 
+    border-bottom: 1px solid #eee; 
 }
 
 .card-autor-combinada {
@@ -40,35 +40,30 @@
 .card-texto-combinada {
     color: #444;
     line-height: 1.5;
-    margin: 0; /* Remover margem padrão */
-    white-space: pre-wrap; /* Preserva quebras de linha e espaços */
-    word-break: break-word; /* Quebra palavras longas */
+    margin: 0; 
+    white-space: pre-wrap; 
+    word-break: break-word; 
     font-size: 0.95rem;
 }
 
-/* === ESTILOS PARA O WRAPPER DOS ANEXOS === */
 .card-anexo-wrapper {
-    display: flex; /* Permite que os anexos fiquem lado a lado */
-    flex-wrap: wrap; /* Quebra para a próxima linha se não houver espaço */
-    gap: 0.8rem; /* Espaço entre os anexos individuais */
-    margin-top: 0.5rem; /* Espaçamento do texto acima */
-    padding-top: 0.8rem; /* Padding para a linha de cima */
-    border-top: 1px dashed #eee; /* Linha tracejada acima dos anexos */
+    display: flex; 
+    flex-wrap: wrap; 
+    gap: 0.8rem; 
+    margin-top: 0.5rem; 
+    padding-top: 0.8rem; 
+    border-top: 1px dashed #eee; 
 }
-/* Remova o border-top e padding-top do card-anexo-wrapper se NÃO houver texto no card.
-   Isso precisaria de uma classe condicional no JS, tipo `has-text`, mas por simplicidade,
-   mantemos por enquanto, já que não é um erro grave visualmente. */
-
 
 .combinada-thumbnail {
-    max-width: 100%; /* Garante que a imagem não transborde */
-    height: auto; /* Mantém a proporção */
-    max-height: 250px; /* Limita a altura para não ocupar muito espaço */
+    max-width: 100%; 
+    height: auto; 
+    max-height: 250px; 
     border-radius: 6px;
-    display: block; /* Para margin: 0 auto funcionar */
+    display: block; 
     margin: 0 auto;
-    object-fit: contain; /* Ajusta a imagem dentro da área sem cortar */
-    border: 1px solid #e0e0e0; /* Borda sutil */
+    object-fit: contain; 
+    border: 1px solid #e0e0e0; 
 }
 
 .combinada-anexo-link, .combinada-anexo-file {
@@ -77,25 +72,24 @@
     gap: 0.5rem;
     font-size: 0.95rem;
     color: #555;
-    background-color: #f0f0f0; /* Fundo cinza claro para o item de anexo individual */
-    border: 1px solid #ddd; /* Adicionada borda */
+    background-color: #f0f0f0; 
+    border: 1px solid #ddd; 
     border-radius: 6px;
     padding: 0.6rem 1rem;
-    word-break: break-all; /* Para links muito longos */
-    flex-shrink: 0; /* Impede que encolha demais */
-    /* flex-grow: 1; */ /* Removido: estava fazendo eles esticarem demais */
-    min-width: 0; /* Necessário para 'word-break: break-all' em flex items */
-    max-width: 100%; /* Garante que não transborde */
+    word-break: break-all; 
+    flex-shrink: 0; 
+    min-width: 0; 
+    max-width: 100%; 
 }
 
 .combinada-anexo-link a {
     color: #007AFF;
     text-decoration: underline;
-    white-space: nowrap; /* Tenta manter em uma linha */
-    overflow: hidden; /* Esconde o excesso */
-    text-overflow: ellipsis; /* Adiciona "..." */
-    flex-grow: 1; /* Permite que o texto do link ocupe o máximo de espaço */
-    min-width: 0; /* Necessário para ellipsis em flex items */
+    white-space: nowrap; 
+    overflow: hidden;
+    text-overflow: ellipsis; 
+    flex-grow: 1; 
+    min-width: 0; 
 }
 .combinada-anexo-link a:hover {
     color: #0056b3;
@@ -104,11 +98,11 @@
 .combinada-anexo-link svg, .combinada-anexo-file svg {
     font-size: 1.2rem;
     color: #007AFF;
-    flex-shrink: 0; /* Ícone não encolhe */
+    flex-shrink: 0;
 }
 
 .combinada-anexo-file span {
-    color: #555; /* Cor do texto do nome do arquivo */
+    color: #555; 
     flex-grow: 1;
     white-space: nowrap;
     overflow: hidden;
@@ -117,7 +111,7 @@
 }
 
 .combinada-anexo-visualizavel {
-    display: block; /* Garante que o link não seja inline */
-    text-decoration: none; /* Remove o sublinhado do link */
-    color: inherit; /* Herda a cor do texto, se houver */
+    display: block; 
+    text-decoration: none; 
+    color: inherit; 
 }
