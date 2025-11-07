@@ -55,17 +55,11 @@ export function CadastrarFamiliar() {
                     <IconVoltar onClick={handleBack} /> {/* <--- Use onClick e a função handleBack */}
                     <IconSair to='/login' />
                 </div>
-                <h1>Olá Clínica,{pacienteId ? <br /> : null} {pacienteId ? `Cadastre o familiar para o paciente ${pacienteId}!` : 'Cadastre o familiar!'}</h1>
+                {/* <h1>Olá Clínica,{pacienteId ? <br /> : null} {pacienteId ? `Cadastre o familiar para o paciente ${pacienteId}!` : 'Cadastre o familiar!'}</h1>  Isso é para o que mesmo???*/}
+                <h1>Olá Clínica, Cadastre o familiar!</h1>
             </header>
             <section className='form-cadastrar-familiar'>
-                {/* <--- PASSE AS PROPS PARA O COMPONENTE FILHO */}
-                <FormCadastrarFamiliar
-                    onCadastroSubmit={handleCadastro}
-                    // Se você for gerenciar os estados no pai, passe-os aqui:
-                    // nome={nome} setNome={setNome}
-                    // email={email} setEmail={setEmail}
-                    // ...outros campos
-                />
+                <FormCadastrarFamiliar />
             </section>
             <section className='imagem-neurolink'>
                 <img src="/neurolink-cadastro.png" alt="Logo Neurolink" />

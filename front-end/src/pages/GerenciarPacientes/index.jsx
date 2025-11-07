@@ -1,4 +1,3 @@
-// src/paginas/GerenciarPacientes/index.jsx
 import React, { useState, useEffect } from 'react';
 import { PacienteCard } from '../../componentes/PacienteCard';
 import { Sidebar } from '../../componentes/Sidebar';
@@ -8,77 +7,24 @@ import { VincularFamiliarModal } from '../../componentes/VincularFamiliarModal';
 import { VincularTerapeutaModal } from '../../componentes/VincularTerapeutaModal';
 import './gerenciar-pacientes.estilo.css';
 
-// Dados fictícios para Familiares e Terapeutas (precisam estar disponíveis para o mockPacientes)
-const mockAllFamiliares = [
-    { id: 'f001', nome: 'João Silva', parentesco: 'Pai', email: 'joao@email.com' },
-    { id: 'f002', nome: 'Maria Souza', parentesco: 'Mãe', email: 'maria@email.com' },
-    { id: 'f003', nome: 'Pedro Santos', parentesco: 'Irmão', email: 'pedro@email.com' },
-    { id: 'f004', nome: 'Ana Costa', parentesco: 'Tia', email: 'ana@email.com' },
-];
-
-const mockAllTerapeutas = [
-  { id: 't001', nome: 'Dr. Lucas Ribeiro', especialidade: 'Psicólogo', email: 'lucas@terapeuta.com' },
-  { id: 't002', nome: 'Dra. Sofia Mendes', especialidade: 'Neuropsicóloga', email: 'sofia@terapeuta.com' },
-  { id: 't003', nome: 'Dr. Carlos Lima', especialidade: 'Psiquiatra', email: 'carlos@terapeuta.com' },
-  { id: 't004', nome: 'Dra. Patrícia Gomes', especialidade: 'Fisioterapeuta', email: 'patricia@terapeuta.com' },
-];
-
-// O MOCK DE PACIENTES DEVE USAR OS OBJETOS COMPLETOS PARA FAMILIARES/TERAPEUTAS
-const mockPacientes = [
-    {
-        id: 'p001',
-        nome: "Maria Silva",
-        num: "12185",
-        idade: 5,
-        genero: "Feminino",
-        endereco: "Rua A, 123",
-        terapeutasVinculados: [mockAllTerapeutas[0]], // Array de objetos
-        familiarVinculado: [mockAllFamiliares[0]], // Array de objetos
-    },
-    {
-        id: 'p002',
-        nome: "João Pedro",
-        num: "67890",
-        idade: 3,
-        genero: "Masculino",
-        endereco: "Av. B, 456",
-        terapeutasVinculados: [mockAllTerapeutas[1]],
-        familiarVinculado: [mockAllFamiliares[2]],
-    },
-    {
-        id: 'p003',
-        nome: "Ana Clara",
-        num: "11223",
-        idade: 8,
-        genero: "Não Binário",
-        endereco: "Travessa C, 789",
-        terapeutasVinculados: [mockAllTerapeutas[0], mockAllTerapeutas[2]],
-        familiarVinculado: [],
-    },
-    {
-        id: 'p004',
-        nome: "Carlos Henrique",
-        num: "44556",
-        idade: 4,
-        genero: "Masculino",
-        endereco: "Praça D, 10",
-        terapeutasVinculados: [mockAllTerapeutas[1]],
-        familiarVinculado: [mockAllFamiliares[3]],
-    },
-    {
-        id: 'p005',
-        nome: "Sofia Costa",
-        num: "77889",
-        idade: 12,
-        genero: "Feminino",
-        endereco: "Alameda E, 20",
-        terapeutasVinculados: [],
-        familiarVinculado: [mockAllFamiliares[1]],
-    },
-];
 
 export function GerenciarPacientes() {
-  const [pacientes, setPacientes] = useState(mockPacientes);
+  // Isso é um teste inicio
+  const [pacientes, setPacientes] = useState([]);
+  const urlGetPacientes = "http://localhost:8000/cadastro/lista-pacientes";
+
+  const fetchPacientes = () => {
+    fetch(urlGetPacientes)
+      .then((res) => res.json())
+      .then((data) => setPacientes(data))
+      .catch((err) => console.error("Erro ao buscar pacientes:", err));
+  };
+
+  useEffect(() => {
+    fetchPacientes();
+  }, []);
+  // Isso é um teste fim
+
   const [searchTerm, setSearchTerm] = useState('');
 
   // Estados para o modal de familiar
@@ -94,20 +40,17 @@ export function GerenciarPacientes() {
   const filteredPacientes = pacientes.filter(paciente => {
     const termo = searchTerm.toLowerCase();
 
-    // Concatena nomes de terapeutas em uma string para busca
-    const nomeTerapeutas = paciente.terapeutasVinculados
-      ? paciente.terapeutasVinculados.map(t => t.nome.toLowerCase()).join(' ')
-      : '';
-    // Concatena nomes de familiares em uma string para busca
-    const nomeFamiliares = paciente.familiarVinculado
-      ? paciente.familiarVinculado.map(f => f.nome.toLowerCase()).join(' ')
-      : '';
+    // // Concatena nomes de terapeutas em uma string para busca
+    // const nomeTerapeutas = paciente.terapeutasVinculados
+    //   ? paciente.terapeutasVinculados.map(t => t.nome.toLowerCase()).join(' ')
+    //   : '';
+    // // Concatena nomes de familiares em uma string para busca
+    // const nomeFamiliares = paciente.familiarVinculado
+    //   ? paciente.familiarVinculado.map(f => f.nome.toLowerCase()).join(' ')
+    //   : '';
 
     return (
-      paciente.nome.toLowerCase().includes(termo) ||
-      paciente.num.includes(termo) ||
-      nomeTerapeutas.includes(termo) ||
-      nomeFamiliares.includes(termo)
+      paciente.nome.toLowerCase().includes(termo)
     );
   });
 
@@ -170,15 +113,15 @@ export function GerenciarPacientes() {
           <div className="search-input-wrapper expanded">
             <FiSearch className="search-icon" />
             <input
-                type="text"
-                placeholder="Buscar por nome, ID, terapeuta ou familiar..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="search-input"
+              type="text"
+              placeholder="Buscar por nome, ID, terapeuta ou familiar..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+              className="search-input"
             />
           </div>
 
-          <Link to="/pacientes/novo" className="add-button">
+          <Link to="/clinica/cadastrar-paciente" className="add-button">
             <FiPlusCircle /> Cadastrar Paciente
           </Link>
         </div>
@@ -187,7 +130,7 @@ export function GerenciarPacientes() {
           {filteredPacientes.length > 0 ? (
             filteredPacientes.map(paciente => (
               <PacienteCard
-                key={paciente.id}
+                key={paciente.id_paciente}
                 paciente={paciente}
                 onVincularFamiliar={handleOpenVincularFamiliarModal}
                 onVincularTerapeuta={handleOpenVincularTerapeutaModal}
@@ -196,6 +139,7 @@ export function GerenciarPacientes() {
           ) : (
             <p className="no-pacientes-found">Nenhum paciente encontrado com os critérios de busca.</p>
           )}
+          <p>{console.log(urlGetPacientes)}</p>
         </div>
 
         {/* Modal de Vincular Familiar */}

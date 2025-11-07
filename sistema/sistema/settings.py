@@ -63,14 +63,17 @@ TEMPLATES = [
 WSGI_APPLICATION = 'sistema.wsgi.application'
 
 
+
+
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'meu_projeto_db',
-        'USER': 'admin',
-        'PASSWORD': 'admin_password',
-        'HOST': '127.0.0.1',
-        'PORT': '5432',
+        # Use as variáveis de ambiente que o Docker está injetando
+        'NAME': os.getenv('POSTGRES_DB', 'meu_projeto_db'),
+        'USER': os.getenv('POSTGRES_USER', 'admin'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD', 'admin_password'),
+        'HOST': os.getenv('POSTGRES_HOST', 'localhost'), # <--- CORRIGIDO
+        'PORT': os.getenv('POSTGRES_PORT', '5432'),
     }
 }
 
@@ -100,6 +103,6 @@ LOGIN_URL = '/entrar/'
 
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173", # Ex: se seu front é React/Vue
+    "http://localhost:5174", # Ex: se seu front é React/Vue
     "http://127.0.0.1:3000",
 ]

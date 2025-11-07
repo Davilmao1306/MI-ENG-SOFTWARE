@@ -34,7 +34,7 @@ import { GerenciarPacientes } from './pages/GerenciarPacientes';
 // Ativamos o roteador
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <BrowserRouter>
+    <BrowserRouter> 
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<Login />} />

@@ -13,3 +13,4 @@ urlpatterns = [
     path("usuarios/<int:id_usuario>/consentimento", views.registrar_consentimento, name="usuarios-consentimento"),
 ]
 
+ 

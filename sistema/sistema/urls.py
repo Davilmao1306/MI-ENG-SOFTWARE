@@ -11,3 +11,4 @@ urlpatterns = [
     path('', include('autenticacao.urls')),
     path('cadastro/', include('cadastro.urls')),
 ]
+ 

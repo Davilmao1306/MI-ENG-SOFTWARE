@@ -22,35 +22,35 @@ services:
       timeout: 5s
       retries: 5
 
-  # web: # FIX 1: Indentação corrigida (agora está dentro de 'services')
-  #   build: .
-  #   container_name: meu_projeto_web
-  #   command: >
-  #     sh -c "
-  #       echo 'Esperando o banco de dados...' &&
-  #       # O 'depends_on' com healthcheck já cuida da espera
-  #       python sistema/manage.py migrate &&
-  #       echo 'Iniciando o servidor...' &&
-  #       python sistema/manage.py runserver 0.0.0.0:8000
-  #     "
-  #   volumes:
-  #     - .:/code
-  #   env_file:
-  #     - .env
-  #   environment:
-  #     # O .env tem precedência, estes são fallbacks
-  #     DJANGO_DEBUG: ${DJANGO_DEBUG:-1}
-  #     DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY:-dev-secret}
-  #     POSTGRES_DB: ${POSTGRES_DB:-meu_projeto_db}
-  #     POSTGRES_USER: ${POSTGRES_USER:-admin}
-  #     POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-admin_password}
-  #     POSTGRES_HOST: db
-  #     POSTGRES_PORT: "5432"
-  #   ports:
-  #     - "8000:8000" # FIX 2: Sem conflitos, esta é a única porta 8000 do host
-  #   depends_on:
-  #     db:
-  #       condition: service_healthy # Agora funciona por causa do healthcheck
+  web: # FIX 1: Indentação corrigida (agora está dentro de 'services')
+    build: .
+    container_name: meu_projeto_web
+    command: >
+      sh -c "
+        echo 'Esperando o banco de dados...' &&
+        # O 'depends_on' com healthcheck já cuida da espera
+        python sistema/manage.py migrate &&
+        echo 'Iniciando o servidor...' &&
+        python sistema/manage.py runserver 0.0.0.0:8000
+      "
+    volumes:
+      - .:/code
+    env_file:
+      - .env
+    environment:
+      # O .env tem precedência, estes são fallbacks
+      DJANGO_DEBUG: ${DJANGO_DEBUG:-1}
+      DJANGO_SECRET_KEY: ${DJANGO_SECRET_KEY:-dev-secret}
+      POSTGRES_DB: ${POSTGRES_DB:-meu_projeto_db}
+      POSTGRES_USER: ${POSTGRES_USER:-admin}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-admin_password}
+      POSTGRES_HOST: db
+      POSTGRES_PORT: "5432"
+    ports:
+      - "8000:8000" # FIX 2: Sem conflitos, esta é a única porta 8000 do host
+    depends_on:
+      db:
+        condition: service_healthy # Agora funciona por causa do healthcheck
 
 volumes:
   postgres_data:

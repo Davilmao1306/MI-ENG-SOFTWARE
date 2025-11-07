@@ -5,21 +5,52 @@ import { Label } from '../Label'
 import { Botao } from '../Botao'
 import './form-cadastrar-terapeuta.estilo.css'
 
+/*http://127.0.0.1:8000/cadastro/terapeutas url para fazer POST */
 export function FormCadastrarTerapeuta() {
-    function dadosTerapeuta(formData) {
+
+    async function dadosTerapeuta(event) {
+        event.preventDefault();
+        const formData = new FormData(event.target);
         const dados = {
             nome: formData.get('cadastrarNomeTerapeuta'),
             email: formData.get('loginEmail'),
-            data: new Date(formData.get("dataNascimentoTerapeuta")),
-            registro: formData.get('CRP/CRM'),
+            data_nascimento: formData.get("dataNascimentoTerapeuta"),
+            crp: formData.get('CRP/CRM'),
             telefone: formData.get('telTerapeuta'),
             senha: formData.get('firstPasswordTerapeuta'),
-            senharepiater: formData.get('passwordTerapeuta'),
+            especialidade: formData.get('especialidade')
         }
         console.log("dados do terapeuta", dados)
+
+        try {
+            const response = await fetch("http://127.0.0.1:8000/cadastro/terapeutas", {
+                method: "POST",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(dados),
+            });
+
+            if (!response.ok) {
+                const erroData = await response.json();
+                console.error("Erro do backend:", erroData);
+                const msgErro = Object.values(erroData).join(' ');
+                alert(`Erro ao cadastrar: ${msgErro}`);
+                throw new Error("Erro na requisição: " + response.status);
+            }
+            const data = await response.json();
+            console.log("Terapeuta cadastrado com sucesso:", data);
+            alert(`Terapeuta cadastrado com sucesso! ID: ${data.id_terapeuta}`);
+        } catch (error) {
+            console.error("Erro:", error);
+
+            if (!error.message.includes("Erro na requisição")) {
+                alert("Ocorreu um erro de rede ao tentar cadastrar Terapeuta.");
+            }
+        }
     }
     return (
-        <form className='campos-cadastrar-terapeuta' action={dadosTerapeuta}>
+        <form className='campos-cadastrar-terapeuta' onSubmit={dadosTerapeuta}>
             <div className='formulario-cadastrar-terapeuta'>
                 <CampoDeFormulario>
                     <Label htmlFor="NomeTerapeuta"></Label>
@@ -76,11 +107,11 @@ export function FormCadastrarTerapeuta() {
                     />
                 </CampoDeFormulario>
                 <CampoDeFormulario>
-                    <Label htmlFor="SenhaTerapeuta"></Label>
+                    <Label htmlFor="Especialidade"></Label>
                     <CampoDeEntrada
-                        type='password'
-                        name='passwordTerapeuta'
-                        placeholder='Digite sua senha novamente'
+                        type='text'
+                        name='especialidade'
+                        placeholder='Sua especialidade'
                         required
                     />
                 </CampoDeFormulario>
