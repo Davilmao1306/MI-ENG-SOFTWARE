@@ -63,21 +63,102 @@ CREATE TABLE diariocompartilhado(
   CONSTRAINT fk_diario_paciente FOREIGN KEY (Id_Paciente) REFERENCES paciente(Id_Paciente)
 );
 
--- Table Plano Terapeuta
-CREATE TABLE planoterapeuta(
-  Id_Plano INT GENERATED ALWAYS AS IDENTITY,
-  DataCriacao DATE NOT NULL,
-  Link VARCHAR(255),
-  Arquivo BYTEA,
-  DataModificacao DATE,
-  Descricao_plano VARCHAR(255),
-  Status BOOLEAN NOT NULL,
-  Id_Paciente INT NOT NULL,
-  Id_Terapeuta INT NOT NULL,
-  CONSTRAINT planoterapeuta_pk PRIMARY KEY (Id_Plano),
-  CONSTRAINT fk_plano_paciente FOREIGN KEY (Id_Paciente) REFERENCES paciente(Id_Paciente),
-  CONSTRAINT fk_plano_terapeuta FOREIGN KEY (Id_Terapeuta) REFERENCES terapeuta(Id_Terapeuta)
+
+-- Atualização do plano terapêutico
+-- Tabela principal que armazena os dados do plano terapêutico
+CREATE TABLE PlanoTerapeutico (
+    Id_Plano INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    Id_Paciente INT NOT NULL,
+    Id_Terapeuta INT NOT NULL,
+    Id_Familiar INT NULL, -- Pode ser NULL se não houver um familiar/responsável principal associado no momento da criação
+    
+    GrauNeurodivergencia VARCHAR(500) NOT NULL,
+    ObjetivosTratamento VARCHAR(2000) NOT NULL,
+    AbordagemFamilia VARCHAR(2000) NOT NULL,
+    CronogramaAtividades VARCHAR(2000) NOT NULL,
+    MensagemPlano VARCHAR(2000) NULL,
+    
+    DataCriacao DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    DataAssinaturaTerapeuta DATETIME NULL,
+    DataAssinaturaFamilia DATETIME NULL,
+
+    -- Chaves Estrangeiras
+    FOREIGN KEY (Id_Paciente) REFERENCES Paciente(Id_Paciente),
+    FOREIGN KEY (Id_Terapeuta) REFERENCES Terapeuta(Id_Terapeuta),
+    FOREIGN KEY (Id_Familiar) REFERENCES Familiar(Id_Familiar)
 );
+
+
+-- Tabela para armazenar o conteúdo do arquivo binário (em BYTEA); perguntar se deseja armazenar diretamente no banco ou apenas o caminho do arquivo.
+CREATE TABLE Anexos (
+    Id_Anexo SERIAL PRIMARY KEY,
+    Id_Plano INT NOT NULL,
+    
+    NomeArquivo VARCHAR(255) NOT NULL,
+    TipoMime VARCHAR(100) NOT NULL,
+    DadosArquivo BYTEA NOT NULL, -- Estudar o impacto de performance e tamanho do banco ao armazenar arquivos diretamente e como fazer o SELECT posteriormente.
+    DataUpload TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT NOW(),
+
+    -- Chave Estrangeira
+    FOREIGN KEY (Id_Plano) REFERENCES PlanoTerapeutico(Id_Plano)
+);
+
+-- Tabela com a lista pré-definida de neurodivergências (TEA, TDAH, Dislexia, etc.)
+CREATE TABLE Neurodivergencia (
+    Id_Neuro INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    Sigla VARCHAR(10) UNIQUE NOT NULL, -- Ex: 'TEA', 'TDAH', 'TOC'
+    NomeCompleto VARCHAR(100) NULL -- Ex: 'Transtorno do Espectro Autista'
+);
+
+-- Tabela que liga um Plano a Múltiplas Neurodivergências
+CREATE TABLE PlanoNeurodivergencia (
+    Id_Plano INT NOT NULL,
+    Id_Neuro INT NOT NULL,
+    
+    -- Chave Primária Composta para evitar duplicatas e garantir a relação
+    PRIMARY KEY (Id_Plano, Id_Neuro),
+
+    -- Chaves Estrangeiras
+    FOREIGN KEY (Id_Plano) REFERENCES PlanoTerapeutico(Id_Plano),
+    FOREIGN KEY (Id_Neuro) REFERENCES Neurodivergencia(Id_Neuro)
+);
+
+
+-- Tabela que liga um Plano a Múltiplos Métodos de Acompanhamento
+CREATE TABLE PlanoMetodo (
+    Id_Plano INT NOT NULL,
+    Id_Metodo INT NOT NULL,
+    
+    -- Chave Primária Composta
+    PRIMARY KEY (Id_Plano, Id_Metodo),
+
+    -- Chaves Estrangeiras
+    FOREIGN KEY (Id_Plano) REFERENCES PlanoTerapeutico(Id_Plano),
+    FOREIGN KEY (Id_Metodo) REFERENCES MetodoAcompanhamento(Id_Metodo)
+);
+
+INSERT INTO MetodoAcompanhamento (Nome) VALUES
+('Treinamento Parental'),
+('Comunicação Assistiva'),
+('Terapia Ocupacional'),
+('Fonoaudiologia'),
+('Terapia Comportamental Cognitiva'),
+('Análise do Comportamento Aplicada (ABA)'), -- Adicionado como um método comum
+('Psicomotricidade'), -- Adicionado como um método comum
+('Intervenção Nutricional'); -- Adicionado como um método comum
+
+INSERT INTO Neurodivergencia (Sigla, NomeCompleto) VALUES
+('TEA', 'Transtorno do Espectro Autista'),
+('TAB', 'Transtorno Afetivo Bipolar'),
+('TDAH', 'Transtorno do Déficit de Atenção e Hiperatividade'),
+('TPN', 'Transtorno de Processamento Não-Verbal' /* Sugestão baseada em contexto; pode ser ajustado */),
+('TOC', 'Transtorno Obsessivo-Compulsivo'),
+('Dislexia', 'Transtorno Específico de Aprendizagem com prejuízo na Leitura'),
+('Discalculia', 'Transtorno Específico de Aprendizagem com prejuízo na Matemática'),
+('Disgrafia', 'Transtorno Específico de Aprendizagem com prejuízo na Escrita'),
+('Outros', 'Outros Transtornos ou Condições Neurodivergentes');
+-- fim da atualização do plano terapêutico
+
 
 -- Table consulta
 CREATE TABLE consulta(
@@ -106,24 +187,7 @@ CREATE TABLE feedback(
   CONSTRAINT fk_feedback_familiar FOREIGN KEY (Id_Familiar) REFERENCES familiar(Id_Familiar)
 );
 
--- Table historico plano terapeuta
-CREATE TABLE historicoplanoterapeuta(
-  Id_Historico INT GENERATED ALWAYS AS IDENTITY,
-  DataFim DATE NOT NULL,
-  Id_Plano INT NOT NULL,
-  CONSTRAINT historicoplano_pk PRIMARY KEY (Id_Historico),
-  CONSTRAINT fk_historico_plano FOREIGN KEY (Id_Plano) REFERENCES planoterapeuta(Id_Plano)
-);
 
--- Table neurodivergencia
-CREATE TABLE neurodivergencia(
-  Id_Neurodivergencia INT GENERATED ALWAYS AS IDENTITY,
-  Tipo VARCHAR(255) NOT NULL,
-  Grau INT NOT NULL,
-  Id_Paciente INT NOT NULL,
-  CONSTRAINT neurodivergencia_pk PRIMARY KEY (Id_Neurodivergencia),
-  CONSTRAINT fk_neuro_paciente FOREIGN KEY (Id_Paciente) REFERENCES paciente(Id_Paciente)
-);
 
 -- Table checklist
 CREATE TABLE checklist(
