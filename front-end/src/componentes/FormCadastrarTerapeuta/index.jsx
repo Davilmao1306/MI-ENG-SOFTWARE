@@ -1,15 +1,32 @@
-import { Link } from 'react-router-dom';
 import { CampoDeEntrada } from '../CampoDeEntrada'
 import { CampoDeFormulario } from '../CampoDeFormulario'
 import { Label } from '../Label'
 import { Botao } from '../Botao'
 import './form-cadastrar-terapeuta.estilo.css'
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom'
+import { IoEyeOff, IoEye } from "react-icons/io5";
 
-/*http://127.0.0.1:8000/cadastro/terapeutas url para fazer POST */
+
+const TIPO_TERPEUTA = 'T'
 export function FormCadastrarTerapeuta() {
+    const navigate = useNavigate();
+    const [senha, setSenha] = useState('');
+    const [confirmaSenha, setConfirmaSenha] = useState('');
+    const [mostrarSenha, setMostrarSenha] = useState(false);
+
+    // Função para alternar a visibilidade da senha
+    const toggleMostrarSenha = () => {
+        setMostrarSenha(prev => !prev);
+    };
 
     async function dadosTerapeuta(event) {
         event.preventDefault();
+
+        if (senha !== confirmaSenha) {
+            console.log("As senhas não coincidem. Por favor, verifique.");
+            return; // Impede o envio do formulário
+        }
         const formData = new FormData(event.target);
         const dados = {
             nome: formData.get('cadastrarNomeTerapeuta'),
@@ -17,8 +34,9 @@ export function FormCadastrarTerapeuta() {
             data_nascimento: formData.get("dataNascimentoTerapeuta"),
             crp: formData.get('CRP/CRM'),
             telefone: formData.get('telTerapeuta'),
-            senha: formData.get('firstPasswordTerapeuta'),
-            especialidade: formData.get('especialidade')
+            senha: senha,
+            especialidade: formData.get('especialidade'),
+            tipo: TIPO_TERPEUTA
         }
         console.log("dados do terapeuta", dados)
 
@@ -41,6 +59,7 @@ export function FormCadastrarTerapeuta() {
             const data = await response.json();
             console.log("Terapeuta cadastrado com sucesso:", data);
             alert(`Terapeuta cadastrado com sucesso! ID: ${data.id_terapeuta}`);
+            navigate('/clinica')
         } catch (error) {
             console.error("Erro:", error);
 
@@ -97,14 +116,65 @@ export function FormCadastrarTerapeuta() {
                         required
                     />
                 </CampoDeFormulario>
+
                 <CampoDeFormulario>
                     <Label htmlFor="SenhaTerapeuta"></Label>
-                    <CampoDeEntrada
-                        type='password'
-                        name='firstPasswordTerapeuta'
-                        placeholder='Digite seu senha'
-                        required
-                    />
+                    <div style={{ position: 'relative' }}>
+                        <CampoDeEntrada
+                            type={mostrarSenha ? 'text' : 'password'}
+                            name='firstPasswordTerapeuta'
+                            placeholder='Digite seu senha'
+                            required
+                            value={senha}
+                            onChange={(e) => setSenha(e.target.value)}
+                        />
+                        <button
+                            type="button"
+                            onClick={toggleMostrarSenha}
+                            style={{
+                                position: 'absolute',
+                                right: '10px',
+                                top: '50%',
+                                transform: 'translateY(-50%)',
+                                background: 'none',
+                                border: 'none',
+                                cursor: 'pointer'
+                            }}
+                            aria-label={mostrarSenha ? 'Ocultar senha' : 'Mostrar senha'}
+                        >
+                            {mostrarSenha ? <IoEyeOff /> : <IoEye />}
+                        </button>
+                    </div>
+                </CampoDeFormulario>
+
+                <CampoDeFormulario>
+                    <Label htmlFor="SenhaTerapeutarepetida"></Label>
+                    <div style={{ position: 'relative' }}>
+                        <CampoDeEntrada
+                            type={mostrarSenha ? 'text' : 'password'}
+                            name='secondPasswordTerapeuta'
+                            placeholder='Digite seu senha novamente'
+                            required
+                            value={confirmaSenha}
+                            onChange={(e) => setConfirmaSenha(e.target.value)}
+                        />
+                        <button
+                            type="button"
+                            onClick={toggleMostrarSenha}
+                            style={{
+                                position: 'absolute',
+                                right: '10px',
+                                top: '50%',
+                                transform: 'translateY(-50%)',
+                                background: 'none',
+                                border: 'none',
+                                cursor: 'pointer'
+                            }}
+                            aria-label={mostrarSenha ? 'Ocultar senha' : 'Mostrar senha'}
+                        >
+                            {mostrarSenha ? <IoEyeOff /> : <IoEye />}
+                        </button>
+                    </div>
                 </CampoDeFormulario>
                 <CampoDeFormulario>
                     <Label htmlFor="Especialidade"></Label>
@@ -116,10 +186,10 @@ export function FormCadastrarTerapeuta() {
                     />
                 </CampoDeFormulario>
             </div>
+
             <div className='acoes-cadastrar-terapeuta'>
                 <Botao type='submit'>Cadastrar Terapeuta</Botao>
             </div>
-
         </form>
     )
 }

@@ -18,7 +18,6 @@ import { TelaInicioFamiliar } from './pages/TelaInicioFamiliar/index.jsx'; // P�
 import { PlanosFamiliar } from './pages/PlanoTerapeuticoFamiliar/index.jsx';
 import { PlanosTerapeuta } from './pages/PlanoTerapeuticoTerapeuta/index.jsx';
 import { AcessarPlano } from './pages/AcessarPlano/index.jsx';
-import { TelaInicioClinica } from './pages/TelaInicioClinica/index.jsx';
 import { TelaInicioTerapeuta } from './pages/TelaInicioTerapeuta/index.jsx';
 import { ListaTerapeutas } from './pages/ListaTerapeutas/index.jsx';
 import { TelaNovaSessao } from './pages/TelaNovaSessao/index.jsx';
@@ -29,12 +28,15 @@ import Consent from './componentes/Consentimento/index.jsx';
 import { DiarioCompartilhadoPage } from './pages/DiarioCompartilhado/index.jsx';
 import { DashboardInicial } from './pages/InicialClinica/index.jsx';
 import { GerenciarPacientes } from './pages/GerenciarPacientes';
+import { ListaFamiliares } from './pages/ListaFamiliares/index.jsx';
 
+
+const TIPO_CLINICA = 'C'
 
 // Ativamos o roteador
 createRoot(document.getElementById('root')).render(
   <StrictMode>
-    <BrowserRouter> 
+    <BrowserRouter>
       <Routes>
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<Login />} />
@@ -46,8 +48,8 @@ createRoot(document.getElementById('root')).render(
         <Route path="/plano-terapeutico-familiar" element={<PlanosFamiliar />} />
         <Route path="/plano-terapeutico-terapeuta" element={<PlanosTerapeuta />} />
         <Route path="/acessar-plano" element={<AcessarPlano />} />
-        <Route path="/login/familiar-paciente" element={<TelaInicioFamiliar />} />
-        <Route path="/login/familiar-perfis" element={<TelaPerfilPaciente />} />
+        <Route path="/familiar-paciente" element={<TelaInicioFamiliar />} />
+        <Route path="/familiar-perfil" element={<TelaPerfilPaciente />} />
         <Route path="/terapeuta" element={<TelaInicioTerapeuta />} />
         <Route path="/terapeuta/sessao" element={<TelaNovaSessao />} />
         <Route path="/terapeuta/pacientes" element={<AcessarPacientes />} />
@@ -57,11 +59,11 @@ createRoot(document.getElementById('root')).render(
         <Route path='/consentimento' element={<Consent />} />
         <Route path='/diario-compartilhado' element={<DiarioCompartilhadoPage />} />
         <Route path='/clinica' element={<DashboardInicial />} />
-        <Route path="/pacientes" element={<GerenciarPacientes />} /> {/* Rota para a lista de pacientes */}
-        <Route path="/pacientes/novo" element={<div>Tela de Adicionar Paciente</div>} /> {/* Rota para o formulário de adição */}
-        <Route path="/pacientes/editar/:id" element={<div>Tela de Editar Paciente</div>} /> {/* Rota para editar */}
-        <Route path="/pacientes/:id/vincular-familiar" element={<div>Tela de Vincular Familiar</div>} /> {/* Rota para vincular familiar */}
-        <Route path="/pacientes/:id/vincular-terapeuta" element={<div>Tela de Vincular Terapeuta</div>} /> {/* Rota para vincular terapeuta */}
+        <Route path="/pacientes" element={<GerenciarPacientes />} />
+        <Route path="/pacientes/editar/:id" element={<div>Tela de Editar Paciente</div>} />
+        <Route path="/pacientes/:id/vincular-familiar" element={<div>Tela de Vincular Familiar</div>} />
+        <Route path="/pacientes/:id/vincular-terapeuta" element={<div>Tela de Vincular Terapeuta</div>} />
+        <Route path="/familiares" element={<ListaFamiliares />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>,

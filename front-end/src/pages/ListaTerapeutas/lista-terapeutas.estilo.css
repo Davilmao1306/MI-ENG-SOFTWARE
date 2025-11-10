@@ -4,8 +4,9 @@
     height: 100vh;
 }
 
-.main-listar-terapeutas {
-    padding: 30px 0px 0px 30px;
+.main-listar-terapeutas { 
+    padding: 30px 30px 0px 30px;
+    width: 80%;
 }
 
 .header-lista-terapeutas {
@@ -13,11 +14,9 @@
     align-items: center;
     gap: 16px;
     margin-bottom: 24px;
-
 }
 
 .header-lista-terapeutas a {
-
     text-decoration: none;
     color: #000000;
 }
@@ -33,9 +32,8 @@
 
 .search-input-wrapper {
     display: flex;
-
     align-items: center;
-    margin-bottom: 24px;
+    
     background-color: #93D9FA;
     height: 50px;
     border-radius: 30px;
@@ -60,18 +58,12 @@
     border-radius: 10px;
 }
 
-.search-input-wrapper {
-    position: relative;
-    display: flex;
-    align-items: center;
-    flex-grow: 1;
-    max-width: 400px;
-}
+
 
 .search-input-wrapper .search-icon {
     position: absolute;
     left: 12px;
-    color: var(--cor-texto-secundario);
+    color: #000000;
 }
 
 .search-input-wrapper input {
@@ -82,16 +74,6 @@
 
     font-size: 1rem;
     outline: none;
-}
-
-.ordenar-btn {
-    background-color: var(--cor-azul-claro);
-    border: none;
-    border-radius: 8px;
-    padding: 10px 16px;
-    font-size: 1rem;
-    font-weight: 500;
-    cursor: pointer;
 }
 
 /* Layout Principal (Filtros + Grid) */
@@ -146,6 +128,7 @@
     grid-template-columns: repeat(3, 1fr);
     gap: 24px;
     margin-bottom: 32px;
+    width: 80%;
 }
 
 /* Card Individual do Terapeuta */

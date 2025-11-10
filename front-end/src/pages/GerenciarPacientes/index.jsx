@@ -9,8 +9,9 @@ import './gerenciar-pacientes.estilo.css';
 
 
 export function GerenciarPacientes() {
-  // Isso é um teste inicio
+
   const [pacientes, setPacientes] = useState([]);
+  const [searchTerm, setSearchTerm] = useState('');
   const urlGetPacientes = "http://localhost:8000/cadastro/lista-pacientes";
 
   const fetchPacientes = () => {
@@ -25,11 +26,11 @@ export function GerenciarPacientes() {
   }, []);
   // Isso é um teste fim
 
-  const [searchTerm, setSearchTerm] = useState('');
 
   // Estados para o modal de familiar
   const [showVincularFamiliarModal, setShowVincularFamiliarModal] = useState(false);
   const [selectedPacienteForVincularFamiliar, setSelectedPacienteForVincularFamiliar] = useState(null);
+
 
   // Estados para o modal de terapeuta
   const [showVincularTerapeutaModal, setShowVincularTerapeutaModal] = useState(false);
@@ -40,14 +41,14 @@ export function GerenciarPacientes() {
   const filteredPacientes = pacientes.filter(paciente => {
     const termo = searchTerm.toLowerCase();
 
-    // // Concatena nomes de terapeutas em uma string para busca
-    // const nomeTerapeutas = paciente.terapeutasVinculados
-    //   ? paciente.terapeutasVinculados.map(t => t.nome.toLowerCase()).join(' ')
-    //   : '';
-    // // Concatena nomes de familiares em uma string para busca
-    // const nomeFamiliares = paciente.familiarVinculado
-    //   ? paciente.familiarVinculado.map(f => f.nome.toLowerCase()).join(' ')
-    //   : '';
+    // Concatena nomes de terapeutas em uma string para busca
+    const nomeTerapeutas = paciente.terapeutasVinculados
+      ? paciente.terapeutasVinculados.map(t => t.nome.toLowerCase()).join(' ')
+      : '';
+    // Concatena nomes de familiares em uma string para busca
+    const nomeFamiliares = paciente.familiarVinculado
+      ? paciente.familiarVinculado.map(f => f.nome.toLowerCase()).join(' ')
+      : '';
 
     return (
       paciente.nome.toLowerCase().includes(termo)
@@ -68,7 +69,7 @@ export function GerenciarPacientes() {
   const handleSaveFamiliarVincular = (pacienteId, familiaresToLink) => {
     console.log(`Salvando vínculos de familiar para paciente ${pacienteId}:`, familiaresToLink);
     setPacientes(prevPacientes => prevPacientes.map(p => {
-      if (p.id === pacienteId) {
+      if (p.id_paciente === pacienteId) {
         return {
           ...p,
           familiarVinculado: familiaresToLink // Agora salva o array de objetos familiares
@@ -92,7 +93,7 @@ export function GerenciarPacientes() {
   const handleSaveTerapeutaVincular = (pacienteId, terapeutasToLink) => {
     console.log(`Salvando vínculos de terapeuta para paciente ${pacienteId}:`, terapeutasToLink);
     setPacientes(prevPacientes => prevPacientes.map(p => {
-      if (p.id === pacienteId) {
+      if (p.id_paciente === pacienteId) {
         return {
           ...p,
           terapeutasVinculados: terapeutasToLink // Agora salva o array de objetos terapeutas
@@ -139,7 +140,7 @@ export function GerenciarPacientes() {
           ) : (
             <p className="no-pacientes-found">Nenhum paciente encontrado com os critérios de busca.</p>
           )}
-          <p>{console.log(urlGetPacientes)}</p>
+
         </div>
 
         {/* Modal de Vincular Familiar */}

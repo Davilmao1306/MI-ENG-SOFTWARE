@@ -34,10 +34,7 @@ export function ListaTerapeutas() {
             <Sidebar />
             <main className='main-listar-terapeutas'>
                 <header className="header-lista-terapeutas">
-                    <Link to="/clinica">
-                        <ArrowLeft size={24} className="icone-voltar" />
-                    </Link>
-                    <h1>Terapeutas</h1>
+                    <h1 >Gerenciamento de Terapeutas</h1>
                 </header>
 
                 <section className="terapeutas-content">
@@ -55,11 +52,10 @@ export function ListaTerapeutas() {
                         <Link to='/clinica/cadastrar-terapeuta'>
                             <FiPlusCircle /> Cadastrar Terapeuta
                         </Link>
-
                     </div>
 
                     <div className="terapeutas-layout">
-                        <aside className="filtros-sidebar">
+                        {/* <aside className="filtros-sidebar">
                             <h3>Filtros</h3>
 
                             <div className="filtro-section">
@@ -93,8 +89,8 @@ export function ListaTerapeutas() {
                                     <input type="checkbox" /> TEA
                                 </label>
                             </div>
-                        </aside>
-                        <section className="terapeutas-grid-container">
+                        </aside> */}
+                        <div className="terapeutas-grid-container">
                             <div className="terapeutas-grid">
                                 {filteredTerapeutas.map((terapeuta) => (
                                     <div key={terapeuta.id_terapeuta} className="terapeuta-card">
@@ -105,7 +101,7 @@ export function ListaTerapeutas() {
                                     </div>
                                 ))}
                             </div>
-                        </section>
+                        </div>
                     </div>
                 </section>
             </main>

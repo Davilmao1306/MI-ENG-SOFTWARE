@@ -5,23 +5,12 @@ import { IconSair } from '../../componentes/IconSair'
 import { IoBookOutline } from "react-icons/io5";
 import { FiMessageSquare } from "react-icons/fi";
 import { IoMdNotificationsOutline } from "react-icons/io";
-import { CgProfile } from "react-icons/cg";
 import { RxAvatar } from "react-icons/rx";
-import { Dialog } from '../../componentes/Dialog';
-import { useState } from 'react';
+
 
 export function TelaInicioFamiliar() {
-    const [showDialog, setShowDialog] = useState(true)
-
-    const toggleDialog = () => {
-        setShowDialog(!showDialog)
-    }
     return (
         <main>
-            <Dialog isOpen={showDialog} onClose={toggleDialog}>
-                <h3>Bem vindo!</h3>
-                <p>Seja bem vindo ao espaço de acompanhamento do paciente X</p>
-            </Dialog>
             <header className='header-tela-inicio-familiar'>
                 <div className='um'>
                     <IconVoltar to='/login/familiar-perfis' />

@@ -3,24 +3,26 @@ import { CampoDeEntrada } from '../CampoDeEntrada'
 import { CampoDeFormulario } from '../CampoDeFormulario'
 import { Label } from '../Label'
 import { Botao } from '../Botao'
+import { jwtDecode } from 'jwt-decode';
+import { useState } from 'react';
 import './form-login.estilo.css'
 
 export function FormLogin() {
-    const navigate = useNavigate();
-
+    const navigate = useNavigate()
     async function dadosLogin(event) {
         event.preventDefault(); // evita recarregar a página
 
+
         const formData = new FormData(event.target);
         const dados = {
-            login: formData.get('loginEmail'),
-            senha: formData.get('userSenha'),
+            email: formData.get('loginEmail'),
+            password: formData.get('userSenha'),
         };
 
         console.log("Enviando dados:", dados);
 
         try {
-            const response = await fetch("http://localhost:5000/login", {
+            const response = await fetch("http://127.0.0.1:8000/login/api/login/", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
@@ -28,41 +30,27 @@ export function FormLogin() {
                 body: JSON.stringify(dados),
             });
 
-            if (!response.ok) {
+            if (!response.ok) { 
+                const erroData = await response.json();
+                console.error("Erro do backend:", erroData);
+                const msgErro = Object.values(erroData).join(' ');
+                alert(`Erro ao fazer login: ${msgErro}`);
                 throw new Error("Erro na requisição: " + response.status);
             }
-
             const data = await response.json();
-
-            if (data.token) {
-                // Armazena o token e informações do usuário
-                localStorage.setItem("token", data.token);
-                localStorage.setItem("tipoUsuario", data.usuario.tipo);
-
-                alert("Login bem-sucedido!");
-
-                // Redirecionamento com base no tipo de usuário
-                switch (data.usuario.tipo) {
-                    case "clinica":
-                        navigate("/clinica");
-                        break;
-                    case "terapeuta":
-                        navigate("/terapeuta");
-                        break;
-                    case "paciente":
-                        navigate("/familiar");
-                        break;
-                    default:
-                        navigate("/home");
-                        break;
-                }
-            } else {
-                alert(data.mensagem || "Usuário ou senha inválidos.");
+            console.log("login feito com sucesso:", data);
+            if(data.tipo == 'C'){
+                navigate('/clinica')
+            }else if(data.tipo = 'T'){
+                navigate('/terapeuta')
+            }else{
+                navigate('/familiar-perfil')
             }
+            
 
         } catch (error) {
-            console.error("Erro:", error);
-            alert("Ocorreu um erro ao tentar fazer login.");
+            console.error("Erro:", error.message);
+            setErroLogin(error.message || "Usuário ou senha inválidos.");
         }
     }
     return (

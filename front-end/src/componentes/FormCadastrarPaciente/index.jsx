@@ -11,8 +11,8 @@ export function FormCadastrarPaciente() {
             nome: formData.get('cadastrarNomePaciente'),
             cpf: formData.get('cpfPaciente'),
             data_nascimento: formData.get("dataNascimentoPaciente"),
-            // telefone: formData.get('telResponsavelPaciente'),
-            // genero: formData.get('genero')
+            telefone: formData.get('telResponsavelPaciente'),
+            genero: formData.get('genero')
         }
         console.log("dados do paciente", dados)
 
@@ -70,7 +70,21 @@ export function FormCadastrarPaciente() {
                         required
                     />
                 </CampoDeFormulario>
+                <CampoDeFormulario>
+                    <CampoDeEntrada
+                        type='tel'
+                        name='telResponsavelPaciente'
+                        placeholder='Telefone do responsável (DD) XXXXX-XXXX'
 
+                    />
+                </CampoDeFormulario>
+                <CampoDeFormulario>
+                    <select className='lista-suspensa' id='genero' defaultValue="" name='genero'>
+                        <option value="" disabled>Selecione</option>
+                        <option value="feminino">Feminino</option>
+                        <option value="masculino">Masculino</option>
+                    </select>
+                </CampoDeFormulario>
 
             </div>
             <div className='acoes-cadastrar-paciente'>

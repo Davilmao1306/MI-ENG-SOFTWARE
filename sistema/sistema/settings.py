@@ -19,26 +19,28 @@ INSTALLED_APPS = [
     'cadastro',
     'corsheaders',
     "rest_framework",
+    "rest_framework_simplejwt",
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
 REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework.authentication.SessionAuthentication",  # dev
-        # "rest_framework_simplejwt.authentication.JWTAuthentication",  # produção
+        "rest_framework_simplejwt.authentication.JWTAuthentication",  # produção
     ],
     "DEFAULT_PERMISSION_CLASSES": [
-        "rest_framework.permissions.AllowAny",  # troque para IsAuthenticated em produção
+        # troque para IsAuthenticated em produção
+        "rest_framework.permissions.AllowAny",
     ],
 }
 
@@ -63,8 +65,6 @@ TEMPLATES = [
 WSGI_APPLICATION = 'sistema.wsgi.application'
 
 
-
-
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
@@ -72,7 +72,7 @@ DATABASES = {
         'NAME': os.getenv('POSTGRES_DB', 'meu_projeto_db'),
         'USER': os.getenv('POSTGRES_USER', 'admin'),
         'PASSWORD': os.getenv('POSTGRES_PASSWORD', 'admin_password'),
-        'HOST': os.getenv('POSTGRES_HOST', 'localhost'), # <--- CORRIGIDO
+        'HOST': os.getenv('POSTGRES_HOST', 'localhost'),  # <--- CORRIGIDO
         'PORT': os.getenv('POSTGRES_PORT', '5432'),
     }
 }
@@ -103,6 +103,8 @@ LOGIN_URL = '/entrar/'
 
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5174", # Ex: se seu front é React/Vue
+    "http://localhost:5173",  # Ex: se seu front é React/Vue
+    "http://localhost:5174",
+    "http://localhost:5175",
     "http://127.0.0.1:3000",
 ]
