@@ -19,7 +19,8 @@ INSTALLED_APPS = [
     'cadastro',
     'corsheaders',
     "rest_framework",
-    "rest_framework_simplejwt",
+    #"rest_framework_simplejwt",
+    "vinculos",
 ]
 
 MIDDLEWARE = [

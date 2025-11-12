@@ -7,7 +7,6 @@ from contextlib import contextmanager
 def get_conn():
     """
     Conexão simples (uma por requisição).
-    Se quiser performance maior, depois troque para psycopg_pool.
     """
     host = os.getenv("POSTGRES_HOST", "localhost")
     port = os.getenv("POSTGRES_PORT", "5433")
