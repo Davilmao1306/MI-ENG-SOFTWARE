@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { PacienteCard } from '../../componentes/PacienteCard';
 import { Sidebar } from '../../componentes/Sidebar';
+import { Navbar } from '../../componentes/Navbar';
 import { FiPlusCircle, FiSearch } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 import { VincularFamiliarModal } from '../../componentes/VincularFamiliarModal';
@@ -138,6 +139,7 @@ export function GerenciarPacientes() {
   return (
     <div className="gerenciar-pacientes-layout">
       <Sidebar />
+      <Navbar userName="Clínica" />
       <main className="gerenciar-pacientes-main-content">
         <h1 className="gerenciar-pacientes-title">Gerenciamento de Pacientes</h1>
 

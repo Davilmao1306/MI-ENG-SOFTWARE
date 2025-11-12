@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import { Sidebar } from '../../componentes/Sidebar';
+import { Navbar } from '../../componentes/Navbar';
 import './dashboard-clinica.estilo.css';
 import { RiPsychotherapyLine } from "react-icons/ri";
 import { FiUser, FiActivity, FiArrowUpCircle } from 'react-icons/fi';
@@ -40,7 +41,7 @@ export function DashboardInicial() {
   return (
     <div className="dashboard-layout">
       <Sidebar />
-
+      <Navbar userName="Clínica" />
       <main className="dashboard-main-content">
         <h1 className="dashboard-title">Dashboard</h1>
 

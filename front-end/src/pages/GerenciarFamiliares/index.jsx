@@ -1,6 +1,7 @@
 // src/paginas/GerenciarFamiliares/index.jsx
 import { useState, useEffect } from 'react';
 import { Sidebar } from '../../componentes/Sidebar';
+import { Navbar } from '../../componentes/Navbar';
 import { FamiliarCard } from '../../componentes/FamiliarCard';
 import { FiPlusCircle, FiSearch } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
@@ -71,6 +72,7 @@ export function GerenciarFamiliares() {
   return (
     <div className="gerenciar-layout">
       <Sidebar />
+        <Navbar userName="Clínica" />
       <main className="gerenciar-main-content">
         <h1 className="gerenciar-familiar-title">Gerenciamento de Familiares</h1>
 
