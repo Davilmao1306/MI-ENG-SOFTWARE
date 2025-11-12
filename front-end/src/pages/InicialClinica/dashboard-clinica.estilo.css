@@ -1,7 +1,7 @@
 .dashboard-layout {
   display: flex;
   min-height: 100vh;
-  background-color: #f0f2f5; 
+  background-color: white; 
 }
 
 
@@ -13,7 +13,7 @@
 
 .dashboard-title {
   font-size: 2.2rem;
-  color: #333;
+  color: black;
   margin-bottom: 1.5rem;
   font-weight: 600;
 }

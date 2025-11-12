@@ -19,12 +19,12 @@ export function Sidebar() {
           <li>
             {/* Aplica 'active' se o pathname for '/dashboard' */}
             <Link to="/clinica" className={`sidebar-nav-item ${isActive('/clinica') ? 'active' : ''}`}>
-              <FiHome /> Dashboard
+              <FiHome /> Início
             </Link>
           </li>
           <li>
             {/* Aplica 'active' se o pathname for '/terapeutas' */}
-            <Link to="/clinica/lista-de-terapeutas" className={`sidebar-nav-item ${isActive('/clinica/lista-de-terapeutas') ? 'active' : ''}`}>
+            <Link to="/clinica/terapeutas" className={`sidebar-nav-item ${isActive('/clinica/lista-de-terapeutas') ? 'active' : ''}`}>
               <RiPsychotherapyLine /> Terapeutas
             </Link>
           </li>

@@ -54,7 +54,38 @@ export function GerenciarPacientes() {
       paciente.nome.toLowerCase().includes(termo)
     );
   });
+  
 
+  const handleRemoverOuInativarPaciente = (paciente) => {
+      const confirmAction = window.confirm(
+        `Deseja realmente remover/inativar o paciente ${paciente.nome} (ID: ${paciente.id_paciente})?`
+      );
+
+      if (confirmAction) {
+        console.log(`Ação de remover/inativar para o paciente: ${paciente.nome}`);
+        // Lógica para chamar sua API de remoção/inativação aqui (DELETE ou PATCH)
+        // Exemplo (AJUSTE PARA SUA API REAL):
+        // fetch(`http://localhost:8000/cadastro/pacientes/${paciente.id_paciente}/`, {
+        //   method: 'DELETE', // Ou 'PATCH' para inativar
+        //   headers: {
+        //     'Content-Type': 'application/json',
+        //   },
+        // })
+        // .then(response => {
+        //   if (response.ok) {
+        //     alert('Paciente removido/inativado com sucesso!');
+        //     fetchPacientes(); // Recarrega a lista de pacientes
+        //   } else {
+        //     alert('Erro ao remover/inativar paciente.');
+        //   }
+        // })
+        // .catch(error => console.error('Erro na requisição:', error));
+
+        // Por enquanto, apenas um console.log e recarregar para simular
+        alert(`Paciente ${paciente.nome} (ID: ${paciente.id_paciente}) seria removido/inativado.`);
+        fetchPacientes(); // Recarrega a lista para refletir a mudança (se fosse real)
+      }
+    };
   // Funções para abrir/fechar o modal de FAMILIAR
   const handleOpenVincularFamiliarModal = (paciente) => {
     setSelectedPacienteForVincularFamiliar(paciente);
@@ -114,11 +145,12 @@ export function GerenciarPacientes() {
           <div className="search-input-wrapper expanded">
             <FiSearch className="search-icon" />
             <input
+              className="search-input-wrapper"
               type="text"
               placeholder="Buscar por nome, ID, terapeuta ou familiar..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              className="search-input"
+              
             />
           </div>
 
@@ -158,6 +190,7 @@ export function GerenciarPacientes() {
             paciente={selectedPacienteForVincularTerapeuta}
             onClose={handleCloseVincularTerapeutaModal}
             onSave={handleSaveTerapeutaVincular}
+            onRemoverOuInativar={handleRemoverOuInativarPaciente}
           />
         )}
       </main>

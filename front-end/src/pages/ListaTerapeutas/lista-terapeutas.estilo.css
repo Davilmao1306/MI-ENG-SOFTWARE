@@ -33,7 +33,7 @@
 .search-input-wrapper {
     display: flex;
     align-items: center;
-    
+
     background-color: #93D9FA;
     height: 50px;
     border-radius: 30px;
@@ -60,11 +60,7 @@
 
 
 
-.search-input-wrapper .search-icon {
-    position: absolute;
-    left: 12px;
-    color: #000000;
-}
+
 
 .search-input-wrapper input {
     background-color: var(--cor-azul-claro);

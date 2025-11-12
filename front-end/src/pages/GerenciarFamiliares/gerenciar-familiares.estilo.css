@@ -1,0 +1,101 @@
+
+.gerenciar-layout {
+  display: flex;
+  min-height: 100vh;
+  background-color: white;
+}
+
+.gerenciar-main-content {
+  flex-grow: 1;
+  padding: 1.5rem;
+}
+
+.gerenciar-familiar-title {
+ font-size: 2.2rem;
+  color: black;
+  margin-bottom: 1.5rem;
+  font-weight: 600;
+}
+
+.acoes-gerenciamento {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+  margin-bottom: 2rem;
+  flex-wrap: wrap; 
+}
+
+.search-input-wrapper {
+  position: relative;
+  flex-grow: 1; /* Ocupa o máximo de espaço possível */
+  max-width: 600px; /* Limite a largura da barra de pesquisa */
+}
+
+.search-input {
+  width: 100%;
+  padding: 0.7rem 0.7rem 0.7rem 2.5rem; /* Espaço para o ícone */
+  border: 1px solid #ccc;
+  border-radius: 25px;
+  font-size: 1rem;
+  color: #333;
+  background-color: #e0f2f7; /* Cor de fundo similar aos seus outros inputs */
+  transition: all 0.2s ease;
+  outline: none; /* Remove o contorno padrão */
+}
+
+.search-input::placeholder {
+  color: #777;
+}
+
+.search-input:focus {
+  border-color: #3499db;
+  box-shadow: 0 0 0 3px rgba(52, 153, 219, 0.2);
+}
+
+.search-icon {
+  position: absolute;
+  left: 1rem;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #777;
+  font-size: 1.1rem;
+}
+
+
+.familiares-grid {
+  display: grid;
+  gap: 1.5rem; /* Espaçamento entre os cards */
+  justify-content: center; /* Centraliza os cards na linha */
+  padding: 1rem 0; /* Espaçamento superior/inferior para o grid */
+}
+
+.no-itens-found {
+  grid-column: 1 / -1; /* Faz o texto ocupar toda a largura do grid */
+  text-align: center;
+  color: #777;
+  font-size: 1.1rem;
+  margin-top: 2rem;
+}
+
+/* Responsividade básica */
+@media (max-width: 768px) {
+  .gerenciar-main-content {
+    margin-left: 0;
+    padding: 1rem;
+  }
+  .acoes-gerenciamento {
+    flex-direction: column;
+    align-items: stretch;
+  }
+  .search-input-wrapper {
+    max-width: 100%;
+  }
+  .add-button {
+    width: 100%;
+    justify-content: center;
+  }
+  .familiares-grid {
+    gap: 1rem; /* Reduz o gap em telas menores */
+  }
+}

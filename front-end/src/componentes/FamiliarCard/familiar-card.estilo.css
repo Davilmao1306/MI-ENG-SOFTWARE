@@ -1,0 +1,104 @@
+/* src/componentes/FamiliarCard/familiar-card.estilo.css */
+
+.familiar-card-container {
+  background-color: #ffffff;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  padding: 0.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+  text-align: center;
+  border: 1px solid #e0e0e0;
+  max-width: 285px;
+  width: 100%;
+}
+
+.familiar-card-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.3rem;
+  margin-bottom: 0.5rem;
+}
+
+.familiar-icon {
+  color: #3499db; /* Cor para o ícone do familiar */
+  font-size: 30px;
+}
+
+.familiar-nome {
+  font-size: 1rem;
+  font-weight: 600;
+  color: #333;
+  margin: 0;
+}
+
+.familiar-card-info {
+  text-align: left;
+  line-height: 1.2;
+  font-size: 0.9rem;
+  color: #555;
+  margin-bottom: 0.2rem;
+}
+
+.familiar-card-info p {
+  margin: 0.1rem 0;
+  display: flex; /* Para alinhar o ícone com o texto */
+  align-items: center;
+  gap: 0.3rem; /* Espaçamento entre ícone e texto */
+}
+
+.familiar-card-info strong {
+  color: #333;
+}
+
+.familiar-card-acoes {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-top: auto; /* Empurra os botões para baixo */
+}
+
+.familiar-card-botao-acao {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.4rem;
+  padding: 0.4rem 1rem;
+  border-radius: 8px;
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 0.8rem;
+  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+  width: 100%;
+  box-sizing: border-box;
+  cursor: pointer;
+}
+
+.familiar-card-botao-acao.edit {
+  background-color: #f0f8ff; /* Azul claro */
+  color: #2196F3;
+  border: 1px solid #bbdefb;
+}
+
+.familiar-card-botao-acao.edit:hover {
+  background-color: #e0f2f7;
+  border-color: #90caf9;
+}
+
+.familiar-card-botao-acao.remover-inativar {
+  background-color: #ffebee; /* Vermelho claro */
+  color: #f44336; /* Vermelho */
+  border: 1px solid #ffcdd2;
+}
+
+.familiar-card-botao-acao.remover-inativar:hover {
+  background-color: #f2cad0;
+  color: #f44336;
+  border-color: #e2979f;
+}
+
+.familiar-card-botao-acao svg {
+  font-size: 1rem;
+}

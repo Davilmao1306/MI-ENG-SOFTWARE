@@ -1,10 +1,10 @@
 // src/componentes/PacienteCard/index.jsx
 import { Link } from 'react-router-dom';
-import { FiEdit, FiUsers, FiUserPlus, FiUser } from 'react-icons/fi'; // Adicionado FiUser aqui
-// import { LuUser } from 'react-icons/lu'; // Se quiser manter, certifique-se de que está instalado
+import { FiEdit, FiUsers, FiUserPlus, FiUser, FiUserX } from 'react-icons/fi'; // << AQUI: Adicionado FiTrash2
+
 import './paciente-card.estilo.css';
 
-export function PacienteCard({ paciente, onVincularFamiliar, onVincularTerapeuta }) {
+export function PacienteCard({ paciente, onVincularFamiliar, onVincularTerapeuta, onRemoverOuInativar }) { // << AQUI: Adicionado onRemoverOuInativar
     // Funções para formatar os nomes para exibição
     const getTerapeutasNomes = (terapeutas) => {
         return terapeutas && terapeutas.length > 0
@@ -21,7 +21,7 @@ export function PacienteCard({ paciente, onVincularFamiliar, onVincularTerapeuta
     return (
         <div className="paciente-card-container">
             <div className="paciente-card-header">
-                <FiUser size={30} className="paciente-icon" /> {/* Alterado para FiUser para consistência */}
+                <FiUser size={30} className="paciente-icon" />
                 <h3 className="paciente-nome">{paciente.nome}</h3>
             </div>
             <div className="paciente-card-info">
@@ -36,21 +36,33 @@ export function PacienteCard({ paciente, onVincularFamiliar, onVincularTerapeuta
                 <p><strong>Familiar:</strong> {getFamiliaresNomes(paciente.familiarVinculado)}</p>
             </div>
             <div className="paciente-card-acoes">
-                <Link to={`/pacientes/editar/${paciente.id}`} className="paciente-card-botao-acao edit">
-                    <FiEdit /> Editar
-                </Link>
+        
                 <button
-                    className="paciente-card-botao-acao vincular familiar" // Adicione uma classe específica se quiser estilo diferente
+                    className="paciente-card-botao-acao vincular familiar"
                     onClick={() => onVincularFamiliar(paciente)}
                 >
                     <FiUsers /> Vincular a um familiar
                 </button>
                 <button
-                    className="paciente-card-botao-acao vincular terapeuta" // Adicione uma classe específica se quiser estilo diferente
+                    className="paciente-card-botao-acao vincular terapeuta"
                     onClick={() => onVincularTerapeuta(paciente)}
                 >
                     <FiUserPlus /> Vincular a um terapeuta
                 </button>
+
+      
+                <div className="paciente-card-acoes-inferior">
+                    <Link to={`/pacientes/editar/${paciente.id_paciente}`} className="paciente-card-botao-acao edit"> 
+                        <FiEdit /> Editar
+                    </Link>
+
+                    <button
+                        className="paciente-card-botao-acao remover-inativar"
+                        onClick={() => onRemoverOuInativar(paciente)} 
+                    >
+                        <FiUserX /> Remover/Inativar
+                    </button>
+                </div>
             </div>
         </div>
     );

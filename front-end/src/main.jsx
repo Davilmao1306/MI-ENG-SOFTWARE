@@ -29,7 +29,8 @@ import { DiarioCompartilhadoPage } from './pages/DiarioCompartilhado/index.jsx';
 import { DashboardInicial } from './pages/InicialClinica/index.jsx';
 import { GerenciarPacientes } from './pages/GerenciarPacientes';
 import { ListaFamiliares } from './pages/ListaFamiliares/index.jsx';
-
+import { GerenciarTerapeutas } from './pages/GerenciarTerapeutas/index.jsx';
+import { GerenciarFamiliares } from './pages/GerenciarFamiliares/index.jsx';
 
 const TIPO_CLINICA = 'C'
 
@@ -63,7 +64,8 @@ createRoot(document.getElementById('root')).render(
         <Route path="/pacientes/editar/:id" element={<div>Tela de Editar Paciente</div>} />
         <Route path="/pacientes/:id/vincular-familiar" element={<div>Tela de Vincular Familiar</div>} />
         <Route path="/pacientes/:id/vincular-terapeuta" element={<div>Tela de Vincular Terapeuta</div>} />
-        <Route path="/familiares" element={<ListaFamiliares />} />
+        <Route path="/clinica/terapeutas" element={<GerenciarTerapeutas />} />
+        <Route path="/familiares" element={<GerenciarFamiliares />} />
       </Routes>
     </BrowserRouter>
   </StrictMode>,

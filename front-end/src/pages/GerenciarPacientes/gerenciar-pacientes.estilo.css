@@ -1,18 +1,18 @@
 .gerenciar-pacientes-layout {
   display: flex;
   min-height: 100vh;
-  background-color: #f0f2f5;
+  background-color: white;
 }
 
 .gerenciar-pacientes-main-content {
   flex-grow: 1;
-  padding: 2rem;
-  overflow-y: auto;
+  padding: 1.5rem;
+
 }
 
 .gerenciar-pacientes-title {
   font-size: 2.2rem;
-  color: #333;
+  color: black;
   margin-bottom: 1.5rem;
   font-weight: 600;
 }
@@ -32,17 +32,25 @@
 
 .search-input-wrapper.expanded {
     flex-grow: 1; 
-
     max-width: 600px; 
+    
 }
 
 .search-input {
-  width: 100%; 
+  width: 100%;
   padding: 0.8rem 1rem 0.8rem 2.5rem;
-  border: 1px solid #ccc;
+  border: 1px solid #ccc; /* Bordas padrão para quando não está focado */
   border-radius: 8px;
   font-size: 1rem;
+  transition: all 0.2s ease-in-out;
+  outline: none; /* Já está lá e funcionando */
+}
+
+/* Redefina os estilos de foco para não terem borda ou sombra externa */
+.search-input:focus {
+  border-color: #ccc; /* Volta para a cor da borda padrão */
   box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.05);
+
 }
 
 .search-icon {
