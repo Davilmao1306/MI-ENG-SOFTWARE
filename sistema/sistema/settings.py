@@ -17,6 +17,7 @@ INSTALLED_APPS = [
     'contas',
     'autenticacao',
     'cadastro',
+    'planos',
     'corsheaders',
     "rest_framework",
 ]
