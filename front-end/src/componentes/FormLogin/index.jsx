@@ -11,7 +11,9 @@ export function FormLogin() {
     const navigate = useNavigate()
     async function dadosLogin(event) {
         event.preventDefault(); // evita recarregar a página
-
+        localStorage.removeItem("token");
+        localStorage.removeItem("tipo");
+        localStorage.removeItem("id_usuario");
 
         const formData = new FormData(event.target);
         const dados = {
@@ -29,24 +31,30 @@ export function FormLogin() {
                 },
                 body: JSON.stringify(dados),
             });
+            const data = await response.json();
 
-            if (!response.ok) { 
-                const erroData = await response.json();
-                console.error("Erro do backend:", erroData);
-                const msgErro = Object.values(erroData).join(' ');
+            if (!response.ok) {
+                console.error("Erro do backend:", data);
+                const msgErro = Object.values(data).join(' ');
                 alert(`Erro ao fazer login: ${msgErro}`);
                 throw new Error("Erro na requisição: " + response.status);
             }
-            const data = await response.json();
-            console.log("login feito com sucesso:", data);
-            if(data.tipo == 'C'){
+
+            if (data.access && data.tipo) {
+                localStorage.setItem("token", data.access);
+                localStorage.setItem("tipo", data.tipo);
+                localStorage.setItem("id_usuario", data.id)
+                console.log("Token salvo:", localStorage.getItem("token"));
+            }
+
+            if (data.tipo == 'C') {
                 navigate('/clinica')
-            }else if(data.tipo = 'T'){
+            } else if (data.tipo == 'T') {
                 navigate('/terapeuta')
-            }else{
+            } else {
                 navigate('/familiar-perfil')
             }
-            
+
 
         } catch (error) {
             console.error("Erro:", error.message);
@@ -60,6 +68,7 @@ export function FormLogin() {
                     <Label htmlFor='Useremail' >
                     </Label>
                     <CampoDeEntrada
+                        id='Useremail'
                         type='email'
                         name='loginEmail'
                         placeholder='Digite seu email'
@@ -71,6 +80,7 @@ export function FormLogin() {
                     <Label htmlFor='userSenha'>
                     </Label>
                     <CampoDeEntrada
+                        id='userSenha'
                         type='password'
                         name='userSenha'
                         placeholder='Digite sua senha'

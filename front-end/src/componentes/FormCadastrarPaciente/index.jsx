@@ -2,11 +2,42 @@ import { CampoDeEntrada } from '../CampoDeEntrada'
 import { CampoDeFormulario } from '../CampoDeFormulario'
 import { Botao } from '../Botao'
 import './form-cadastrar-paciente.estilo.css'
+import { useState } from 'react';
+import InputMask from "react-input-mask";
+import { useNavigate } from 'react-router-dom';
 
 export function FormCadastrarPaciente() {
+    function validarCPF(cpf) {
+        cpf = cpf.replace(/\D/g, "");
+        if (cpf.length !== 11 || /^(\d)\1+$/.test(cpf)) return false;
+
+        let soma = 0;
+        for (let i = 0; i < 9; i++) soma += parseInt(cpf[i]) * (10 - i);
+        let digito1 = (soma * 10) % 11;
+        if (digito1 === 10) digito1 = 0;
+
+        soma = 0;
+        for (let i = 0; i < 10; i++) soma += parseInt(cpf[i]) * (11 - i);
+        let digito2 = (soma * 10) % 11;
+        if (digito2 === 10) digito2 = 0;
+
+        return cpf.endsWith(`${digito1}${digito2}`);
+    }
+
+    const [erroCpf, setErroCpf] = useState('');
     async function dadosPaciente(event) {
+
+
         event.preventDefault();
         const formData = new FormData(event.target);
+        const navigate = useNavigate();
+
+        if (!validarCPF(formData.get('cpfPaciente'))) {
+            setErroCpf("CPF inválido. Verifique e tente novamente.");
+            return;
+        } else {
+            setErroCpf(""); // limpa o erro se estiver tudo certo
+        }
         const dados = {
             nome: formData.get('cadastrarNomePaciente'),
             cpf: formData.get('cpfPaciente'),
@@ -35,6 +66,7 @@ export function FormCadastrarPaciente() {
             const data = await response.json();
             console.log("Paciente cadastrado com sucesso:", data);
             alert(`Paciente cadastrado com sucesso! ID: ${data.id_paciente}`);
+            navigate("/clinica")
         } catch (error) {
             console.error("Erro:", error);
 
@@ -56,11 +88,17 @@ export function FormCadastrarPaciente() {
                 </CampoDeFormulario>
                 <CampoDeFormulario>
                     <CampoDeEntrada
+                        as={InputMask}
+                        mask="999.999.999-99"
                         type='text'
                         name='cpfPaciente'
                         placeholder='CPF'
                         required
+                        onChange={(e) => {
+                            if (erroCpf) setErroCpf('');
+                        }}
                     />
+                    {erroCpf && <p style={{ color: 'red', fontSize: '0.9rem' }}>{erroCpf}</p>}
                 </CampoDeFormulario>
                 <CampoDeFormulario>
                     <CampoDeEntrada

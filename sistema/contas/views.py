@@ -1,14 +1,11 @@
-from django.shortcuts import render, redirect
-from django.contrib.auth import authenticate, login
 from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
-from .forms import LoginForm
 from .serializers import LoginAPISerializer
 from django.db import connection
-
-
-
+import jwt
+from datetime import datetime, timedelta, timezone
+from django.conf import settings
 
 
 @api_view(["POST"])
@@ -24,15 +21,28 @@ def login_api(request):
         cur.execute("SELECT * FROM validar_login(%s, %s)", [email, password])
         row = cur.fetchone()
 
-    if row:
-        id_usuario, email, consentimento, tipo = row
-        return Response({
-            "success": True,
-            "id": id_usuario,
-            "email": email,
-            "consentimento": consentimento,
-            "tipo": tipo
-        })
-    else:
-        return Response({"success": False, "detail": "Credenciais inválidas."},
-                        status=status.HTTP_401_UNAUTHORIZED)
+    if not row:
+        return Response(
+            {"success": False, "detail": "Credenciais inválidas."},
+            status=status.HTTP_401_UNAUTHORIZED
+        )
+    id_usuario, email, consentimento, tipo = row
+
+    payload = {
+        "id": id_usuario,
+        "email": email,
+        "tipo": tipo,
+        "exp": datetime.now(timezone.utc) + timedelta(minutes=1),
+        "iat": datetime.now(timezone.utc),
+    }
+
+    access_token = jwt.encode(payload, settings.SECRET_KEY, algorithm="HS256")
+
+    return Response({
+        "success": True,
+        "id": id_usuario,
+        "email": email,
+        "consentimento": consentimento,
+        "tipo": tipo,
+        "access": access_token,
+    })

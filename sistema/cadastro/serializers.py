@@ -53,6 +53,8 @@ class PacienteIn(serializers.Serializer):
     nome = serializers.CharField(min_length=2, max_length=120)
     data_nascimento = serializers.DateField()
     cpf = serializers.CharField()
+    telefone = serializers.CharField(max_length=20)
+    genero = serializers.CharField(max_length=20)
 
     def validate_cpf(self, v):
         if not CPF_RE.match(v):

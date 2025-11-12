@@ -1,17 +1,15 @@
 import { useState, useEffect } from 'react';
-import { Sidebar } from '../../componentes/Sidebar'; 
-import './dashboard-clinica.estilo.css'; 
+import { Sidebar } from '../../componentes/Sidebar';
+import './dashboard-clinica.estilo.css';
 import { RiPsychotherapyLine } from "react-icons/ri";
 import { FiUser, FiActivity, FiArrowUpCircle } from 'react-icons/fi';
-import {FiLink, FiUsers, FiUserMinus } from 'react-icons/fi'; 
+import { FiLink, FiUsers, FiUserMinus } from 'react-icons/fi';
+import { useExibirListas } from "../../hooks/useExibirListas";
 
 // Dados fictícios para simular a API
 const mockData = {
-  totalTerapeutas: 15,
   terapeutasMes: 3,
-  totalPacientes: 85,
   pacientesMes: 12,
-  totalFamiliares: 90,
   familiaresMes: 8,
   pacientesSemTerapeuta: 8,
   pacientesSemFamiliar: 15,
@@ -30,12 +28,18 @@ const mockData = {
   ]
 };
 
+
+
+
 export function DashboardInicial() {
-  const [data, setData] = useState(mockData); 
+  const listTerapeutas = useExibirListas("http://localhost:8000/cadastro/lista-terapeutas");
+  const listFamiliares = useExibirListas("http://localhost:8000/cadastro/lista-familiares");
+  const listPacientes = useExibirListas("http://localhost:8000/cadastro/lista-pacientes");
+  const [data, setData] = useState(mockData);
 
   return (
     <div className="dashboard-layout">
-      <Sidebar /> 
+      <Sidebar />
 
       <main className="dashboard-main-content">
         <h1 className="dashboard-title">Dashboard</h1>
@@ -45,7 +49,7 @@ export function DashboardInicial() {
             <div className="card-icon-wrapper users"><RiPsychotherapyLine size={30} /></div>
             <div className="card-info">
               <span className="card-label">Total de Terapeutas</span>
-              <span className="card-value">{data.totalTerapeutas}</span>
+              <span className="card-value">{listTerapeutas.length}</span>
               <span className="card-trend"><FiArrowUpCircle /> +{data.terapeutasMes} este mês</span>
             </div>
           </div>
@@ -54,7 +58,7 @@ export function DashboardInicial() {
             <div className="card-icon-wrapper user"><FiUser size={30} /></div>
             <div className="card-info">
               <span className="card-label">Total de Pacientes</span>
-              <span className="card-value">{data.totalPacientes}</span>
+              <span className="card-value">{listPacientes.length}</span>
               <span className="card-trend"><FiArrowUpCircle /> +{data.pacientesMes} este mês</span>
             </div>
           </div>
@@ -63,14 +67,14 @@ export function DashboardInicial() {
             <div className="card-icon-wrapper home"><FiUsers size={30} /></div>
             <div className="card-info">
               <span className="card-label">Total de Familiares</span>
-              <span className="card-value">{data.totalFamiliares}</span>
-                <span className="card-trend"><FiArrowUpCircle /> +{data.familiaresMes} este mês</span>
+              <span className="card-value">{listFamiliares.length}</span>
+              <span className="card-trend"><FiArrowUpCircle /> +{data.familiaresMes} este mês</span>
             </div>
           </div>
         </section>
-   
+
         <section className="dashboard-details-section">
-  
+
           <div className="vinculos-card">
             <h2 className="section-subtitle">Vínculos e Distribuição</h2>
             <ul>
@@ -93,10 +97,10 @@ export function DashboardInicial() {
                   ))}
                 </ul>
               </li>
-              
+
             </ul>
             {data.pacientesSemTerapeuta === 0 && data.pacientesSemFamiliar === 0 && (
-                <p className="no-items">Todos os pacientes estão vinculados.</p>
+              <p className="no-items">Todos os pacientes estão vinculados.</p>
             )}
           </div>
 
@@ -123,6 +127,6 @@ export function DashboardInicial() {
         </section>
 
       </main>
-    </div> 
+    </div>
   );
 }

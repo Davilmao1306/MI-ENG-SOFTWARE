@@ -1,6 +1,6 @@
 import { StrictMode } from 'react';
 import { createRoot } from 'react-dom/client';
-import { createBrowserRouter, RouterProvider } from 'react-router-dom';
+import { ProtectedRoute } from "./routes/ProtectedRoute";
 import { BrowserRouter, Routes, Route } from "react-router";
 import './index.css';
 
@@ -43,29 +43,36 @@ createRoot(document.getElementById('root')).render(
         <Route path="/login" element={<Login />} />
         <Route path="/login/recuperar-senha" element={<RecuperarSenha />} />
         <Route path="/login/recuperar-senha/nova-senha" element={<NovaSenha />} />
+
+        {/* rotas da clinica */}
+        <Route path='/clinica' element={<ProtectedRoute tipoPermitido="C"><DashboardInicial /></ProtectedRoute>} />
         <Route path="/clinica/cadastrar-familiar" element={<CadastrarFamiliar />} />
         <Route path="/clinica/cadastrar-paciente" element={<CadastrarPaciente />} />
         <Route path="/clinica/cadastrar-terapeuta" element={<CadastrarTerapeuta />} />
+        <Route path="/clinica/lista-de-terapeutas" element={<GerenciarTerapeutas />} />
+        <Route path="/clinica/lista-de-pacientes" element={<GerenciarPacientes />} />
+        <Route path="/clinica/lista-de-familiares" element={<GerenciarFamiliares />} />
+        {/* ate aqui */}
+
+
+        {/* rotas do terapeuta */}
+        <Route path="/terapeuta" element={<TelaInicioTerapeuta />} />
+
         <Route path="/plano-terapeutico-familiar" element={<PlanosFamiliar />} />
         <Route path="/plano-terapeutico-terapeuta" element={<PlanosTerapeuta />} />
         <Route path="/acessar-plano" element={<AcessarPlano />} />
         <Route path="/familiar-paciente" element={<TelaInicioFamiliar />} />
         <Route path="/familiar-perfil" element={<TelaPerfilPaciente />} />
-        <Route path="/terapeuta" element={<TelaInicioTerapeuta />} />
+
         <Route path="/terapeuta/sessao" element={<TelaNovaSessao />} />
         <Route path="/terapeuta/pacientes" element={<AcessarPacientes />} />
-        <Route path="/clinica/lista-de-terapeutas" element={<ListaTerapeutas />} />
+        
         <Route path='/terapeuta/diario' element={<DiarioTerapeuta />} />
         <Route path="/pacientes/:idPaciente/criar-plano" element={<CriarPlanoPage />} />
         <Route path='/consentimento' element={<Consent />} />
         <Route path='/diario-compartilhado' element={<DiarioCompartilhadoPage />} />
-        <Route path='/clinica' element={<DashboardInicial />} />
-        <Route path="/pacientes" element={<GerenciarPacientes />} />
-        <Route path="/pacientes/editar/:id" element={<div>Tela de Editar Paciente</div>} />
-        <Route path="/pacientes/:id/vincular-familiar" element={<div>Tela de Vincular Familiar</div>} />
-        <Route path="/pacientes/:id/vincular-terapeuta" element={<div>Tela de Vincular Terapeuta</div>} />
-        <Route path="/clinica/terapeutas" element={<GerenciarTerapeutas />} />
-        <Route path="/familiares" element={<GerenciarFamiliares />} />
+
+
       </Routes>
     </BrowserRouter>
   </StrictMode>,

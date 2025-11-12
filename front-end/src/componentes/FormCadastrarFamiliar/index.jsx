@@ -1,4 +1,5 @@
 import { CampoDeEntrada } from '../CampoDeEntrada'
+import InputMask from "react-input-mask";
 import { CampoDeFormulario } from '../CampoDeFormulario'
 import { Botao } from '../Botao'
 import './form-cadastrar-familiar.estilo.css'
@@ -10,10 +11,27 @@ import { Label } from './../Label/index';
 const TIPO_FAMILIAR = 'F'
 
 export function FormCadastrarFamiliar() {
+    function validarCPF(cpf) {
+        cpf = cpf.replace(/\D/g, "");
+        if (cpf.length !== 11 || /^(\d)\1+$/.test(cpf)) return false;
+
+        let soma = 0;
+        for (let i = 0; i < 9; i++) soma += parseInt(cpf[i]) * (10 - i);
+        let digito1 = (soma * 10) % 11;
+        if (digito1 === 10) digito1 = 0;
+
+        soma = 0;
+        for (let i = 0; i < 10; i++) soma += parseInt(cpf[i]) * (11 - i);
+        let digito2 = (soma * 10) % 11;
+        if (digito2 === 10) digito2 = 0;
+
+        return cpf.endsWith(`${digito1}${digito2}`);
+    }
     const navigate = useNavigate();
     const [senha, setSenha] = useState('');
     const [confirmaSenha, setConfirmaSenha] = useState('');
     const [mostrarSenha, setMostrarSenha] = useState(false);
+    const [erroCpf, setErroCpf] = useState('');
 
     // Função para alternar a visibilidade da senha
     const toggleMostrarSenha = () => {
@@ -22,13 +40,20 @@ export function FormCadastrarFamiliar() {
 
     async function dadosFamiliar(event) {
         event.preventDefault();
+        const formData = new FormData(event.target);
 
         if (senha !== confirmaSenha) {
-            console.log("As senhas não coincidem. Por favor, verifique.");
+            alert("As senhas não coincidem. Por favor, verifique.");
             return;
+        } else if (!validarCPF(formData.get('cpfFamiliar'))) {
+            setErroCpf("CPF inválido. Verifique e tente novamente.");
+            return;
+        } else {
+            setErroCpf(""); // limpa o erro se estiver tudo certo
         }
 
-        const formData = new FormData(event.target);
+
+
         const dados = {
             nome: formData.get('cadastrarNomeFamiliar'),
             email: formData.get('loginEmail'),
@@ -97,11 +122,17 @@ export function FormCadastrarFamiliar() {
                 </CampoDeFormulario>
                 <CampoDeFormulario>
                     <CampoDeEntrada
-                        type='text'
-                        name='cpfFamiliar'
-                        placeholder='CPF'
+                        as={InputMask}
+                        mask="999.999.999-99"
+                        type="text"
+                        name="cpfFamiliar"
+                        placeholder="CPF"
                         required
+                        onChange={(e) => {
+                            if (erroCpf) setErroCpf('');
+                        }}
                     />
+                    {erroCpf && <p style={{ color: 'red', fontSize: '0.9rem' }}>{erroCpf}</p>}
                 </CampoDeFormulario>
                 <CampoDeFormulario>
                     <CampoDeEntrada

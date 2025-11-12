@@ -13,7 +13,7 @@ SQL_CADASTRAR_FAMILIAR = f"SELECT {SCHEMA}cadastrar_familiar(%s, %s, %s, %s, %s,
 # -> id_terapeuta
 SQL_CADASTRAR_TERAPEUTA = f"SELECT {SCHEMA}cadastrar_terapeuta(%s, %s, %s, %s, %s, %s, %s, %s)"
 # -> id_paciente
-SQL_CADASTRAR_PACIENTE = f"SELECT {SCHEMA}cadastrar_paciente(%s, %s, %s)"
+SQL_CADASTRAR_PACIENTE = f"SELECT {SCHEMA}cadastrar_paciente(%s, %s, %s, %s, %s)"
 # -> id_clinica
 SQL_CADASTRAR_CLINICA = f"SELECT {SCHEMA}cadastrar_clinica(%s, %s, %s, %s)"
 # -> void
@@ -76,7 +76,8 @@ def criar_paciente(request):
     try:
         with get_conn() as conn, conn.cursor() as cur:
             cur.execute(SQL_CADASTRAR_PACIENTE, (
-                d["nome"], str(d["data_nascimento"]), d["cpf"]
+                d["nome"], str(d["data_nascimento"]
+                               ), d["cpf"], d["genero"], d["telefone"]
             ))
             new_id = cur.fetchone()[0]
             return Response({"id_paciente": new_id}, status=status.HTTP_201_CREATED)
