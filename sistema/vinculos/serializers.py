@@ -14,3 +14,4 @@ class DesvincularPacienteFamiliarIn(VincularPacienteFamiliarIn):
 
 class DesvincularPacienteTerapeutaIn(VincularPacienteTerapeutaIn):
     pass
+ 

@@ -6,7 +6,7 @@ import { FiX, FiSearch, FiUser, FiPlus } from 'react-icons/fi';
 
 
 export function VincularFamiliarModal({ paciente, onClose, onSave }) {
-  const mockAllFamiliares = "http://localhost:8000/cadastro/lista-familiares";
+  const mockAllFamiliares = "http://localhost:8000/cadastro/lista-familiares"; 
   const [familiares, setFamiliares] = useState([]);
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
@@ -17,7 +17,7 @@ export function VincularFamiliarModal({ paciente, onClose, onSave }) {
     fetch(mockAllFamiliares)
       .then((res) => res.json())
       .then((data) => setFamiliares(data))
-      .catch((err) => console.error("Erro ao buscar terapeutas:", err));
+      .catch((err) => console.error("Erro ao buscar familiares:", err));
   };
 
   useEffect(() => {
@@ -68,6 +68,7 @@ export function VincularFamiliarModal({ paciente, onClose, onSave }) {
     const finalFamiliaresToLink = familiares.filter(f => combinedFamiliaresIds.includes(f.id_familiar));
 
     onSave(paciente.id_paciente, finalFamiliaresToLink);
+    console.log(onSave);
     onClose();
   };
 

@@ -2,7 +2,7 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from psycopg.errors import ForeignKeyViolation, UndefinedFunction
-from ..db import get_conn
+from db import get_conn
 from .serializers import (
     VincularPacienteFamiliarIn, VincularPacienteTerapeutaIn,
     DesvincularPacienteFamiliarIn, DesvincularPacienteTerapeutaIn,

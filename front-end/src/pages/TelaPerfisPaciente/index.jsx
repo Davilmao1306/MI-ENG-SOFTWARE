@@ -17,7 +17,7 @@ export function TelaPerfilPaciente() {
             <section className="section-tela-perfis">
                 {pacientes.map((paciente) => (
                     <div key={paciente.id} className="div-perfil">
-                        <Link to={`/login/familiar-paciente/${paciente.id}`}>
+                        <Link to={`/familiar-paciente/`}>
                             <BsPersonCircle />
                         </Link>
                         <p>{paciente.nome}</p>

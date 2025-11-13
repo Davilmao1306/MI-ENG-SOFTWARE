@@ -10,7 +10,7 @@ urlpatterns = [
     path("lista-terapeutas", views.lista_terapeutas, name="terapeutas-listar"),
     path("lista-pacientes", views.lista_pacientes, name="pacientes-listar"),
     path("lista-familiares", views.lista_familiares, name="familiares-listar"),
-    path("usuarios/<int:id_usuario>/consentimento", views.registrar_consentimento, name="usuarios-consentimento"),
+    path("lista-vinculos", views.lista_vinculos, name="vinculos-listar"),
+    path("usuarios/<int:id_usuario>/consentimento",
+         views.registrar_consentimento, name="usuarios-consentimento"),
 ]
-
- 

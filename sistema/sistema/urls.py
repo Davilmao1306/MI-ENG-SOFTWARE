@@ -12,4 +12,5 @@ urlpatterns = [
     path('', home, name='home'),
     path('login/', include('contas.urls')),
     path('cadastro/', include('cadastro.urls')),
+    path('vincular/', include('vinculos.urls')),
 ]

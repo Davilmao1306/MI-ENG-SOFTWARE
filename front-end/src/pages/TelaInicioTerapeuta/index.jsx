@@ -4,25 +4,32 @@ import { IoMdNotificationsOutline } from "react-icons/io";
 import { IconSair } from '../../componentes/IconSair'
 import { Link } from 'react-router-dom';
 import { useExibirListas } from '../../hooks/useExibirListas';
+import { useEffect, useState } from 'react';
 
 export function TelaInicioTerapeuta() {
-    const terapeutas = useExibirListas("http://localhost:8000/cadastro/lista-terapeutas")
+    const terapeutas = "http://localhost:8000/cadastro/lista-terapeutas"
     const id = localStorage.getItem("id_usuario");
+    const [lista, setLista] = useState([]);
+    const fetchLista = () => {
+        fetch(terapeutas)
+            .then((res) => res.json())
+            .then((data) => setLista(data))
+            .catch((err) => console.error("Erro ao buscar lista:", err));
+    };
 
-    // Tem que fazer isso para dar tempo dos dados chegarem a lista de terapeutas
-    if (!Array.isArray(terapeutas) || terapeutas.length === 0) {
-        return;
-    }
+    useEffect(() => {
+        fetchLista();
+    }, []);
 
-    const terapeutaAuth = terapeutas.find(t => String(t.id_usuario) === String(id));
-
+    const terapeutaAuth = lista.find(t => String(t.id_usuario) === String(id));
+    console.log(lista)
     return (
         <main className='main-tela-inicio-terapeuta'>
             <header className='header-tela-inicio-terapeuta'>
                 <div className='div-img-nome'>
                     <img src="/logo-terapeuta.png" alt="" />
-                    <p> {terapeutaAuth.nome}<br></br>
-                        {terapeutaAuth.especialidade}
+                    <p> {terapeutaAuth?.nome}<br></br>
+                        {terapeutaAuth?.especialidade}
                     </p>
 
                 </div>

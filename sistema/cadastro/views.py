@@ -2,12 +2,11 @@ from rest_framework.decorators import api_view
 from rest_framework.response import Response
 from rest_framework import status
 from psycopg.errors import UniqueViolation, ForeignKeyViolation, UndefinedFunction
-from ..db import get_conn
+from db import get_conn
 from .serializers import FamiliarIn, TerapeutaIn, PacienteIn, ClinicaIn
-from django.contrib.auth.hashers import make_password
 
 
-SCHEMA = ""  
+SCHEMA = ""
 # -> id_familiar
 SQL_CADASTRAR_FAMILIAR = f"SELECT {SCHEMA}cadastrar_familiar(%s, %s, %s, %s, %s, %s, %s)"
 # -> id_terapeuta
@@ -155,5 +154,4 @@ lista_clinicas = gera_listagem('clinica')
 lista_pacientes = gera_listagem('paciente')
 lista_familiares = gera_listagem('familiar')
 lista_terapeutas = gera_listagem('terapeuta')
-
-
+lista_vinculos = gera_listagem('pacientefamiliar')
