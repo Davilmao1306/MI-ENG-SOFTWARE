@@ -68,7 +68,6 @@ export function VincularFamiliarModal({ paciente, onClose, onSave }) {
     const finalFamiliaresToLink = familiares.filter(f => combinedFamiliaresIds.includes(f.id_familiar));
 
     onSave(paciente.id_paciente, finalFamiliaresToLink);
-    console.log(onSave);
     onClose();
   };
 

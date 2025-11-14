@@ -1,7 +1,7 @@
 // src/componentes/Navbar/index.jsx
 import React from 'react';
 import { FiUser, FiBell, FiLogOut } from 'react-icons/fi';
-import { Link, useNavigate } from 'react-router-dom'; 
+import { Link, useNavigate } from 'react-router-dom';
 import './navbar.estilo.css';
 
 export function Navbar({ userName = "Clínica" }) {
@@ -30,7 +30,7 @@ export function Navbar({ userName = "Clínica" }) {
         <button className="navbar-icon-button" onClick={handleNotifications}>
           <FiBell size={20} />
         </button>
-      <Link to="/login" className="navbar-icon-button" >
+        <Link to="/login" className="navbar-icon-button" >
           <FiLogOut size={20} />
         </Link>
       </div>

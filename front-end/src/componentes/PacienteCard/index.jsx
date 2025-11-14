@@ -4,8 +4,7 @@ import { FiEdit, FiUsers, FiUserPlus, FiUser, FiUserX } from 'react-icons/fi'; /
 
 import './paciente-card.estilo.css';
 
-export function PacienteCard({ paciente, onVincularFamiliar, onVincularTerapeuta, onRemoverOuInativar }) { // << AQUI: Adicionado onRemoverOuInativar
-    // Funções para formatar os nomes para exibição
+export function PacienteCard({ paciente, onVincularFamiliar, onVincularTerapeuta, onRemoverOuInativar }) { 
     const getTerapeutasNomes = (terapeutas) => {
         return terapeutas && terapeutas.length > 0
             ? terapeutas.map(t => t.nome).join(', ')
@@ -33,7 +32,7 @@ export function PacienteCard({ paciente, onVincularFamiliar, onVincularTerapeuta
                 {/* Exibindo os terapeutas vinculados */}
                 <p><strong>Terapeuta:</strong> {getTerapeutasNomes(paciente.terapeutasVinculados)}</p>
                 {/* Exibindo os familiares vinculados */}
-                <p><strong>Familiar:</strong> {getFamiliaresNomes(paciente.familiarVinculado)}</p>
+                <p><strong>Familiar:</strong> {getFamiliaresNomes(paciente.familiaresVinculados)}</p>
             </div>
             <div className="paciente-card-acoes">
         
