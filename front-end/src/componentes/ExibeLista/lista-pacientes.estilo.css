@@ -2,26 +2,30 @@
     background-color: #ffffff;
     padding: 10px;
 }
+
 .ul-paciente {
-    display: flex;
-    gap: 30px;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+    gap: 0.8rem;
 }
 
 .li-paciente {
-    padding: 10px;
-    width: 200px;
-    height: auto;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    padding: 0.8rem;
     display: flex;
     flex-direction: column;
-    border: 1px solid #D9D9D9;
-    list-style-type: none;
-    border-radius: 10px;
-    gap: 10px;
-    background-color: #ffffff;
-    box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2);
+    gap: 0.2rem;
+    text-align: start;
+    border: 1px solid #e0e0e0;
+    max-width: 285px;
+    width: 100%;
 }
-.input-pesquisar-paciente{
+.li-paciente div {
+    text-align: center;
+}
+.input-pesquisar-paciente {
     margin-left: 40px;
     border-radius: 5px;
     width: 500px;
@@ -29,4 +33,16 @@
     height: 20px;
     border: none;
     box-shadow: 3px 3px 6px rgba(0, 0, 0, 0.2);
+}
+.botao-acessar {
+    background-color: #7be2ff;
+    border: none;
+    padding: 10px;
+    border-radius: 10px;
+    margin-top: 10px;
+    cursor: pointer;
+}
+
+.botao-acessar:hover{
+    background-color: #419db7;
 }

@@ -4,7 +4,7 @@ import { FiUser, FiBell, FiLogOut } from 'react-icons/fi';
 import { Link, useNavigate } from 'react-router-dom';
 import './navbar.estilo.css';
 
-export function Navbar({ userName = "Clínica" }) {
+export function Navbar({ userName  }) {
   const handleLogout = () => {
     console.log("Usuário deslogado!");
     alert("Você foi desconectado!");

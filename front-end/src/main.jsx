@@ -45,6 +45,7 @@ createRoot(document.getElementById('root')).render(
         <Route path="/login/recuperar-senha/nova-senha" element={<NovaSenha />} />
 
         {/* rotas da clinica */}
+        
         <Route path='/clinica' element={<ProtectedRoute tipoPermitido="C"><DashboardInicial /></ProtectedRoute>} />
         <Route path="/clinica/cadastrar-familiar" element={<CadastrarFamiliar />} />
         <Route path="/clinica/cadastrar-paciente" element={<CadastrarPaciente />} />
@@ -57,6 +58,11 @@ createRoot(document.getElementById('root')).render(
 
         {/* rotas do terapeuta */}
         <Route path="/terapeuta" element={<TelaInicioTerapeuta />} />
+        <Route path="/terapeuta/sessao" element={<TelaNovaSessao />} />
+        <Route path="/terapeuta/pacientes" element={<AcessarPacientes />} />
+        <Route path='/terapeuta/diario' element={<DiarioTerapeuta />} />
+
+
 
         <Route path="/plano-terapeutico-familiar" element={<PlanosFamiliar />} />
         <Route path="/plano-terapeutico-terapeuta" element={<PlanosTerapeuta />} />
@@ -64,10 +70,9 @@ createRoot(document.getElementById('root')).render(
         <Route path="/familiar-paciente" element={<TelaInicioFamiliar />} />
         <Route path="/familiar-perfil" element={<TelaPerfilPaciente />} />
 
-        <Route path="/terapeuta/sessao" element={<TelaNovaSessao />} />
-        <Route path="/terapeuta/pacientes" element={<AcessarPacientes />} />
         
-        <Route path='/terapeuta/diario' element={<DiarioTerapeuta />} />
+        
+        
         <Route path="/pacientes/:idPaciente/criar-plano" element={<CriarPlanoPage />} />
         <Route path='/consentimento' element={<Consent />} />
         <Route path='/diario-compartilhado' element={<DiarioCompartilhadoPage />} />

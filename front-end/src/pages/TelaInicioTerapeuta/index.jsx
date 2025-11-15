@@ -22,15 +22,15 @@ export function TelaInicioTerapeuta() {
     }, []);
 
     const terapeutaAuth = lista.find(t => String(t.id_usuario) === String(id));
-    console.log(lista)
+    
     return (
         <main className='main-tela-inicio-terapeuta'>
             <header className='header-tela-inicio-terapeuta'>
                 <div className='div-img-nome'>
                     <img src="/logo-terapeuta.png" alt="" />
-                    <p> {terapeutaAuth?.nome}<br></br>
+                    {/* <p> {terapeutaAuth?.nome}<br></br>
                         {terapeutaAuth?.especialidade}
-                    </p>
+                    </p> */}
 
                 </div>
                 <div>

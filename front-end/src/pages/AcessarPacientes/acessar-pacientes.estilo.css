@@ -1,8 +1,9 @@
 .tela-exibe-pacientes{
-    background-color: #E0F2FE;
-    height: 100%;
+    background-color: #93D9FA;
+    height: 100vh;
 }
 .header-acessar-pacientes{
+    
     display: flex;
     justify-content: space-between;
     border-bottom: 1px solid #D9D9D9; 
@@ -16,10 +17,12 @@
     flex-direction: column;
 }
 .div-titulos{
-    margin-left: 60px;
+    display: flex;
+    align-items: center;
+    gap: 30px;
+    margin-left: 20px;
 }
-.voltar-tela-pacientes{
-    position: relative;
-    left: 10px;
-    top: 50px;
+.div-titulos a{
+    text-decoration: none;
+    color: #000;
 }
