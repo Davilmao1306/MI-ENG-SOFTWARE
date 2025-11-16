@@ -1,50 +1,50 @@
--- Função: vincular_paciente_familiar
--- Cria o vínculo entre um paciente e um familiar.
--- Parâmetros:
---   p_id_paciente → ID do paciente que será vinculado
---   p_id_familiar → ID do familiar que será vinculado
--- Validações:
---   Verifica se o paciente existe.
---   Verifica se o familiar existe.
---   Evita duplicar vínculos já existentes.
--- Uso:
---   SELECT vincular_paciente_familiar(1, 2);
+    -- Função: vincular_paciente_familiar
+    -- Cria o vínculo entre um paciente e um familiar.
+    -- Parâmetros:
+    --   p_id_paciente → ID do paciente que será vinculado
+    --   p_id_familiar → ID do familiar que será vinculado
+    -- Validações:
+    --   Verifica se o paciente existe.
+    --   Verifica se o familiar existe.
+    --   Evita duplicar vínculos já existentes.
+    -- Uso:
+    --   SELECT vincular_paciente_familiar(1, 2);
 
-CREATE OR REPLACE FUNCTION vincular_paciente_familiar(
-    p_id_paciente INT,
-    p_id_familiar INT
-)
-RETURNS TEXT AS $$
-DECLARE
-    v_existe BOOLEAN;
-BEGIN
-    -- Verifica se paciente existe
-    IF NOT EXISTS (SELECT 1 FROM paciente WHERE Id_Paciente = p_id_paciente) THEN
-        RAISE EXCEPTION 'Paciente com ID % não existe.', p_id_paciente;
-    END IF;
+    CREATE OR REPLACE FUNCTION vincular_paciente_familiar(
+        p_id_paciente INT,
+        p_id_familiar INT
+    )
+    RETURNS TEXT AS $$
+    DECLARE
+        v_existe BOOLEAN;
+    BEGIN
+        -- Verifica se paciente existe
+        IF NOT EXISTS (SELECT 1 FROM paciente WHERE Id_Paciente = p_id_paciente) THEN
+            RAISE EXCEPTION 'Paciente com ID % não existe.', p_id_paciente;
+        END IF;
 
-    -- Verifica se familiar existe
-    IF NOT EXISTS (SELECT 1 FROM familiar WHERE Id_Familiar = p_id_familiar) THEN
-        RAISE EXCEPTION 'Familiar com ID % não existe.', p_id_familiar;
-    END IF;
+        -- Verifica se familiar existe
+        IF NOT EXISTS (SELECT 1 FROM familiar WHERE Id_Familiar = p_id_familiar) THEN
+            RAISE EXCEPTION 'Familiar com ID % não existe.', p_id_familiar;
+        END IF;
 
-    -- Verifica se já há vínculo
-    SELECT TRUE
-    FROM pacientefamiliar
-    WHERE Id_Paciente = p_id_paciente AND Id_Familiar = p_id_familiar
-    INTO v_existe;
+        -- Verifica se já há vínculo
+        SELECT TRUE
+        FROM pacientefamiliar
+        WHERE Id_Paciente = p_id_paciente AND Id_Familiar = p_id_familiar
+        INTO v_existe;
 
-    IF v_existe THEN
-        RETURN 'Vínculo já existente.';
-    END IF;
+        IF v_existe THEN
+            RETURN 'Vínculo já existente.';
+        END IF;
 
-    -- Insere vínculo
-    INSERT INTO pacientefamiliar (Id_Familiar, Id_Paciente)
-    VALUES (p_id_familiar, p_id_paciente);
+        -- Insere vínculo
+        INSERT INTO pacientefamiliar (Id_Familiar, Id_Paciente)
+        VALUES (p_id_familiar, p_id_paciente);
 
-    RETURN 'Vínculo paciente-familiar criado com sucesso.';
-END;
-$$ LANGUAGE plpgsql;
+        RETURN 'Vínculo paciente-familiar criado com sucesso.';
+    END;
+    $$ LANGUAGE plpgsql;
 
 -- Função: vincular_paciente_terapeuta
 -- Cria o vínculo entre um paciente e um terapeuta.

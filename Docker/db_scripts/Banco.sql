@@ -68,76 +68,79 @@ CREATE TABLE diariocompartilhado(
 
 -- Tabela principal que armazena os dados do plano terapêutico
 CREATE TABLE PlanoTerapeutico (
-    Id_Plano INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
+    Id_Plano INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     Id_Paciente INT NOT NULL,
     Id_Terapeuta INT NOT NULL,
-    Id_Familiar INT NULL, -- Pode ser NULL se não houver um familiar/responsável principal associado no momento da criação
+    Id_Familiar INT NULL, -- Pode ser NULL
     
     GrauNeurodivergencia VARCHAR(500) NOT NULL,
     ObjetivosTratamento VARCHAR(2000) NOT NULL,
     AbordagemFamilia VARCHAR(2000) NOT NULL,
     CronogramaAtividades VARCHAR(2000) NOT NULL,
-    MensagemPlano VARCHAR(2000) NULL,
-    
-    DataCriacao DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    DataAssinaturaTerapeuta DATETIME NULL,
-    DataAssinaturaFamilia DATETIME NULL,
+    MensagemPlano VARCHAR(2000),
 
-    -- Chaves Estrangeiras
+    DataCriacao TIMESTAMP NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    DataAssinaturaTerapeuta TIMESTAMP NULL,
+    DataAssinaturaFamilia TIMESTAMP NULL,
+
     FOREIGN KEY (Id_Paciente) REFERENCES Paciente(Id_Paciente),
     FOREIGN KEY (Id_Terapeuta) REFERENCES Terapeuta(Id_Terapeuta),
     FOREIGN KEY (Id_Familiar) REFERENCES Familiar(Id_Familiar)
 );
 
 
--- Tabela para armazenar o conteúdo do arquivo binário (em BYTEA); perguntar se deseja armazenar diretamente no banco ou apenas o caminho do arquivo.
+-- Tabela para armazenar arquivos anexos
 CREATE TABLE Anexos (
-    Id_Anexo SERIAL PRIMARY KEY,
+    Id_Anexo INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
     Id_Plano INT NOT NULL,
-    
+
     NomeArquivo VARCHAR(255) NOT NULL,
     TipoMime VARCHAR(100) NOT NULL,
-    DadosArquivo BYTEA NOT NULL, -- Estudar o impacto de performance e tamanho do banco ao armazenar arquivos diretamente e como fazer o SELECT posteriormente.
-    DataUpload TIMESTAMP WITHOUT TIME ZONE NOT NULL DEFAULT NOW(),
+    DadosArquivo BYTEA NOT NULL,
+    DataUpload TIMESTAMP NOT NULL DEFAULT NOW(),
 
-    -- Chave Estrangeira
     FOREIGN KEY (Id_Plano) REFERENCES PlanoTerapeutico(Id_Plano)
 );
 
--- Tabela com a lista pré-definida de neurodivergências (TEA, TDAH, Dislexia, etc.)
+
+-- Lista pré-definida de neurodivergências
 CREATE TABLE Neurodivergencia (
-    Id_Neuro INT PRIMARY KEY NOT NULL AUTO_INCREMENT,
-    Sigla VARCHAR(10) UNIQUE NOT NULL, -- Ex: 'TEA', 'TDAH', 'TOC'
-    NomeCompleto VARCHAR(100) NULL -- Ex: 'Transtorno do Espectro Autista'
+    Id_Neuro INT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+    Sigla VARCHAR(100) UNIQUE NOT NULL,
+    NomeCompleto VARCHAR(1000)
 );
 
--- Tabela que liga um Plano a Múltiplas Neurodivergências
+
+-- Relação Plano → Neurodivergências
 CREATE TABLE PlanoNeurodivergencia (
     Id_Plano INT NOT NULL,
     Id_Neuro INT NOT NULL,
-    
-    -- Chave Primária Composta para evitar duplicatas e garantir a relação
+
     PRIMARY KEY (Id_Plano, Id_Neuro),
 
-    -- Chaves Estrangeiras
     FOREIGN KEY (Id_Plano) REFERENCES PlanoTerapeutico(Id_Plano),
     FOREIGN KEY (Id_Neuro) REFERENCES Neurodivergencia(Id_Neuro)
 );
 
+-- Lista pré-definida de métodos de acompanhamento
+CREATE TABLE MetodoAcompanhamento (
+    Id_Metodo SERIAL PRIMARY KEY,
+    Nome VARCHAR(255) NOT NULL UNIQUE
+);
 
--- Tabela que liga um Plano a Múltiplos Métodos de Acompanhamento
+
+
+-- Relação Plano → Métodos de Acompanhamento
 CREATE TABLE PlanoMetodo (
     Id_Plano INT NOT NULL,
     Id_Metodo INT NOT NULL,
-    
-    -- Chave Primária Composta
+
     PRIMARY KEY (Id_Plano, Id_Metodo),
 
-    -- Chaves Estrangeiras
     FOREIGN KEY (Id_Plano) REFERENCES PlanoTerapeutico(Id_Plano),
     FOREIGN KEY (Id_Metodo) REFERENCES MetodoAcompanhamento(Id_Metodo)
 );
-
+-- Lista pré-definida de métodos de acompanhamento
 INSERT INTO MetodoAcompanhamento (Nome) VALUES
 ('Treinamento Parental'),
 ('Comunicação Assistiva'),
@@ -148,6 +151,7 @@ INSERT INTO MetodoAcompanhamento (Nome) VALUES
 ('Psicomotricidade'), -- Adicionado como um método comum
 ('Intervenção Nutricional'); -- Adicionado como um método comum
 
+-- lista pré-definida de neurodivergências
 INSERT INTO Neurodivergencia (Sigla, NomeCompleto) VALUES
 ('TEA', 'Transtorno do Espectro Autista'),
 ('TAB', 'Transtorno Afetivo Bipolar'),
@@ -170,7 +174,7 @@ CREATE TABLE consulta(
   Id_Plano INT NOT NULL,
   CONSTRAINT consulta_pk PRIMARY KEY (Id_Sessao),
   CONSTRAINT fk_consulta_paciente FOREIGN KEY (Id_Paciente) REFERENCES paciente(Id_Paciente),
-  CONSTRAINT fk_consulta_plano FOREIGN KEY (Id_Plano) REFERENCES planoterapeuta(Id_Plano),
+  CONSTRAINT fk_consulta_plano FOREIGN KEY (Id_Plano) REFERENCES PlanoTerapeutico(Id_Plano),
   CONSTRAINT fk_consulta_terapeuta FOREIGN KEY (Id_Terapeuta) REFERENCES terapeuta(Id_Terapeuta)
 );
 
@@ -183,17 +187,17 @@ CREATE TABLE feedback(
   Id_Plano INT NOT NULL,
   Id_Familiar INT NOT NULL,
   CONSTRAINT feedback_pk PRIMARY KEY (Id_Feedback),
-  CONSTRAINT fk_feedback_plano FOREIGN KEY (Id_Plano) REFERENCES planoterapeuta(Id_Plano),
+  CONSTRAINT fk_feedback_plano FOREIGN KEY (Id_Plano) REFERENCES PlanoTerapeutico(Id_Plano),
   CONSTRAINT fk_feedback_familiar FOREIGN KEY (Id_Familiar) REFERENCES familiar(Id_Familiar)
 );
 
 -- Table historico plano terapeuta
-CREATE TABLE historicoplanoterapeuta(
+CREATE TABLE historicoPlanoTerapeutico(
   Id_Historico INT GENERATED ALWAYS AS IDENTITY,
   DataFim DATE NOT NULL,
   Id_Plano INT NOT NULL,
   CONSTRAINT historicoplano_pk PRIMARY KEY (Id_Historico),
-  CONSTRAINT fk_historico_plano FOREIGN KEY (Id_Plano) REFERENCES planoterapeuta(Id_Plano)
+  CONSTRAINT fk_historico_plano FOREIGN KEY (Id_Plano) REFERENCES PlanoTerapeutico(Id_Plano)
 );
 
 
@@ -267,12 +271,12 @@ CREATE TABLE pacienteterapeuta(
   CONSTRAINT fk_pt_paciente FOREIGN KEY (Id_Paciente) REFERENCES paciente(Id_Paciente)
 );
 
--- Table familiarplanoterapeuta
-CREATE TABLE familiarplanoterapeuta(
+-- Table familiarPlanoTerapeutico
+CREATE TABLE familiarPlanoTerapeutico(
   Id_Plano INT NOT NULL,
   Id_Familiar INT NOT NULL,
   CONSTRAINT familiarplano_pk PRIMARY KEY (Id_Plano, Id_Familiar),
-  CONSTRAINT fk_fp_plano FOREIGN KEY (Id_Plano) REFERENCES planoterapeuta(Id_Plano),
+  CONSTRAINT fk_fp_plano FOREIGN KEY (Id_Plano) REFERENCES PlanoTerapeutico(Id_Plano),
   CONSTRAINT fk_fp_familiar FOREIGN KEY (Id_Familiar) REFERENCES familiar(Id_Familiar)
 );
 
@@ -616,8 +620,9 @@ $$ LANGUAGE plpgsql;
 -- Retorno:
 --   INT → ID do plano terapêutico criado
 -- Validações:
---   Insere automaticamente a data de criação (CURRENT_TIMESTAMP)
---   Retorna o ID do plano criado para uso posterior
+--   Verifica existência do paciente; lança exceção se não existir.
+--   Verifica existência do terapeuta; lança exceção se não existir.
+--   Se p_id_familiar for fornecido, verifica existência do familiar; lança exceção se não existir.
 -- Uso:
 --   SELECT criar_plano_terapeutico(1, 2, 3, 'Leve', 'Melhorar comunicação', 'Envolvimento ativo', 'Segunda a quinta', 'Observações');
 
@@ -625,16 +630,33 @@ CREATE OR REPLACE FUNCTION criar_plano_terapeutico(
     p_id_paciente INT,
     p_id_terapeuta INT,
     p_id_familiar INT DEFAULT NULL,
-    p_grau_neurodivergencia VARCHAR,
-    p_objetivos_tratamento VARCHAR,
-    p_abordagem_familia VARCHAR,
-    p_cronograma_atividades VARCHAR,
+    p_grau_neurodivergencia VARCHAR DEFAULT 'Não Especificado', 
+    p_objetivos_tratamento VARCHAR DEFAULT 'Objetivos não especificados', -- Adicionado valor padrão
+    p_abordagem_familia VARCHAR DEFAULT 'Não Especificado',
+    p_cronograma_atividades VARCHAR DEFAULT 'Não Especificado',
     p_mensagem_plano VARCHAR DEFAULT NULL
 )
 RETURNS INT AS $$
 DECLARE
     v_id_plano INT;
 BEGIN
+    -- Verifica paciente
+    IF NOT EXISTS (SELECT 1 FROM Paciente WHERE Id_Paciente = p_id_paciente) THEN
+        RAISE EXCEPTION 'Paciente % não existe', p_id_paciente;
+    END IF;
+
+    -- Verifica terapeuta
+    IF NOT EXISTS (SELECT 1 FROM Terapeuta WHERE Id_Terapeuta = p_id_terapeuta) THEN
+        RAISE EXCEPTION 'Terapeuta % não existe', p_id_terapeuta;
+    END IF;
+
+    -- Verifica familiar se não for NULL
+    IF p_id_familiar IS NOT NULL THEN
+        IF NOT EXISTS (SELECT 1 FROM Familiar WHERE Id_Familiar = p_id_familiar) THEN
+            RAISE EXCEPTION 'Familiar % não existe', p_id_familiar;
+        END IF;
+    END IF;
+
     INSERT INTO PlanoTerapeutico (
         Id_Paciente,
         Id_Terapeuta,
@@ -643,7 +665,8 @@ BEGIN
         ObjetivosTratamento,
         AbordagemFamilia,
         CronogramaAtividades,
-        MensagemPlano
+        MensagemPlano,
+        DataCriacao
     )
     VALUES (
         p_id_paciente,
@@ -653,7 +676,8 @@ BEGIN
         p_objetivos_tratamento,
         p_abordagem_familia,
         p_cronograma_atividades,
-        p_mensagem_plano
+        p_mensagem_plano,
+        CURRENT_TIMESTAMP
     )
     RETURNING Id_Plano INTO v_id_plano;
 
@@ -662,29 +686,44 @@ END;
 $$ LANGUAGE plpgsql;
 
 
-
 -- Função: vincular_familiar_plano
 -- Vincula ou atualiza o vínculo de um familiar a um plano terapêutico existente.
 -- Parâmetros:
 --   p_id_plano → ID do plano terapêutico a ser atualizado
 --   p_id_familiar → ID do familiar a ser vinculado
 -- Validações:
---   Verifica se o plano existe (via constraint de foreign key)
---   Verifica se o familiar existe (via constraint de foreign key)
+--   Verifica existência do plano; lança exceção se não existir.
+--   Verifica existência do familiar; lança exceção se não existir.
+--   Confirma que o UPDATE afetou ao menos uma linha; lança exceção se nenhuma linha foi atualizada.
 -- Uso:
 --   SELECT vincular_familiar_plano(1, 3);
-
 CREATE OR REPLACE FUNCTION vincular_familiar_plano(
     p_id_plano INT,
     p_id_familiar INT
 )
 RETURNS VOID AS $$
+DECLARE
+    v_rows INT;
 BEGIN
+    IF NOT EXISTS (SELECT 1 FROM PlanoTerapeutico WHERE Id_Plano = p_id_plano) THEN
+        RAISE EXCEPTION 'Plano % não existe', p_id_plano;
+    END IF;
+
+    IF NOT EXISTS (SELECT 1 FROM Familiar WHERE Id_Familiar = p_id_familiar) THEN
+        RAISE EXCEPTION 'Familiar % não existe', p_id_familiar;
+    END IF;
+
     UPDATE PlanoTerapeutico
     SET Id_Familiar = p_id_familiar
     WHERE Id_Plano = p_id_plano;
+
+    GET DIAGNOSTICS v_rows = ROW_COUNT;
+    IF v_rows = 0 THEN
+        RAISE EXCEPTION 'Nenhuma linha atualizada. Plano % não encontrado.', p_id_plano;
+    END IF;
 END;
 $$ LANGUAGE plpgsql;
+
 
 
 -- Função: adicionar_neurodivergencia_plano
@@ -693,9 +732,9 @@ $$ LANGUAGE plpgsql;
 --   p_id_plano → ID do plano terapêutico
 --   p_id_neuro → ID da neurodivergência a ser adicionada
 -- Validações:
---   Verifica se o plano existe (via constraint de foreign key)
---   Verifica se a neurodivergência existe (via constraint de foreign key)
---   Evita duplicação de vínculos já existentes (ON CONFLICT DO NOTHING)
+--   Verifica existência do plano; lança exceção se não existir.
+--   Verifica existência da neurodivergência; lança exceção se não existir.
+--   Evita duplicação usando PRIMARY KEY / ON CONFLICT DO NOTHING.
 -- Uso:
 --   SELECT adicionar_neurodivergencia_plano(1, 1); -- Adiciona TEA ao plano 1
 
@@ -705,6 +744,14 @@ CREATE OR REPLACE FUNCTION adicionar_neurodivergencia_plano(
 )
 RETURNS VOID AS $$
 BEGIN
+    IF NOT EXISTS (SELECT 1 FROM PlanoTerapeutico WHERE Id_Plano = p_id_plano) THEN
+        RAISE EXCEPTION 'Plano % não existe', p_id_plano;
+    END IF;
+
+    IF NOT EXISTS (SELECT 1 FROM Neurodivergencia WHERE Id_Neuro = p_id_neuro) THEN
+        RAISE EXCEPTION 'Neurodivergência % não existe', p_id_neuro;
+    END IF;
+
     INSERT INTO PlanoNeurodivergencia (Id_Plano, Id_Neuro)
     VALUES (p_id_plano, p_id_neuro)
     ON CONFLICT DO NOTHING;
@@ -718,9 +765,9 @@ $$ LANGUAGE plpgsql;
 --   p_id_plano → ID do plano terapêutico
 --   p_id_metodo → ID do método de acompanhamento a ser adicionado
 -- Validações:
---   Verifica se o plano existe (via constraint de foreign key)
---   Verifica se o método existe (via constraint de foreign key)
---   Evita duplicação de vínculos já existentes (ON CONFLICT DO NOTHING)
+--   Verifica existência do plano; lança exceção se não existir.
+--   Verifica existência do método; lança exceção se não existir.
+--   Evita duplicação usando PRIMARY KEY / ON CONFLICT DO NOTHING.
 -- Uso:
 --   SELECT adicionar_metodo_plano(1, 1); -- Adiciona Treinamento Parental ao plano 1
 
@@ -730,11 +777,20 @@ CREATE OR REPLACE FUNCTION adicionar_metodo_plano(
 )
 RETURNS VOID AS $$
 BEGIN
+    IF NOT EXISTS (SELECT 1 FROM PlanoTerapeutico WHERE Id_Plano = p_id_plano) THEN
+        RAISE EXCEPTION 'Plano % não existe', p_id_plano;
+    END IF;
+
+    IF NOT EXISTS (SELECT 1 FROM MetodoAcompanhamento WHERE Id_Metodo = p_id_metodo) THEN
+        RAISE EXCEPTION 'Método % não existe', p_id_metodo;
+    END IF;
+
     INSERT INTO PlanoMetodo (Id_Plano, Id_Metodo)
     VALUES (p_id_plano, p_id_metodo)
     ON CONFLICT DO NOTHING;
 END;
 $$ LANGUAGE plpgsql;
+
 
 
 -- Função: assinar_plano_terapeuta
@@ -744,8 +800,7 @@ $$ LANGUAGE plpgsql;
 -- Retorno:
 --   VOID
 -- Validações:
---   Verifica se o plano existe
---   Registra automaticamente a data/hora atual (NOW())
+--   Executa UPDATE em DataAssinaturaTerapeuta e verifica se alguma linha foi afetada; lança exceção se o plano não existir.
 -- Uso:
 --   SELECT assinar_plano_terapeuta(1);
 
@@ -753,12 +808,21 @@ CREATE OR REPLACE FUNCTION assinar_plano_terapeuta(
     p_id_plano INT
 )
 RETURNS VOID AS $$
+DECLARE
+    v_rows INT;
 BEGIN
     UPDATE PlanoTerapeutico
     SET DataAssinaturaTerapeuta = NOW()
     WHERE Id_Plano = p_id_plano;
+
+    GET DIAGNOSTICS v_rows = ROW_COUNT;
+
+    IF v_rows = 0 THEN
+        RAISE EXCEPTION 'Plano % não existe', p_id_plano;
+    END IF;
 END;
 $$ LANGUAGE plpgsql;
+
 
 
 -- Função: anexar_arquivo_plano
@@ -771,10 +835,10 @@ $$ LANGUAGE plpgsql;
 -- Retorno:
 --   VOID
 -- Validações:
---   Verifica se o plano existe (via constraint de foreign key)
---   Registra automaticamente a data/hora do upload (NOW())
+--   Verifica existência do plano; lança exceção se não existir.
+--   Insere o anexo com DataUpload = NOW().
 -- Observações:
---   Armazena diretamente no banco de dados; considere impacto de performance
+--   Armazena diretamente no banco de dados; considerar impacto de performance e limites de tamanho.
 -- Uso:
 --   SELECT anexar_arquivo_plano(1, 'plano_terapeutico.pdf', 'application/pdf', dados_binarios);
 
@@ -786,8 +850,12 @@ CREATE OR REPLACE FUNCTION anexar_arquivo_plano(
 )
 RETURNS VOID AS $$
 BEGIN
-    INSERT INTO Anexos (Id_Plano, NomeArquivo, TipoMime, DadosArquivo)
-    VALUES (p_id_plano, p_nome_arquivo, p_tipo_mime, p_dados);
+    IF NOT EXISTS (SELECT 1 FROM PlanoTerapeutico WHERE Id_Plano = p_id_plano) THEN
+        RAISE EXCEPTION 'Plano % não existe', p_id_plano;
+    END IF;
+
+    INSERT INTO Anexos (Id_Plano, NomeArquivo, TipoMime, DadosArquivo, DataUpload)
+    VALUES (p_id_plano, p_nome_arquivo, p_tipo_mime, p_dados, NOW());
 END;
 $$ LANGUAGE plpgsql;
 
@@ -799,9 +867,8 @@ $$ LANGUAGE plpgsql;
 -- Retorno:
 --   TABLE (id_plano, paciente_nome, terapeuta_nome, familiar_nome, grau_neurodivergencia, objetivos_tratamento, data_criacao)
 -- Validações:
---   Realiza JOINs LEFT para lidar com familiares opcionais
--- Observações:
---   Retorna NULL para campos de relacionamento não preenchidos
+--   Não realiza validação explícita no corpo da função; retorna zero linhas se o plano não existir.
+--   Usa LEFT JOIN para obter dados relacionados mesmo quando campos de relacionamento estão NULL.
 -- Uso:
 --   SELECT * FROM buscar_resumo_plano(1);
 
@@ -843,9 +910,10 @@ $$ LANGUAGE plpgsql;
 -- Retorno:
 --   TABLE (id_plano, terapeuta_nome, familiar_nome, grau_neurodivergencia, objetivos_tratamento, data_criacao)
 -- Validações:
---   Realiza JOINs LEFT para lidar com familiares opcionais
+--   Não valida a existência do paciente; retorna lista vazia se não houver planos.
+--   Usa LEFT JOIN para lidar com familiares ou terapeutas ausentes.
 -- Observações:
---   Ordena os resultados por data de criação (decrescente - mais recente primeiro)
+--   Ordena por DataCriacao DESC.
 -- Uso:
 --   SELECT * FROM listar_planos_paciente(1);
 
@@ -885,9 +953,10 @@ $$ LANGUAGE plpgsql;
 -- Retorno:
 --   TABLE (id_plano, paciente_nome, familiar_nome, grau_neurodivergencia, objetivos_tratamento, data_criacao)
 -- Validações:
---   Realiza JOINs LEFT para lidar com familiares opcionais
+--   Não valida a existência do terapeuta; retorna lista vazia se não houver planos.
+--   Usa LEFT JOIN para lidar com pacientes ou familiares ausentes.
 -- Observações:
---   Ordena os resultados por data de criação (decrescente - mais recente primeiro)
+--   Ordena por DataCriacao DESC.
 -- Uso:
 --   SELECT * FROM listar_planos_terapeuta(2);
 
@@ -927,9 +996,10 @@ $$ LANGUAGE plpgsql;
 -- Retorno:
 --   TABLE (id_plano, paciente_nome, terapeuta_nome, grau_neurodivergencia, objetivos_tratamento, data_criacao)
 -- Validações:
---   Realiza JOINs LEFT para lidar com dados opcionais
+--   Não valida a existência do familiar; retorna lista vazia se não houver planos.
+--   Usa LEFT JOIN para lidar com dados relacionados opcionais.
 -- Observações:
---   Ordena os resultados por data de criação (decrescente - mais recente primeiro)
+--   Ordena por DataCriacao DESC.
 -- Uso:
 --   SELECT * FROM listar_planos_familiar(3);
 
@@ -968,9 +1038,11 @@ $$ LANGUAGE plpgsql;
 --   p_id_plano → ID do plano terapêutico
 -- Retorno:
 --   TABLE (id_anexo, nome_arquivo, tipo_mime, data_upload)
+-- Validações:
+--   Não valida explicitamente a existência do plano; retornará lista vazia se não houver anexos.
 -- Observações:
---   Não retorna o conteúdo binário (DadosArquivo) para otimizar performance
---   Ordena os resultados por data de upload (decrescente - mais recente primeiro)
+--   Não retorna DadosArquivo (binário) para otimizar performance.
+--   Ordena por DataUpload DESC.
 -- Uso:
 --   SELECT * FROM listar_anexos_plano(1);
 
@@ -1003,8 +1075,8 @@ $$ LANGUAGE plpgsql;
 --   p_id_plano → ID do plano terapêutico
 -- Retorno:
 --   TABLE (nome_metodo)
--- Observações:
---   Retorna apenas os nomes dos métodos, sem seus IDs
+-- Validações:
+--   Não valida explicitamente a existência do plano; retornará lista vazia se não houver métodos vinculados.
 -- Uso:
 --   SELECT * FROM listar_metodos_plano(1);
 
@@ -1030,8 +1102,8 @@ $$ LANGUAGE plpgsql;
 --   p_id_plano → ID do plano terapêutico
 -- Retorno:
 --   TABLE (sigla, nome_completo)
--- Observações:
---   Retorna tanto a sigla (TEA, TDAH, etc.) quanto o nome completo da neurodivergência
+-- Validações:
+--   Não valida explicitamente a existência do plano; retornará lista vazia se não houver neurodivergências vinculadas.
 -- Uso:
 --   SELECT * FROM listar_neurodivergencias_plano(1);
 
@@ -1061,10 +1133,8 @@ $$ LANGUAGE plpgsql;
 --          objetivos_tratamento, abordagem_familia, cronograma_atividades, mensagem_plano, 
 --          data_criacao, assinatura_terapeuta, assinatura_familia)
 -- Validações:
---   Realiza JOINs LEFT para lidar com familiares opcionais
--- Observações:
---   Retorna informações de assinatura (datas de quando terapeuta/família assinaram)
---   Útil para visualização completa do plano antes de impressão/exportação
+--   Não realiza validação explícita; retorna zero linhas se o plano não existir.
+--   Usa LEFT JOIN para recuperar valores de relacionamentos opcionais.
 -- Uso:
 --   SELECT * FROM buscar_plano_completo(1);
 
@@ -1107,4 +1177,3 @@ BEGIN
     WHERE p.Id_Plano = p_id_plano;
 END;
 $$ LANGUAGE plpgsql;
-

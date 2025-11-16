@@ -170,7 +170,7 @@ CREATE TABLE consulta(
   Id_Plano INT NOT NULL,
   CONSTRAINT consulta_pk PRIMARY KEY (Id_Sessao),
   CONSTRAINT fk_consulta_paciente FOREIGN KEY (Id_Paciente) REFERENCES paciente(Id_Paciente),
-  CONSTRAINT fk_consulta_plano FOREIGN KEY (Id_Plano) REFERENCES planoterapeuta(Id_Plano),
+  CONSTRAINT fk_consulta_plano FOREIGN KEY (Id_Plano) REFERENCES PlanoTerapeutico(Id_Plano),
   CONSTRAINT fk_consulta_terapeuta FOREIGN KEY (Id_Terapeuta) REFERENCES terapeuta(Id_Terapeuta)
 );
 
@@ -183,7 +183,7 @@ CREATE TABLE feedback(
   Id_Plano INT NOT NULL,
   Id_Familiar INT NOT NULL,
   CONSTRAINT feedback_pk PRIMARY KEY (Id_Feedback),
-  CONSTRAINT fk_feedback_plano FOREIGN KEY (Id_Plano) REFERENCES planoterapeuta(Id_Plano),
+  CONSTRAINT fk_feedback_plano FOREIGN KEY (Id_Plano) REFERENCES PlanoTerapeutico(Id_Plano),
   CONSTRAINT fk_feedback_familiar FOREIGN KEY (Id_Familiar) REFERENCES familiar(Id_Familiar)
 );
 
@@ -259,12 +259,12 @@ CREATE TABLE pacienteterapeuta(
   CONSTRAINT fk_pt_paciente FOREIGN KEY (Id_Paciente) REFERENCES paciente(Id_Paciente)
 );
 
--- Table familiarplanoterapeuta
-CREATE TABLE familiarplanoterapeuta(
+-- Table familiarPlanoTerapeutico
+CREATE TABLE familiarPlanoTerapeutico(
   Id_Plano INT NOT NULL,
   Id_Familiar INT NOT NULL,
   CONSTRAINT familiarplano_pk PRIMARY KEY (Id_Plano, Id_Familiar),
-  CONSTRAINT fk_fp_plano FOREIGN KEY (Id_Plano) REFERENCES planoterapeuta(Id_Plano),
+  CONSTRAINT fk_fp_plano FOREIGN KEY (Id_Plano) REFERENCES PlanoTerapeutico(Id_Plano),
   CONSTRAINT fk_fp_familiar FOREIGN KEY (Id_Familiar) REFERENCES familiar(Id_Familiar)
 );
 
