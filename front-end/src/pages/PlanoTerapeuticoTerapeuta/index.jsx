@@ -18,7 +18,7 @@ export function PlanosTerapeuta() {
   return (
     <main className="planos-terapeuta-container">
       <div className='sidebar-plano'>
-        <IconVoltar to='/terapeuta' />
+        <IconVoltar to='/terapeuta/pacientes' />
         <IconSair to='/login' />
       </div>
 
@@ -47,8 +47,8 @@ export function PlanosTerapeuta() {
             <Link to="/pacientes/:idPaciente/criar-plano" className="botao-acao">
               <FiPlusCircle /> Criar plano
             </Link>
-         
-         
+
+
           </aside>
         </div>
       </div>

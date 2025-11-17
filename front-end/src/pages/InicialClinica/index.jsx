@@ -33,9 +33,13 @@ const mockData = {
 
 
 export function DashboardInicial() {
-  const listTerapeutas = useExibirListas("http://localhost:8000/cadastro/lista-terapeutas");
-  const listFamiliares = useExibirListas("http://localhost:8000/cadastro/lista-familiares");
-  const listPacientes = useExibirListas("http://localhost:8000/cadastro/lista-pacientes");
+
+  const [listTerapeutas, setListTerapeutas] = useState([])
+  const [listFamiliares, setListFamiliares] = useState([])
+  const [listPacientes, setListPacientes] = useState([])
+  useExibirListas("http://localhost:8000/cadastro/lista-terapeutas", setListTerapeutas)
+  useExibirListas("http://localhost:8000/cadastro/lista-familiares", setListFamiliares);
+  useExibirListas("http://localhost:8000/cadastro/lista-pacientes", setListPacientes);
   const [data, setData] = useState(mockData);
 
   return (

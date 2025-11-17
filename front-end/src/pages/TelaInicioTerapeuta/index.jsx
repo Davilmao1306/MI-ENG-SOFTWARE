@@ -7,30 +7,20 @@ import { useExibirListas } from '../../hooks/useExibirListas';
 import { useEffect, useState } from 'react';
 
 export function TelaInicioTerapeuta() {
-    const terapeutas = "http://localhost:8000/cadastro/lista-terapeutas"
+    const [terapeutas, setTerapeutas] = useState([])
+    useExibirListas("http://localhost:8000/cadastro/lista-terapeutas",setTerapeutas)
     const id = localStorage.getItem("id_usuario");
-    const [lista, setLista] = useState([]);
-    const fetchLista = () => {
-        fetch(terapeutas)
-            .then((res) => res.json())
-            .then((data) => setLista(data))
-            .catch((err) => console.error("Erro ao buscar lista:", err));
-    };
 
-    useEffect(() => {
-        fetchLista();
-    }, []);
-
-    const terapeutaAuth = lista.find(t => String(t.id_usuario) === String(id));
+    const terapeutaAuth = terapeutas.find(t => String(t.id_usuario) === String(id));
     
     return (
         <main className='main-tela-inicio-terapeuta'>
             <header className='header-tela-inicio-terapeuta'>
                 <div className='div-img-nome'>
                     <img src="/logo-terapeuta.png" alt="" />
-                    {/* <p> {terapeutaAuth?.nome}<br></br>
+                    <p> {terapeutaAuth?.nome}<br></br>
                         {terapeutaAuth?.especialidade}
-                    </p> */}
+                    </p>
 
                 </div>
                 <div>

@@ -45,7 +45,7 @@ createRoot(document.getElementById('root')).render(
         <Route path="/login/recuperar-senha/nova-senha" element={<NovaSenha />} />
 
         {/* rotas da clinica */}
-        
+
         <Route path='/clinica' element={<ProtectedRoute tipoPermitido="C"><DashboardInicial /></ProtectedRoute>} />
         <Route path="/clinica/cadastrar-familiar" element={<CadastrarFamiliar />} />
         <Route path="/clinica/cadastrar-paciente" element={<CadastrarPaciente />} />
@@ -53,29 +53,23 @@ createRoot(document.getElementById('root')).render(
         <Route path="/clinica/lista-de-terapeutas" element={<GerenciarTerapeutas />} />
         <Route path="/clinica/lista-de-pacientes" element={<GerenciarPacientes />} />
         <Route path="/clinica/lista-de-familiares" element={<GerenciarFamiliares />} />
-        {/* ate aqui */}
-
 
         {/* rotas do terapeuta */}
         <Route path="/terapeuta" element={<TelaInicioTerapeuta />} />
         <Route path="/terapeuta/sessao" element={<TelaNovaSessao />} />
         <Route path="/terapeuta/pacientes" element={<AcessarPacientes />} />
-        <Route path='/terapeuta/diario' element={<DiarioTerapeuta />} />
+        {/* <Route path="/terapeuta/pacientes/:idPaciente/diario" element={<DiarioTerapeuta />} /> */}
+        <Route path="/terapeuta/pacientes/:id_paciente/criar-plano" element={<CriarPlanoPage />} />
+        <Route path="/terapeuta/paciente/plano-terapeutico-terapeuta" element={<PlanosTerapeuta />} />
 
-
-
+        {/* rotas do familiar */}
         <Route path="/plano-terapeutico-familiar" element={<PlanosFamiliar />} />
-        <Route path="/plano-terapeutico-terapeuta" element={<PlanosTerapeuta />} />
         <Route path="/acessar-plano" element={<AcessarPlano />} />
         <Route path="/familiar-paciente" element={<TelaInicioFamiliar />} />
         <Route path="/familiar-perfil" element={<TelaPerfilPaciente />} />
 
-        
-        
-        
-        <Route path="/pacientes/:idPaciente/criar-plano" element={<CriarPlanoPage />} />
         <Route path='/consentimento' element={<Consent />} />
-        <Route path='/diario-compartilhado' element={<DiarioCompartilhadoPage />} />
+        <Route path='/terapeuta/pacientes/:id_paciente/diario' element={<DiarioCompartilhadoPage />} />
 
 
       </Routes>

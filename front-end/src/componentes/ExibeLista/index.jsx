@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import './lista-pacientes.estilo.css'
 import { UserRound } from 'lucide-react';
 import { Botao } from "../Botao";
+import { Link } from "react-router-dom";
 
 export function ListaPacientes({ lista }) {
 
@@ -33,10 +34,11 @@ export function ListaPacientes({ lista }) {
                         gênero: {paciente.genero} <br></br>
                         status: {paciente.status} <br></br>
                         cpf: {paciente.cpf}
-                        <Botao className='botao-acessar'>Acessar Diario</Botao>
-                        <Botao className='botao-acessar'>Acessar Plano</Botao>
+                        <Link to={`/terapeuta/pacientes/${paciente.id_paciente}/diario`}> <Botao className='botao-acessar'>Acessar Diario</Botao></Link>
+                        <Link to={'/terapeuta/paciente/plano-terapeutico-terapeuta'}> <Botao className='botao-acessar'>Acessar Plano</Botao></Link>
+
                     </li>
-                ))}
+                ))} 
             </ul>
         </div>
     );
