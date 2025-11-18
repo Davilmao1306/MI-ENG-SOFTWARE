@@ -60,16 +60,17 @@ createRoot(document.getElementById('root')).render(
         <Route path="/terapeuta/pacientes" element={<AcessarPacientes />} />
         {/* <Route path="/terapeuta/pacientes/:idPaciente/diario" element={<DiarioTerapeuta />} /> */}
         <Route path="/terapeuta/pacientes/:id_paciente/criar-plano" element={<CriarPlanoPage />} />
-        <Route path="/terapeuta/paciente/plano-terapeutico-terapeuta" element={<PlanosTerapeuta />} />
+        <Route path="/terapeuta/paciente/:id_paciente/plano-terapeutico-terapeuta" element={<PlanosTerapeuta />} />
+        <Route path='/terapeuta/pacientes/:id_paciente/diario' element={<DiarioCompartilhadoPage />} />
 
         {/* rotas do familiar */}
         <Route path="/plano-terapeutico-familiar" element={<PlanosFamiliar />} />
         <Route path="/acessar-plano" element={<AcessarPlano />} />
-        <Route path="/familiar-paciente" element={<TelaInicioFamiliar />} />
+        <Route path="/familiar-paciente/:id_paciente" element={<TelaInicioFamiliar />} />
         <Route path="/familiar-perfil" element={<TelaPerfilPaciente />} />
 
         <Route path='/consentimento' element={<Consent />} />
-        <Route path='/terapeuta/pacientes/:id_paciente/diario' element={<DiarioCompartilhadoPage />} />
+
 
 
       </Routes>

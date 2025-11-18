@@ -2,13 +2,33 @@ import './tela-perfis.estilo.css'
 import { Link } from 'react-router-dom';
 import { PiSignOutBold } from 'react-icons/pi';
 import { BsPersonCircle } from "react-icons/bs";
+import { useExibirListas } from '../../hooks/useExibirListas';
+import { useState } from 'react';
 
-const pacientes = [
-    { id: 1, nome: 'Matheus', avatar: '/avatar-perfil.png' },
-    { id: 2, nome: 'Paciente', avatar: '/avatar-perfil.png' },
-    { id: 3, nome: 'Paciente', avatar: '/avatar-perfil.png' },
-]
+
+
+
+
 export function TelaPerfilPaciente() {
+    const [familiares, setPacientesDoFamiliar] = useState([]);
+    const [vinculos, setVinculos] = useState([]);
+    const [pacientesLista, setPacientes] = useState([])
+
+    useExibirListas("http://localhost:8000/cadastro/lista-familiares", setPacientesDoFamiliar);
+    useExibirListas("http://localhost:8000/cadastro/lista-vinculos-pf", setVinculos);
+    useExibirListas("http://localhost:8000/cadastro/lista-pacientes", setPacientes)
+
+    const id = localStorage.getItem("id_usuario");
+    const familiarAuth = familiares.find(f => String(f.id_usuario) === String(id));
+    const pacientes = familiarAuth
+        ? pacientesLista.filter(p =>
+            vinculos.some(v =>
+                v.id_familiar === familiarAuth.id_familiar &&
+                v.id_paciente === p.id_paciente
+            )
+        )
+        : [];
+
     return (
         <main className='main-tela-perfis-paciente'>
             <header className="header-tela-perfis">
@@ -16,8 +36,8 @@ export function TelaPerfilPaciente() {
             </header>f
             <section className="section-tela-perfis">
                 {pacientes.map((paciente) => (
-                    <div key={paciente.id} className="div-perfil">
-                        <Link to={`/familiar-paciente/`}>
+                    <div key={paciente.id_paciente} className="div-perfil">
+                        <Link to={`/familiar-paciente/${paciente.id_paciente}`}>
                             <BsPersonCircle />
                         </Link>
                         <p>{paciente.nome}</p>

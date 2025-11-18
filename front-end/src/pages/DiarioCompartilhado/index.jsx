@@ -22,7 +22,7 @@ export function DiarioCompartilhadoPage() {
 
   const { id_paciente } = useParams();
   const pacienteAuth = pacientes.find(p => String(p.id_paciente) === String(id_paciente));
-  console.log("Paciente selecionado no diario:", pacienteAuth);
+
   const [feedItems, setFeedItems] = useState([
     {
       id: 'f1', type: 'checklist', autor: 'Terapeuta Rodrigo Tripodi', data: '2023-10-26T10:10:00Z', titulo: 'Atividades educacionais.',
@@ -68,7 +68,6 @@ export function DiarioCompartilhadoPage() {
       ]
     },
   ]);
-
   const handleNewEntry = (entryData) => {
 
     const newEntry = {
@@ -152,7 +151,7 @@ export function DiarioCompartilhadoPage() {
         <header className="diario-header-paciente">
           <div className="paciente-info">
             <h2>{pacienteAuth?.nome}</h2>
-            <p>{pacienteAuth?.idade} anos</p>
+            <p>{pacienteAuth?.cpf} cpf</p>
           </div>
           <button
             className="btn-nova-entrada"

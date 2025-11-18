@@ -21,7 +21,7 @@ export function FormLogin() {
             password: formData.get('userSenha'),
         };
 
-        console.log("Enviando dados:", dados);
+        
 
         try {
             const response = await fetch("http://127.0.0.1:8000/login/api/login/", {
@@ -44,7 +44,7 @@ export function FormLogin() {
                 localStorage.setItem("token", data.access);
                 localStorage.setItem("tipo", data.tipo);
                 localStorage.setItem("id_usuario", data.id)
-                console.log("Token salvo:", localStorage.getItem("token"));
+    
             }
 
             if (data.tipo == 'C') {

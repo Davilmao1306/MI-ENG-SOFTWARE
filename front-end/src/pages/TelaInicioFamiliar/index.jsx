@@ -13,7 +13,7 @@ export function TelaInicioFamiliar() {
         <main>
             <header className='header-tela-inicio-familiar'>
                 <div className='um'>
-                    <IconVoltar to='/login/familiar-perfis' />
+                    <IconVoltar to='/familiar-perfil' />
                     <IconSair to='/login' />
                 </div>
                 <div className='dois'>

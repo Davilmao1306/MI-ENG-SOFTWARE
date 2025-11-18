@@ -35,7 +35,7 @@ export function ListaPacientes({ lista }) {
                         status: {paciente.status} <br></br>
                         cpf: {paciente.cpf}
                         <Link to={`/terapeuta/pacientes/${paciente.id_paciente}/diario`}> <Botao className='botao-acessar'>Acessar Diario</Botao></Link>
-                        <Link to={'/terapeuta/paciente/plano-terapeutico-terapeuta'}> <Botao className='botao-acessar'>Acessar Plano</Botao></Link>
+                        <Link to={`/terapeuta/paciente/${paciente.id_paciente}/plano-terapeutico-terapeuta`}> <Botao className='botao-acessar'>Acessar Plano</Botao></Link>
 
                     </li>
                 ))} 
