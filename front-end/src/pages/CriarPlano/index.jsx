@@ -9,7 +9,7 @@ import { UploadModal } from '../../componentes/UploadModal';
 
 import './criar-plano.estilo.css';
 import { useExibirListas } from '../../hooks/useExibirListas';
-
+ 
 export function CriarPlanoPage() {
   const [terapeutas, setTerapeutas] = useState([]);
   useExibirListas("http://localhost:8000/cadastro/lista-terapeutas", setTerapeutas);
@@ -43,10 +43,7 @@ export function CriarPlanoPage() {
   const [pacienteInfo, setPacienteInfo] = useState(null);
 
   useEffect(() => {
-    // Se temos um id_paciente na URL, podemos buscar os dados dele
     if (id_paciente) {
-      // Aqui você faria uma chamada API para buscar os dados do paciente
-      // Por enquanto, vou simular um objeto paciente
       setPacienteInfo({ id: id_paciente, nome: `Paciente ${id_paciente}` });
     }
     // TODO: Se isEditing, buscar os dados do plano com idDoPlano
@@ -138,7 +135,7 @@ export function CriarPlanoPage() {
   return (
     <div className="criar-plano-page-container">
       <div className='sidebar-plano'>
-        <IconVoltar to={id_paciente ? `/pacientes/${id_paciente}/detalhes` : "/plano-terapeutico-terapeuta"} className='link-voltar-sidebar' />
+        <IconVoltar to={`/terapeuta/paciente/${id_paciente}/plano-terapeutico-terapeuta`} className='link-voltar-sidebar' />
         <IconSair to='/login' className='link-sair-sidebar' />
       </div>
 

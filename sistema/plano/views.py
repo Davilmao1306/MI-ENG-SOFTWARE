@@ -51,14 +51,9 @@ def criar_plano(request):
     d = s.validated_data
 
     try:
-        id_paciente_int = int(d["id_paciente"])
-        id_terapeuta_int = int(d["id_terapeuta"])
-    except ValueError:
-        return Response({"detail": "IDs de paciente/terapeuta devem ser números válidos."}, status=status.HTTP_400_BAD_REQUEST)
-    try:
         with get_conn() as conn, conn.cursor() as cur:
             cur.execute(SQL_CRIAR, (
-                id_paciente_int, id_terapeuta_int,
+                d["id_paciente"], d["id_terapeuta"],
                 d["grau_neurodivergencia"], d["objetivos_tratamento"],
                 d["abordagem_familia"], d["cronograma_atividades"], d.get("id_familiar"), d.get(
                     "mensagem_plano"),

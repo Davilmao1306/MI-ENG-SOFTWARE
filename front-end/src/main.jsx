@@ -19,16 +19,13 @@ import { PlanosFamiliar } from './pages/PlanoTerapeuticoFamiliar/index.jsx';
 import { PlanosTerapeuta } from './pages/PlanoTerapeuticoTerapeuta/index.jsx';
 import { AcessarPlano } from './pages/AcessarPlano/index.jsx';
 import { TelaInicioTerapeuta } from './pages/TelaInicioTerapeuta/index.jsx';
-import { ListaTerapeutas } from './pages/ListaTerapeutas/index.jsx';
 import { TelaNovaSessao } from './pages/TelaNovaSessao/index.jsx';
 import { AcessarPacientes } from './pages/AcessarPacientes/index.jsx';
-import { DiarioTerapeuta } from './pages/DiarioTerapeuta/index';
 import { CriarPlanoPage } from './pages/CriarPlano/index.jsx';
 import Consent from './componentes/Consentimento/index.jsx';
 import { DiarioCompartilhadoPage } from './pages/DiarioCompartilhado/index.jsx';
 import { DashboardInicial } from './pages/InicialClinica/index.jsx';
 import { GerenciarPacientes } from './pages/GerenciarPacientes';
-import { ListaFamiliares } from './pages/ListaFamiliares/index.jsx';
 import { GerenciarTerapeutas } from './pages/GerenciarTerapeutas/index.jsx';
 import { GerenciarFamiliares } from './pages/GerenciarFamiliares/index.jsx';
 
@@ -58,14 +55,14 @@ createRoot(document.getElementById('root')).render(
         <Route path="/terapeuta" element={<TelaInicioTerapeuta />} />
         <Route path="/terapeuta/sessao" element={<TelaNovaSessao />} />
         <Route path="/terapeuta/pacientes" element={<AcessarPacientes />} />
-        {/* <Route path="/terapeuta/pacientes/:idPaciente/diario" element={<DiarioTerapeuta />} /> */}
         <Route path="/terapeuta/pacientes/:id_paciente/criar-plano" element={<CriarPlanoPage />} />
         <Route path="/terapeuta/paciente/:id_paciente/plano-terapeutico-terapeuta" element={<PlanosTerapeuta />} />
         <Route path='/terapeuta/pacientes/:id_paciente/diario' element={<DiarioCompartilhadoPage />} />
+        <Route path="/paciente/:id_paciente/acessar-plano/:id_plano" element={<AcessarPlano />} />
 
         {/* rotas do familiar */}
-        <Route path="/plano-terapeutico-familiar" element={<PlanosFamiliar />} />
-        <Route path="/acessar-plano" element={<AcessarPlano />} />
+        <Route path="/:id_paciente/plano-terapeutico-familiar" element={<PlanosFamiliar />} />
+        
         <Route path="/familiar-paciente/:id_paciente" element={<TelaInicioFamiliar />} />
         <Route path="/familiar-perfil" element={<TelaPerfilPaciente />} />
 

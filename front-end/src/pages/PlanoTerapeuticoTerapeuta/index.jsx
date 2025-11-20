@@ -15,13 +15,10 @@ export function PlanosTerapeuta() {
   const [planosTerapeuta, setPlanosTerapeuta] = useState([]);
   useExibirListas("http://localhost:8000/cadastro/lista-planos", setPlanosTerapeuta);
   const { id_paciente } = useParams();
-  console.log(planosTerapeuta);
-  // Dados fictícios
-  const planos  = [
-    { id: 1, data: "25/09/2025", status: "Em uso", descricao: "Plano do paciente X...", UserRole: 'terapeuta' },
-    { id: 2, data: "10/09/2025", status: "Finalizado", descricao: "Plano feito pelo terapeuta Paulo Mascarenhas...", UserRole: 'terapeuta' },
-    { id: 3, data: "07/07/2025", status: "Em uso", descricao: "Plano feito pelo terapeuta Paulo Mascarenhas...", UserRole: 'terapeuta' },
-  ];
+
+  // terapeutas?.find(t => String(t.id_usuario) === String(id));
+  const planosfiltrados =  planosTerapeuta?.filter(plano => String(plano.id_paciente) === String(id_paciente));
+  console.log(planosfiltrados);
 
   return (
     <main className="planos-terapeuta-container">
@@ -36,13 +33,15 @@ export function PlanosTerapeuta() {
           <section className="coluna-planos">
             <h2 className="subtitulo-historico">Históricos de Planos Terapeuticos</h2>
             <div className="lista-de-planos-terapeuta">
-              {planosTerapeuta.map(plano => (
+              {planosfiltrados.map(plano => (
                 <PlanoCard
                   key={plano.id_plano}
-                  data={plano.datacriacao}
-                  status={plano.status}
-                  descricao={plano.mensagemplano}
+                  data={new Date(plano.datacriacao).toLocaleString()}
+                  status={plano.grauneurodivergencia}
+                  // descricao={plano.mensagemplano + " Objetivos: " + plano.objetivostratamento}
+                  descricao = {"Abordagem Familiar: " + plano.abordagemfamilia + ". Cronograma de Atividades: " + plano.cronogramaatividades + ". Objetivos: " + plano.objetivostratamento}
                   userRole={"terapeuta"}
+                  plano={plano}
                 />
               ))}
             </div>
