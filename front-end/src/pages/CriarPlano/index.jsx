@@ -8,10 +8,13 @@ import { AdicionarLinkModal } from '../../componentes/AdicionarLinkModal';
 import { UploadModal } from '../../componentes/UploadModal';
 
 import './criar-plano.estilo.css';
+import { useExibirListas } from '../../hooks/useExibirListas';
 
 export function CriarPlanoPage() {
-
-
+  const [terapeutas, setTerapeutas] = useState([]);
+  useExibirListas("http://localhost:8000/cadastro/lista-terapeutas", setTerapeutas);
+  const id = localStorage.getItem("id_usuario");
+  const terapeutaAuth = terapeutas?.find(t => String(t.id_usuario) === String(id));
   const [neuroSelecionadas, setNeuroSelecionadas] = useState([]);
   const [descNeuro, setDescNeuro] = useState('');
   const [metodosInput, setMetodosInput] = useState('');
@@ -33,21 +36,21 @@ export function CriarPlanoPage() {
   const metodosOpcoes = ["Treinamento Parental", "Comunicação assistiva", "Terapia ocupacional", "Fonoaudiologia", "Terapia Comportamental Cognitiva"];
 
 
-  const { idDoPlano, idPaciente } = useParams();
+  const { idDoPlano, id_paciente } = useParams();
   const isEditing = !!idDoPlano;
   const navigate = useNavigate();
 
   const [pacienteInfo, setPacienteInfo] = useState(null);
 
   useEffect(() => {
-    // Se temos um idPaciente na URL, podemos buscar os dados dele
-    if (idPaciente) {
+    // Se temos um id_paciente na URL, podemos buscar os dados dele
+    if (id_paciente) {
       // Aqui você faria uma chamada API para buscar os dados do paciente
       // Por enquanto, vou simular um objeto paciente
-      setPacienteInfo({ id: idPaciente, nome: `Paciente ${idPaciente}` });
+      setPacienteInfo({ id: id_paciente, nome: `Paciente ${id_paciente}` });
     }
     // TODO: Se isEditing, buscar os dados do plano com idDoPlano
-  }, [idPaciente, idDoPlano]); // Adicionado idDoPlano aqui também para efeito de edição
+  }, [id_paciente, idDoPlano]); // Adicionado idDoPlano aqui também para efeito de edição
 
   // FUNÇÕES DE MANIPULAÇÃO DE ESTADO
   const handleChipClick = (item) => {
@@ -87,28 +90,55 @@ export function CriarPlanoPage() {
     setArquivosAnexados(prev => prev.filter((_, index) => index !== indexToRemove));
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    console.log("Dados do Plano:", {
-      pacienteId: idPaciente,
-      neurodivergenciasSelecionadas: neuroSelecionadas,
-      descricaoNeuro: descNeuro,
-      metodosAplicados: metodosInput,
-      cronograma,
-      objetivos,
-      abordagemFamiliares,
-      sobrePlano,
-      linksAnexados,
-      arquivosAnexados
-    });
-    alert("Plano criado com sucesso!");
-    navigate('/plano-terapeutico-terapeuta/${idPaciente}');
+    const formData = new FormData(e.target);
+    const dados = {
+      id_paciente: id_paciente,
+      id_terapeuta: terapeutaAuth.id_terapeuta,
+      // grau_neurodivergencia: neuroSelecionadas,
+      grau_neurodivergencia: `Diagnóstico: ${neuroSelecionadas.join(', ')}. Descrição: ${descNeuro}`,
+      // metodosAplicados: metodosInput,
+      cronograma_atividades: cronograma,
+      objetivos_tratamento: objetivos,
+      abordagem_familia: abordagemFamiliares,
+      mensagem_plano: sobrePlano,
+      id_familiar: null,
+      // linksAnexados,
+      // arquivosAnexados
+    };
+    try {
+      const response = await fetch("http://127.0.0.1:8000/plano/plano/criar", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(dados),
+      });
+
+      if (!response.ok) {
+        const erroData = await response.json();
+        console.error("Erro do backend:", erroData);
+        const msgErro = Object.values(erroData).join(' ');
+        alert(`Erro ao criar plano: ${msgErro}`);
+        throw new Error("Erro na requisição: " + response.status);
+      }
+      const data = await response.json();
+      console.log("Plano criado com sucesso:", data);
+      alert(`Plano criado com sucesso! ID: ${data.id_plano}`);
+      navigate(`/terapeuta/paciente/${id_paciente}/plano-terapeutico-terapeuta`);
+    } catch (error) {
+      console.error("Erro:", error);
+      if (!error.message.includes("Erro na requisição")) {
+        alert("Ocorreu um erro de rede ao tentar criar plano.");
+      }
+    }
   };
 
   return (
     <div className="criar-plano-page-container">
       <div className='sidebar-plano'>
-        <IconVoltar to={idPaciente ? `/pacientes/${idPaciente}/detalhes` : "/plano-terapeutico-terapeuta"} className='link-voltar-sidebar' />
+        <IconVoltar to={id_paciente ? `/pacientes/${id_paciente}/detalhes` : "/plano-terapeutico-terapeuta"} className='link-voltar-sidebar' />
         <IconSair to='/login' className='link-sair-sidebar' />
       </div>
 

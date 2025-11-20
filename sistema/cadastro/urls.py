@@ -12,6 +12,7 @@ urlpatterns = [
     path("lista-familiares", views.lista_familiares, name="familiares-listar"),
     path("lista-vinculos-pf", views.lista_vinculos_pf, name="vinculos-listar_pf"),
     path("lista-vinculos-pt", views.lista_vinculos_pt, name="vinculos-listar_pt"),
+    path("lista-planos", views.lista_planos, name="vinculos-listar_pt"),
     path("usuarios/<int:id_usuario>/consentimento",
          views.registrar_consentimento, name="usuarios-consentimento"),
 ]

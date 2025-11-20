@@ -38,8 +38,8 @@ export function AcessarPacientes() {
             <header className='header-acessar-pacientes'>
                 <div className='div-img-nome'>
                     <img src="/logo-terapeuta.png" alt="" />
-                    <p> {terapeutaAuth.nome}<br></br>
-                        {terapeutaAuth.especialidade}
+                    <p> Dr(a). {terapeutaAuth.nome}<br></br>
+                        {new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' })}
                     </p>
 
                 </div>

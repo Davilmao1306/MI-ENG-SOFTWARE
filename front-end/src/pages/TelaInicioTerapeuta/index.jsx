@@ -19,7 +19,7 @@ export function TelaInicioTerapeuta() {
                 <div className='div-img-nome'>
                     <img src="/logo-terapeuta.png" alt="" />
                     <p> {terapeutaAuth?.nome}<br></br>
-                        {terapeutaAuth?.especialidade}
+                        {new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' })}
                     </p>
 
                 </div>
