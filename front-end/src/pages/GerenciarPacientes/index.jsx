@@ -53,7 +53,6 @@ export function GerenciarPacientes() {
   // Lógica de filtro atualizada para incluir busca por nomes de terapeutas e familiares
   const filteredPacientes = pacientes.filter(paciente => {
     const termo = searchTerm.toLowerCase();
-
     // Concatena nomes de terapeutas em uma string para busca
     const nomeTerapeutas = paciente.terapeutasVinculados
       ? paciente.terapeutasVinculados.map(t => t.nome.toLowerCase()).join(' ')
@@ -196,10 +195,10 @@ export function GerenciarPacientes() {
         <h1 className="gerenciar-pacientes-title">Gerenciamento de Pacientes</h1>
 
         <div className="acoes-gerenciamento">
-          <div className="search-input-wrapper expanded">
+          <div className="search-input-wrapper">
             <FiSearch className="search-icon" />
             <input
-              className="search-input-wrapper"
+              className="search-input"
               type="text"
               placeholder="Buscar por nome, ID, terapeuta ou familiar..."
               value={searchTerm}
@@ -214,29 +213,33 @@ export function GerenciarPacientes() {
         </div>
 
         <div className="pacientes-grid">
-          {pacientes.map((paciente) => {
-            const vinculosDoPaciente = vinculosPf.filter(v => v.id_paciente === paciente.id_paciente);
-            const vinculosDoPacientePt = vinculosPt.filter(v => v.id_paciente === paciente.id_paciente);
-            const familiaresDoPaciente = vinculosDoPaciente
-              .map(v => familiares.find(f => f.id_familiar === v.id_familiar))
-              .filter(Boolean); // remove undefined caso algum id não exista
-            const terapeutasDoPaciente = vinculosDoPacientePt
-              .map(v => terapeutas.find(f => f.id_terapeuta === v.id_terapeuta))
-              .filter(Boolean);
-            return (
-              <PacienteCard
-                key={paciente.id_paciente}
-                paciente={{
-                  ...paciente,
-                  familiaresVinculados: familiaresDoPaciente,
-                  terapeutasVinculados: terapeutasDoPaciente,
-                }}
-                onVincularFamiliar={handleOpenVincularFamiliarModal}
-                onVincularTerapeuta={handleOpenVincularTerapeutaModal}
-              />
-            );
-          })
-          }
+          {filteredPacientes.length > 0 ? (
+            filteredPacientes.map((paciente) => {
+              const vinculosDoPaciente = vinculosPf.filter(v => v.id_paciente === paciente.id_paciente);
+              const vinculosDoPacientePt = vinculosPt.filter(v => v.id_paciente === paciente.id_paciente);
+              const familiaresDoPaciente = vinculosDoPaciente
+                .map(v => familiares.find(f => f.id_familiar === v.id_familiar))
+                .filter(Boolean); // remove undefined caso algum id não exista
+              const terapeutasDoPaciente = vinculosDoPacientePt
+                .map(v => terapeutas.find(f => f.id_terapeuta === v.id_terapeuta))
+                .filter(Boolean);
+              return (
+                <PacienteCard
+                  key={paciente.id_paciente}
+                  paciente={{
+                    ...paciente,
+                    familiaresVinculados: familiaresDoPaciente,
+                    terapeutasVinculados: terapeutasDoPaciente,
+                  }}
+                  onVincularFamiliar={handleOpenVincularFamiliarModal}
+                  onVincularTerapeuta={handleOpenVincularTerapeutaModal}
+                />
+              );
+            })
+          ) : (
+            <p className="no-itens-found">Nenhum terapeuta encontrado com os critérios de busca.</p>
+          )}
+
         </div>
 
         {/* Modal de Vincular Familiar */}

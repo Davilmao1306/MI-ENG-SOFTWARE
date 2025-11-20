@@ -6,22 +6,13 @@ import { TerapeutaCard } from '../../componentes/TerapeutaCard'; // Importe o Te
 import { FiPlusCircle, FiSearch } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 import './gerenciar-terapeutas.estilo.css'; // O CSS da tela principal
+import { useExibirListas } from '../../hooks/useExibirListas';
 
 export function GerenciarTerapeutas() {
   const [terapeutas, setTerapeutas] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const urlGetTerapeutas = "http://localhost:8000/cadastro/lista-terapeutas"; // << Sua URL da API para terapeutas
+  useExibirListas("http://localhost:8000/cadastro/lista-terapeutas", setTerapeutas)
 
-  const fetchTerapeutas = () => {
-    fetch(urlGetTerapeutas)
-      .then((res) => res.json())
-      .then((data) => setTerapeutas(data))
-      .catch((err) => console.error("Erro ao buscar terapeutas:", err));
-  };
-
-  useEffect(() => {
-    fetchTerapeutas();
-  }, []);
 
   const filteredTerapeutas = terapeutas.filter(terapeuta => {
     const termo = searchTerm.toLowerCase();
@@ -82,15 +73,15 @@ export function GerenciarTerapeutas() {
         <h1 className="gerenciar-terapeutas-title">Gerenciamento de Terapeutas</h1>
 
         <div className="acoes-gerenciamento">
-          <div className="search-input-wrapper expanded">
+          <div className="search-input-wrapper">
             <FiSearch className="search-icon" />
             <input
-            className="search-input"
+              className="search-input"
               type="text"
               placeholder="Buscar por nome, ID, e-mail, especialidade..."
               value={searchTerm}
               onChange={(e) => setSearchTerm(e.target.value)}
-              
+
             />
           </div>
 

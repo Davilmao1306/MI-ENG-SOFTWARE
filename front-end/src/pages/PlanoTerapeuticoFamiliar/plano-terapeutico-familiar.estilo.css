@@ -112,9 +112,7 @@ display: flex;
 .lista-de-planos-terapeuta .plano-card-container:nth-child(odd) {
   border-color: black; 
 }
-.lista-de-planos-terapeuta .plano-card-container:nth-child(even) {
-  border-color: #007AFF; 
-}
+
 
 
 

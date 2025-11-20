@@ -5,24 +5,14 @@ import { Navbar } from '../../componentes/Navbar';
 import { FamiliarCard } from '../../componentes/FamiliarCard';
 import { FiPlusCircle, FiSearch } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
-import './gerenciar-familiares.estilo.css'; 
+import './gerenciar-familiares.estilo.css';
+import { useExibirListas } from '../../hooks/useExibirListas';
 
 export function GerenciarFamiliares() {
   const [familiares, setFamiliares] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
- 
-  const urlGetFamiliares = "http://localhost:8000/cadastro/lista-familiares"; 
+  useExibirListas("http://localhost:8000/cadastro/lista-familiares", setFamiliares)
 
-  const fetchFamiliares = () => {
-    fetch(urlGetFamiliares)
-      .then((res) => res.json())
-      .then((data) => setFamiliares(data))
-      .catch((err) => console.error("Erro ao buscar familiares:", err));
-  };
-
-  useEffect(() => {
-    fetchFamiliares();
-  }, []);
 
   const filteredFamiliares = familiares.filter(familiar => {
     const termo = searchTerm.toLowerCase();
@@ -43,28 +33,28 @@ export function GerenciarFamiliares() {
 
     if (confirmAction) {
       // << ALERTA: AJUSTE ESTA URL PARA A SUA API DE REMOÇÃO/INATIVAÇÃO DE FAMILIAR >>
-      fetch(`http://localhost:8000/cadastro/familiares/${familiar.id_familiar}/`, { 
+      fetch(`http://localhost:8000/cadastro/familiares/${familiar.id_familiar}/`, {
         method: 'DELETE', // Ou 'PATCH' se for inativar
         headers: {
           'Content-Type': 'application/json',
           // 'Authorization': `Bearer ${seuTokenAqui}` // Se precisar de autenticação
         },
       })
-      .then(response => {
-        if (response.ok) {
-          alert(`Familiar ${familiar.nome} removido/inativado com sucesso!`);
-          fetchFamiliares(); // Recarrega a lista
-        } else {
-          return response.json().then(errorData => {
-            alert(`Erro ao remover/inativar familiar: ${errorData.detail || response.statusText}`);
-            console.error('Erro detalhado da API:', errorData);
-          });
-        }
-      })
-      .catch(error => {
-        alert('Erro de conexão ao tentar remover/inativar familiar.');
-        console.error('Erro na requisição:', error);
-      });
+        .then(response => {
+          if (response.ok) {
+            alert(`Familiar ${familiar.nome} removido/inativado com sucesso!`);
+            fetchFamiliares(); // Recarrega a lista
+          } else {
+            return response.json().then(errorData => {
+              alert(`Erro ao remover/inativar familiar: ${errorData.detail || response.statusText}`);
+              console.error('Erro detalhado da API:', errorData);
+            });
+          }
+        })
+        .catch(error => {
+          alert('Erro de conexão ao tentar remover/inativar familiar.');
+          console.error('Erro na requisição:', error);
+        });
     }
   };
 
@@ -72,12 +62,12 @@ export function GerenciarFamiliares() {
   return (
     <div className="gerenciar-layout">
       <Sidebar />
-        <Navbar userName="Clínica" />
+      <Navbar userName="Clínica" />
       <main className="gerenciar-main-content">
         <h1 className="gerenciar-familiar-title">Gerenciamento de Familiares</h1>
 
         <div className="acoes-gerenciamento">
-          <div className="search-input-wrapper expanded">
+          <div className="search-input-wrapper">
             <FiSearch className="search-icon" />
             <input
               className="search-input"
@@ -88,13 +78,13 @@ export function GerenciarFamiliares() {
             />
           </div>
 
-    
+
           <Link to="/clinica/cadastrar-familiar" className="add-button">
             <FiPlusCircle /> Cadastrar Familiar
           </Link>
         </div>
 
-        <div className="familiares-grid"> 
+        <div className="familiares-grid">
           {filteredFamiliares.length > 0 ? (
             filteredFamiliares.map(familiar => (
               <FamiliarCard

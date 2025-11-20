@@ -1,4 +1,3 @@
-
 .gerenciar-layout {
   display: flex;
   min-height: 100vh;
@@ -11,7 +10,7 @@
 }
 
 .gerenciar-familiar-title {
- font-size: 2.2rem;
+  font-size: 2.2rem;
   color: black;
   margin-bottom: 1.5rem;
   font-weight: 600;
@@ -21,27 +20,28 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  gap: 1rem;
+  row-gap: 10px; /* <--- Mantenha 0.8rem ou ajuste para 1rem se quiser mais espaço entre eles */
+  column-gap: 10px;
   margin-bottom: 2rem;
-  flex-wrap: wrap; 
+  flex-wrap: wrap;
 }
 
-.search-input-wrapper {
+/* .search-input-wrapper {
   position: relative;
-  flex-grow: 1; /* Ocupa o máximo de espaço possível */
-  max-width: 600px; /* Limite a largura da barra de pesquisa */
+  flex-grow: 1; /* Ocupa o máximo de espaço possível *
+  max-width: 600px; /* Limite a largura da barra de pesquisa *
 }
 
 .search-input {
   width: 100%;
-  padding: 0.7rem 0.7rem 0.7rem 2.5rem; /* Espaço para o ícone */
+  padding: 0.7rem 0.7rem 0.7rem 2.5rem; /* Espaço para o ícone *
   border: 1px solid #ccc;
   border-radius: 25px;
   font-size: 1rem;
   color: #333;
-  background-color: #e0f2f7; /* Cor de fundo similar aos seus outros inputs */
+  background-color: #e0f2f7; /* Cor de fundo similar aos seus outros inputs *
   transition: all 0.2s ease;
-  outline: none; /* Remove o contorno padrão */
+  outline: none; /* Remove o contorno padrão *
 }
 
 .search-input::placeholder {
@@ -60,18 +60,20 @@
   transform: translateY(-50%);
   color: #777;
   font-size: 1.1rem;
-}
+} */
 
 
 .familiares-grid {
   display: grid;
-  gap: 1.5rem; /* Espaçamento entre os cards */
-  justify-content: center; /* Centraliza os cards na linha */
-  padding: 1rem 0; /* Espaçamento superior/inferior para o grid */
+  grid-template-columns: repeat(auto-fill, minmax(285px, 1fr));
+  gap: 1.0rem;
+  justify-content: center;
+  align-items: start;
 }
 
 .no-itens-found {
-  grid-column: 1 / -1; /* Faz o texto ocupar toda a largura do grid */
+  grid-column: 1 / -1;
+  /* Faz o texto ocupar toda a largura do grid */
   text-align: center;
   color: #777;
   font-size: 1.1rem;
@@ -84,18 +86,23 @@
     margin-left: 0;
     padding: 1rem;
   }
+
   .acoes-gerenciamento {
     flex-direction: column;
     align-items: stretch;
   }
+
   .search-input-wrapper {
     max-width: 100%;
   }
+
   .add-button {
     width: 100%;
     justify-content: center;
   }
+
   .familiares-grid {
-    gap: 1rem; /* Reduz o gap em telas menores */
+    gap: 1rem;
+    /* Reduz o gap em telas menores */
   }
 }
