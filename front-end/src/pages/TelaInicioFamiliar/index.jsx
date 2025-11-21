@@ -1,40 +1,33 @@
 import './tela-inicio-familiar.estilo.css'
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 import { IconVoltar } from '../../componentes/IconVoltar'
 import { IconSair } from '../../componentes/IconSair'
 import { IoBookOutline } from "react-icons/io5";
 import { FiMessageSquare } from "react-icons/fi";
 import { IoMdNotificationsOutline } from "react-icons/io";
-import { CgProfile } from "react-icons/cg";
 import { RxAvatar } from "react-icons/rx";
-import { Dialog } from '../../componentes/Dialog';
-import { useState } from 'react';
+import { use } from 'react';
+
 
 export function TelaInicioFamiliar() {
-    const [showDialog, setShowDialog] = useState(true)
-
-    const toggleDialog = () => {
-        setShowDialog(!showDialog)
-    }
+    const { id_paciente } = useParams();
+    
     return (
         <main>
-            <Dialog isOpen={showDialog} onClose={toggleDialog}>
-                <h3>Bem vindo!</h3>
-                <p>Seja bem vindo ao espaço de acompanhamento do paciente X</p>
-            </Dialog>
             <header className='header-tela-inicio-familiar'>
                 <div className='um'>
-                    <IconVoltar to='/login/familiar-perfis' />
+                    <IconVoltar to='/familiar-perfil' />
                     <IconSair to='/login' />
                 </div>
                 <div className='dois'>
-                    <Link to="/plano-terapeutico-familiar" className='img-diario-tela-inicio-familiar'>
-                        <IoBookOutline style={{ fontSize: "30px" }} />
-                        Diario terapeutico
-                    </Link>
-                    <Link to="/diario-compartilhado-familiar" className='img-plano-tela-inicio-familiar'>
+                    <Link to={`/${id_paciente}/plano-terapeutico-familiar`} className='img-diario-tela-inicio-familiar'>
                         <FiMessageSquare style={{ fontSize: "30px" }} />
                         Plano terapeutico
+                    </Link>
+                    <Link to={`/${id_paciente}/diario-compartilhado-familiar`} className='img-plano-tela-inicio-familiar'>
+                        <IoBookOutline style={{ fontSize: "30px" }} />
+                        Diario terapeutico
+
                     </Link>
                 </div>
             </header>
@@ -47,11 +40,11 @@ export function TelaInicioFamiliar() {
                     </div>
                 </div>
                 <div className='section-bottom'>
-                    <Link to="/diario-compartilhado-familiar" >
+                    <Link to={`/${id_paciente}/diario-compartilhado-familiar`}>
                         <IoBookOutline style={{ fontSize: "50px" }} />
                         Diário compartilhado
                     </Link>
-                    <Link to="/plano-terapeutico-familiar" >
+                    <Link to={`/${id_paciente}/plano-terapeutico-familiar`}  >
                         <FiMessageSquare style={{ fontSize: "50px" }} />
                         Plano terapeutico
                     </Link>

@@ -1,89 +1,49 @@
-// src/paginas/GerenciarPacientes/index.jsx
 import React, { useState, useEffect } from 'react';
 import { PacienteCard } from '../../componentes/PacienteCard';
 import { Sidebar } from '../../componentes/Sidebar';
+import { Navbar } from '../../componentes/Navbar';
 import { FiPlusCircle, FiSearch } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
 import { VincularFamiliarModal } from '../../componentes/VincularFamiliarModal';
 import { VincularTerapeutaModal } from '../../componentes/VincularTerapeutaModal';
 import './gerenciar-pacientes.estilo.css';
 
-// Dados fictícios para Familiares e Terapeutas (precisam estar disponíveis para o mockPacientes)
-const mockAllFamiliares = [
-    { id: 'f001', nome: 'João Silva', parentesco: 'Pai', email: 'joao@email.com' },
-    { id: 'f002', nome: 'Maria Souza', parentesco: 'Mãe', email: 'maria@email.com' },
-    { id: 'f003', nome: 'Pedro Santos', parentesco: 'Irmão', email: 'pedro@email.com' },
-    { id: 'f004', nome: 'Ana Costa', parentesco: 'Tia', email: 'ana@email.com' },
-];
-
-const mockAllTerapeutas = [
-  { id: 't001', nome: 'Dr. Lucas Ribeiro', especialidade: 'Psicólogo', email: 'lucas@terapeuta.com' },
-  { id: 't002', nome: 'Dra. Sofia Mendes', especialidade: 'Neuropsicóloga', email: 'sofia@terapeuta.com' },
-  { id: 't003', nome: 'Dr. Carlos Lima', especialidade: 'Psiquiatra', email: 'carlos@terapeuta.com' },
-  { id: 't004', nome: 'Dra. Patrícia Gomes', especialidade: 'Fisioterapeuta', email: 'patricia@terapeuta.com' },
-];
-
-// O MOCK DE PACIENTES DEVE USAR OS OBJETOS COMPLETOS PARA FAMILIARES/TERAPEUTAS
-const mockPacientes = [
-    {
-        id: 'p001',
-        nome: "Maria Silva",
-        num: "12185",
-        idade: 5,
-        genero: "Feminino",
-        endereco: "Rua A, 123",
-        terapeutasVinculados: [mockAllTerapeutas[0]], // Array de objetos
-        familiarVinculado: [mockAllFamiliares[0]], // Array de objetos
-    },
-    {
-        id: 'p002',
-        nome: "João Pedro",
-        num: "67890",
-        idade: 3,
-        genero: "Masculino",
-        endereco: "Av. B, 456",
-        terapeutasVinculados: [mockAllTerapeutas[1]],
-        familiarVinculado: [mockAllFamiliares[2]],
-    },
-    {
-        id: 'p003',
-        nome: "Ana Clara",
-        num: "11223",
-        idade: 8,
-        genero: "Não Binário",
-        endereco: "Travessa C, 789",
-        terapeutasVinculados: [mockAllTerapeutas[0], mockAllTerapeutas[2]],
-        familiarVinculado: [],
-    },
-    {
-        id: 'p004',
-        nome: "Carlos Henrique",
-        num: "44556",
-        idade: 4,
-        genero: "Masculino",
-        endereco: "Praça D, 10",
-        terapeutasVinculados: [mockAllTerapeutas[1]],
-        familiarVinculado: [mockAllFamiliares[3]],
-    },
-    {
-        id: 'p005',
-        nome: "Sofia Costa",
-        num: "77889",
-        idade: 12,
-        genero: "Feminino",
-        endereco: "Alameda E, 20",
-        terapeutasVinculados: [],
-        familiarVinculado: [mockAllFamiliares[1]],
-    },
-];
-
+function fetchLista(url, set) {
+  fetch(url)
+    .then((res) => res.json())
+    .then((data) => set(data))
+    .catch((err) => console.error("Erro ao buscar pacientes:", err));
+}
 export function GerenciarPacientes() {
-  const [pacientes, setPacientes] = useState(mockPacientes);
+
+  const [pacientes, setPacientes] = useState([]);
+  const [vinculosPf, setVinculosPf] = useState([]);
+  const [vinculosPt, setVinculosPt] = useState([]);
+  const [familiares, setFamiliares] = useState([]);
+  const [terapeutas, setTerapeutas] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
+  const urlGetPacientes = "http://localhost:8000/cadastro/lista-pacientes";
+  const urlVinculosPf = 'http://localhost:8000/cadastro/lista-vinculos-pf';
+  const urlVinculosPt = 'http://localhost:8000/cadastro/lista-vinculos-pt';
+  const urlFamiliar = 'http://localhost:8000/cadastro/lista-familiares';
+  const urlTerapeuta = 'http://localhost:8000/cadastro/lista-terapeutas';
+
+
+
+  useEffect(() => {
+    fetchLista(urlGetPacientes, setPacientes);
+    fetchLista(urlVinculosPf, setVinculosPf);
+    fetchLista(urlFamiliar, setFamiliares);
+    fetchLista(urlTerapeuta, setTerapeutas);
+    fetchLista(urlVinculosPt, setVinculosPt);
+  }, []);
+  // Isso é um teste fim
+  // console.log(vinculosPt, vinculosPf)
 
   // Estados para o modal de familiar
   const [showVincularFamiliarModal, setShowVincularFamiliarModal] = useState(false);
   const [selectedPacienteForVincularFamiliar, setSelectedPacienteForVincularFamiliar] = useState(null);
+
 
   // Estados para o modal de terapeuta
   const [showVincularTerapeutaModal, setShowVincularTerapeutaModal] = useState(false);
@@ -93,7 +53,6 @@ export function GerenciarPacientes() {
   // Lógica de filtro atualizada para incluir busca por nomes de terapeutas e familiares
   const filteredPacientes = pacientes.filter(paciente => {
     const termo = searchTerm.toLowerCase();
-
     // Concatena nomes de terapeutas em uma string para busca
     const nomeTerapeutas = paciente.terapeutasVinculados
       ? paciente.terapeutasVinculados.map(t => t.nome.toLowerCase()).join(' ')
@@ -104,13 +63,41 @@ export function GerenciarPacientes() {
       : '';
 
     return (
-      paciente.nome.toLowerCase().includes(termo) ||
-      paciente.num.includes(termo) ||
-      nomeTerapeutas.includes(termo) ||
-      nomeFamiliares.includes(termo)
+      paciente.nome.toLowerCase().includes(termo)
     );
   });
 
+
+  const handleRemoverOuInativarPaciente = (paciente) => {
+    const confirmAction = window.confirm(
+      `Deseja realmente remover/inativar o paciente ${paciente.nome} (ID: ${paciente.id_paciente})?`
+    );
+
+    if (confirmAction) {
+      console.log(`Ação de remover/inativar para o paciente: ${paciente.nome}`);
+      // Lógica para chamar sua API de remoção/inativação aqui (DELETE ou PATCH)
+      // Exemplo (AJUSTE PARA SUA API REAL):
+      // fetch(`http://localhost:8000/cadastro/pacientes/${paciente.id_paciente}/`, {
+      //   method: 'DELETE', // Ou 'PATCH' para inativar
+      //   headers: {
+      //     'Content-Type': 'application/json',
+      //   },
+      // })
+      // .then(response => {
+      //   if (response.ok) {
+      //     alert('Paciente removido/inativado com sucesso!');
+      //     fetchPacientes(); // Recarrega a lista de pacientes
+      //   } else {
+      //     alert('Erro ao remover/inativar paciente.');
+      //   }
+      // })
+      // .catch(error => console.error('Erro na requisição:', error));
+
+      // Por enquanto, apenas um console.log e recarregar para simular
+      alert(`Paciente ${paciente.nome} (ID: ${paciente.id_paciente}) seria removido/inativado.`);
+      fetchLista(urlGetPacientes, setPacientes);
+    }
+  };
   // Funções para abrir/fechar o modal de FAMILIAR
   const handleOpenVincularFamiliarModal = (paciente) => {
     setSelectedPacienteForVincularFamiliar(paciente);
@@ -122,18 +109,38 @@ export function GerenciarPacientes() {
     setSelectedPacienteForVincularFamiliar(null);
   };
 
-  const handleSaveFamiliarVincular = (pacienteId, familiaresToLink) => {
+  const handleSaveFamiliarVincular = async (pacienteId, familiaresToLink) => {
     console.log(`Salvando vínculos de familiar para paciente ${pacienteId}:`, familiaresToLink);
-    setPacientes(prevPacientes => prevPacientes.map(p => {
-      if (p.id === pacienteId) {
-        return {
-          ...p,
-          familiarVinculado: familiaresToLink // Agora salva o array de objetos familiares
-        };
+    const familiarIds = familiaresToLink.map(f => f.id_familiar);
+    const urlVincular = 'http://localhost:8000/vincular/pacientes/vincular-familiar/';
+
+    const dados = {
+      id_paciente: pacienteId,
+      id_familiar: familiarIds[0],
+    }
+    try {
+      const response = await fetch(urlVincular, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(dados),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.detail || 'Erro ao vincular o familiar.');
       }
-      return p;
-    }));
+      alert('Familiar(es) vinculado(s) com sucesso!');
+      handleCloseVincularFamiliarModal();
+      fetchLista(urlGetPacientes, setPacientes);
+      fetchLista(urlVinculosPt, setVinculosPf);
+    } catch (error) {
+      console.error('Erro na requisição de vínculo:', error);
+      alert(`Falha ao vincular: ${error.message}`);
+    }
   };
+
 
   // Funções para abrir/fechar o modal de TERAPEUTA
   const handleOpenVincularTerapeutaModal = (paciente) => {
@@ -146,56 +153,93 @@ export function GerenciarPacientes() {
     setSelectedPacienteForVincularTerapeuta(null);
   };
 
-  const handleSaveTerapeutaVincular = (pacienteId, terapeutasToLink) => {
+  const handleSaveTerapeutaVincular = async (pacienteId, terapeutasToLink) => {
     console.log(`Salvando vínculos de terapeuta para paciente ${pacienteId}:`, terapeutasToLink);
-    setPacientes(prevPacientes => prevPacientes.map(p => {
-      if (p.id === pacienteId) {
-        return {
-          ...p,
-          terapeutasVinculados: terapeutasToLink // Agora salva o array de objetos terapeutas
-        };
+    const terapeutasIds = terapeutasToLink.map(f => f.id_terapeuta);
+    const urlVincular = 'http://localhost:8000/vincular/pacientes/vincular-terapeuta/';
+
+    const dados = {
+      id_paciente: pacienteId,
+      id_terapeuta: terapeutasIds[0],
+    }
+    try {
+      const response = await fetch(urlVincular, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(dados),
+      });
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.detail || 'Erro ao vincular o terapeuta.');
       }
-      return p;
-    }));
+
+      alert('Terapeuta vinculado(s) com sucesso!');
+      handleCloseVincularTerapeutaModal();
+      fetchLista(urlGetPacientes, setPacientes);
+      fetchLista(urlVinculosPt, setVinculosPt);
+    } catch (error) {
+      console.error('Erro na requisição de vínculo:', error);
+      alert(`Falha ao vincular: ${error.message}`);
+    }
   };
 
 
   return (
     <div className="gerenciar-pacientes-layout">
       <Sidebar />
+      <Navbar userName="Clínica" />
       <main className="gerenciar-pacientes-main-content">
         <h1 className="gerenciar-pacientes-title">Gerenciamento de Pacientes</h1>
 
         <div className="acoes-gerenciamento">
-          <div className="search-input-wrapper expanded">
+          <div className="search-input-wrapper">
             <FiSearch className="search-icon" />
             <input
-                type="text"
-                placeholder="Buscar por nome, ID, terapeuta ou familiar..."
-                value={searchTerm}
-                onChange={(e) => setSearchTerm(e.target.value)}
-                className="search-input"
+              className="search-input"
+              type="text"
+              placeholder="Buscar por nome, ID, terapeuta ou familiar..."
+              value={searchTerm}
+              onChange={(e) => setSearchTerm(e.target.value)}
+
             />
           </div>
 
-          <Link to="/pacientes/novo" className="add-button">
+          <Link to="/clinica/cadastrar-paciente" className="add-button">
             <FiPlusCircle /> Cadastrar Paciente
           </Link>
         </div>
 
         <div className="pacientes-grid">
           {filteredPacientes.length > 0 ? (
-            filteredPacientes.map(paciente => (
-              <PacienteCard
-                key={paciente.id}
-                paciente={paciente}
-                onVincularFamiliar={handleOpenVincularFamiliarModal}
-                onVincularTerapeuta={handleOpenVincularTerapeutaModal}
-              />
-            ))
+            filteredPacientes.map((paciente) => {
+              const vinculosDoPaciente = vinculosPf.filter(v => v.id_paciente === paciente.id_paciente);
+              const vinculosDoPacientePt = vinculosPt.filter(v => v.id_paciente === paciente.id_paciente);
+              const familiaresDoPaciente = vinculosDoPaciente
+                .map(v => familiares.find(f => f.id_familiar === v.id_familiar))
+                .filter(Boolean); // remove undefined caso algum id não exista
+              const terapeutasDoPaciente = vinculosDoPacientePt
+                .map(v => terapeutas.find(f => f.id_terapeuta === v.id_terapeuta))
+                .filter(Boolean);
+              return (
+                <PacienteCard
+                  key={paciente.id_paciente}
+                  paciente={{
+                    ...paciente,
+                    familiaresVinculados: familiaresDoPaciente,
+                    terapeutasVinculados: terapeutasDoPaciente,
+                  }}
+                  onVincularFamiliar={handleOpenVincularFamiliarModal}
+                  onVincularTerapeuta={handleOpenVincularTerapeutaModal}
+                />
+              );
+            })
           ) : (
-            <p className="no-pacientes-found">Nenhum paciente encontrado com os critérios de busca.</p>
+            <p className="no-itens-found">Nenhum terapeuta encontrado com os critérios de busca.</p>
           )}
+
         </div>
 
         {/* Modal de Vincular Familiar */}
@@ -213,6 +257,7 @@ export function GerenciarPacientes() {
             paciente={selectedPacienteForVincularTerapeuta}
             onClose={handleCloseVincularTerapeutaModal}
             onSave={handleSaveTerapeutaVincular}
+            onRemoverOuInativar={handleRemoverOuInativarPaciente}
           />
         )}
       </main>

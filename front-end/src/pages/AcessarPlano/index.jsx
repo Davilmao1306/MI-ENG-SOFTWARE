@@ -5,6 +5,8 @@ import { PiSignOutBold } from 'react-icons/pi';
 import './acessar-plano.estilo.css';
 import { IconVoltar } from '../../componentes/IconVoltar'
 import { IconSair } from '../../componentes/IconSair'
+import { use, useState } from 'react';
+import { useExibirListas } from '../../hooks/useExibirListas';
 
 const planoExemplo = {
   pacienteNome: "Matheus",
@@ -19,13 +21,50 @@ const planoExemplo = {
   imagemGrafico: "/neurolink.png"
 };
 
+// [
+//     {
+//         "id_plano": 2,
+//         "id_paciente": 1,
+//         "id_terapeuta": 14,
+//         "id_familiar": null,
+//         "grauneurodivergencia": "Diagnóstico: TEA, TAB, TDAH, TPN. Descrição: Paciente apresenta neurodivergências de grau 3.",
+//         "objetivostratamento": "Melhora cognitiva",
+//         "abordagemfamilia": "Ter paciência com o processo do paciente",
+//         "cronogramaatividades": "Todos os dias o paciente será exposto a atividades comunicativas e relacionais com outras pessoas",
+//         "mensagemplano": "Sei lá",
+//         "datacriacao": "2025-11-20T15:39:48.146379",
+//         "dataassinaturaterapeuta": null,
+//         "dataassinaturafamilia": null
+//     }
+// ]
+
 export function AcessarPlano() {
+  const { id_paciente, id_plano } = useParams();
+  const [planos, setplanos] = useState([]);
+  const [paciente, setpaciente] = useState([]);
+  useExibirListas("http://localhost:8000/cadastro/lista-planos", setplanos);
+  useExibirListas("http://localhost:8000/cadastro/lista-pacientes", setpaciente);
+
+  const planoExibido = planos.find(plano => String(plano.id_plano) === String(id_plano) && String(plano.id_paciente) === String(id_paciente));
+  const pacienteExibido = paciente?.find(p => String(p.id_paciente) === String(id_paciente));
+  
+  if (pacienteExibido) {
+    planoExemplo.pacienteNome = pacienteExibido.nome;
+  }
+  if (planoExibido) {
+    planoExemplo.neurodivergencia = [planoExibido.grauneurodivergencia];
+    planoExemplo.metodologia = ["Metodologia padrão 1", "Metodologia padrão 2"]; // Substitua por dados reais se disponíveis
+    planoExemplo.objetivos = planoExibido.objetivostratamento;
+    planoExemplo.abordagemFamilia = planoExibido.abordagemfamilia;
+    planoExemplo.sobrePlano = planoExibido.mensagemplano;
+    planoExemplo.cronograma = [planoExibido.cronogramaatividades];
+  }
 
   return (
 
     <div className="acessar-plano-page-wrapper">
       <div className='sidebar-acessar-plano'>
-        <IconVoltar to='/plano-terapeutico-familiar' />
+        <IconVoltar to={`/terapeuta/paciente/${id_paciente}/plano-terapeutico-terapeuta`} />
         <IconSair to='/login' />
       </div>
 

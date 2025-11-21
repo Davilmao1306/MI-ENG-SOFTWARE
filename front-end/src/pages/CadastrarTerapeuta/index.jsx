@@ -5,11 +5,12 @@ import { PiSignOutBold } from 'react-icons/pi'
 import { IoArrowBack } from 'react-icons/io5';
 
 export function CadastrarTerapeuta() {
+    
     return (
         <main className='cadastar-terapeuta'>
             <header className="cadastrar-terapeuta-cabecalho">
                 <div className='barra-lateral'>
-                    <Link to="/clinica" className="icon-voltar">
+                    <Link to="/clinica/lista-de-terapeutas" className="icon-voltar">
                         <IoArrowBack  />
                     </Link>
                     

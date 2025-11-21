@@ -1,110 +1,121 @@
+/* src/componentes/PacienteCard/paciente-card.estilo.css */
 .paciente-card-container {
-  background-color: #ffffff;
-  border-radius: 12px;
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-  padding: 0.8rem; 
-  display: flex;
-  flex-direction: column;
-  gap: 0.2rem; 
-  text-align: center;
-  border: 1px solid #e0e0e0;
-
-  max-width: 285px; 
-  width: 100%;
+    background-color: #ffffff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+    padding: 0.8rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem;
+    text-align: center;
+    border: 1px solid #e0e0e0;
+    max-width: 285px;
+    width: 100%;
 }
 
 .paciente-card-header {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.3rem; 
-  margin-bottom: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.3rem;
+    margin-bottom: 0.5rem;
 }
 
 .paciente-icon {
-  color: #3499db;
-  font-size: 15px; 
+    color: #3499db;
+    font-size: 30px;
 }
 
 .paciente-nome {
-  font-size: 1rem;
-  font-weight: 600;
-  color: #333;
-  margin: 0;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #333;
+    margin: 0;
 }
 
 .paciente-card-info {
-  text-align: left;
-  line-height: 1.2; 
-  font-size: 0.9rem; 
-  color: #555;
-  margin-bottom: 0.2rem; 
+    text-align: left;
+    line-height: 1.2;
+    font-size: 0.9rem;
+    color: #555;
+    margin-bottom: 0.2rem;
 }
 
 .paciente-card-info p {
-  margin: 0.1rem 0;
+    margin: 0.1rem 0;
 }
 
 .paciente-card-info strong {
-  color: #333;
+    color: #333;
 }
 
 .paciente-card-acoes {
-  display: flex;
-  flex-direction: column;
-  gap: 0.4rem; 
-  margin-top: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+    margin-top: auto;
+}
+
+.paciente-card-acoes-inferior {
+    display: flex;
+    gap: 0.4rem;
+    margin-top: 0.1rem;
 }
 
 .paciente-card-botao-acao {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 0.4rem;
-  padding: 0.4rem 1rem; 
-  border-radius: 8px;
-  text-decoration: none;
-  font-weight: 600;
-  font-size: 0.8rem; 
-  transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
-  width: 100%;
-  box-sizing: border-box;
-  cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.4rem;
+    padding: 0.4rem 1rem;
+    border-radius: 8px;
+    text-decoration: none;
+    font-weight: 600;
+    font-size: 0.8rem;
+    transition: background-color 0.2s ease, color 0.2s ease, border-color 0.2s ease;
+    width: 100%;
+    box-sizing: border-box;
+    cursor: pointer;
+}
+
+.paciente-card-acoes-inferior .paciente-card-botao-acao {
+    flex: 1;
 }
 
 .paciente-card-botao-acao.edit {
-  background-color: #f0f8ff;
-  color: #2196F3;
-  border: 1px solid #bbdefb;
+    background-color: #f0f8ff;
+    color: #2196F3;
+    border: 1px solid #bbdefb;
 }
 
 .paciente-card-botao-acao.edit:hover {
-  background-color: #e0f2f7;
-  border-color: #90caf9;
+    background-color: #e0f2f7;
+    border-color: #90caf9;
 }
 
 .paciente-card-botao-acao.vincular {
-  background-color: #e8f5e9;
-  color: #4CAF50;
-  border: 1px solid #c8e6c9;
+    background-color: #e8f5e9;
+    color: #4CAF50;
+    border: 1px solid #c8e6c9;
 }
 
 .paciente-card-botao-acao.vincular:hover {
-  background-color: #dcedc8;
-  border-color: #a5d6a7;
+    background-color: #dcedc8;
+    border-color: #a5d6a7;
+}
+
+.paciente-card-botao-acao.remover-inativar {
+    background-color: #ffebee;
+    color: #f44336;
+    border: 1px solid #ffcdd2;
+}
+
+.paciente-card-botao-acao.remover-inativar:hover {
+    background-color: #f2cad0;
+    color: #f44336;
+    border-color: #e2979f;
 }
 
 .paciente-card-botao-acao svg {
-  font-size: 1rem; 
-}
-
-.paciente-card-actions .terapeuta-button {
-  background-color: #3498db; /* Azul */
-  color: white;
-  border: 1px solid #3498db;
-}
-
-.paciente-card-actions .terapeuta-button:hover {
-  background-color: #2980b9;
-  border-color: #2980b9;
+    font-size: 1rem;
 }

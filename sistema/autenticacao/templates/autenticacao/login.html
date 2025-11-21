@@ -1,0 +1,10 @@
+<!doctype html>
+<html><body>
+  <h1>Entrar</h1>
+  {% if form.errors %}<p style="color:red">Login inválido. Confira e-mail e senha.</p>{% endif %}
+  <form method="post">{% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Entrar</button>
+  </form>
+  <p><a href="{% url 'registrar' %}">Criar conta</a></p>
+</body></html>

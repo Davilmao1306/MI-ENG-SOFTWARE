@@ -3,12 +3,12 @@ import { IoChevronDownOutline, IoChevronForwardOutline, IoChevronUpOutline } fro
 import { PiChatCircleDots } from 'react-icons/pi';
 import { FiEdit } from 'react-icons/fi';
 import './card-plano-terapeutico.estilo.css';
-import { Link } from 'react-router-dom';
+import { Link, useParams } from 'react-router-dom';
 
 
-export function PlanoCard({ data, status, descricao, userRole }) {
+export function PlanoCard({ data, status, descricao, userRole, plano }) {
   const [isOpen, setIsOpen] = useState(false);
-  
+  const { id_paciente } = useParams();
   const toggleOpen = () => {
     setIsOpen(!isOpen);
   };
@@ -29,33 +29,33 @@ export function PlanoCard({ data, status, descricao, userRole }) {
       {isOpen && (
         <section className="plano-card-body">
           <p>{descricao}</p>
-          
+
           <div className="plano-card-acoes">
-            
-            <Link to="/acessar-plano" className="plano-card-botao-acao">
-                <IoChevronForwardOutline /> Acessar Plano
+
+            <Link to={`/paciente/${id_paciente}/acessar-plano/${plano.id_plano}`} className="plano-card-botao-acao">
+              <IoChevronForwardOutline /> Acessar Plano
             </Link>
-         
+
             {isTerapeuta && (
               <Link to="/terapeuta/criar-plano" className="plano-card-botao-acao">
-                  <FiEdit /> Editar Plano
+                <FiEdit /> Editar Plano
               </Link>
             )}
 
-         
+
             {isTerapeuta ? (
-             
+
               <Link to="/ver-feedbacks-plano" className="plano-card-botao-acao">
-                  <PiChatCircleDots /> Feedbacks
+                <PiChatCircleDots /> Feedbacks
               </Link>
             ) : (
-             
+
               <Link to="/adicionar-feedback-plano" className="plano-card-botao-acao">
-                  <PiChatCircleDots /> Dar Feedback
+                <PiChatCircleDots /> Dar Feedback
               </Link>
             )}
 
-           
+
           </div>
         </section>
       )}

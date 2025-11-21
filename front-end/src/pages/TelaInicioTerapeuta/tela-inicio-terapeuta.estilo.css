@@ -16,7 +16,7 @@
 }
 
 .sec-tela-inicio-terapeuta {
-    background-color: #C5EAFC;
+    background-color: #93D9FA;
     padding: 30px 70px;
     border: 1px solid #D9D9D9;
 }
@@ -78,7 +78,7 @@
     width: 600px;
     height: 175px;
     margin-bottom: 50px;
-    background-color: #93D9FA;
+    background-color: #C5EAFC;
     border-radius: 10px;
     display: flex;
     flex-direction: column;

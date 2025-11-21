@@ -30,13 +30,13 @@ export function Sidebar() {
           </li>
           <li>
             {/* Aplica 'active' se o pathname for '/pacientes' */}
-            <Link to="/pacientes" className={`sidebar-nav-item ${isActive('/pacientes') ? 'active' : ''}`}>
+            <Link to="/clinica/lista-de-pacientes" className={`sidebar-nav-item ${isActive('/pacientes') ? 'active' : ''}`}>
               <FiUser /> Pacientes
             </Link>
           </li>
           <li>
             {/* Aplica 'active' se o pathname for '/familiares' */}
-            <Link to="/familiares" className={`sidebar-nav-item ${isActive('/familiares') ? 'active' : ''}`}>
+            <Link to="/clinica/lista-de-familiares" className={`sidebar-nav-item ${isActive('/familiares') ? 'active' : ''}`}>
               <FiUsers /> Familiares
             </Link>
           </li>

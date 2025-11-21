@@ -1,0 +1,9 @@
+<!doctype html>
+<html><body>
+  <h1>Registrar</h1>
+  <form method="post">{% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Cadastrar</button>
+  </form>
+  <p><a href="{% url 'login' %}">Já tenho conta</a></p>
+</body></html>
