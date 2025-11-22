@@ -19,12 +19,7 @@ export function AcessarPacientes() {
     useExibirListas("http://localhost:8000/cadastro/lista-pacientes", setPacientes)
     useExibirListas("http://localhost:8000/cadastro/lista-vinculos-pt", setVinculos)
 
-    // Tem que fazer isso para dar tempo dos dados chegarem a lista de terapeutas
-    if (!Array.isArray(terapeutas) || terapeutas.length === 0) {
-        return;
-    }
-
-    const terapeutaAuth = terapeutas.find(t => String(t.id_usuario) === String(id));
+    const terapeutaAuth = terapeutas?.find(t => String(t.id_usuario) === String(id));
 
     const pacientesDoTerapeuta = pacientes.filter(p =>
         vinculos.some(v =>

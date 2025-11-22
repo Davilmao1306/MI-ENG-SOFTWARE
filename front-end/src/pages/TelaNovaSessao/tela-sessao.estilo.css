@@ -1,3 +1,7 @@
+.tela-sessao{
+    display: flex;
+    height: 100vh;
+}
 .header-tela-sessao {
     background-color: #ffffff;
     padding: 30px 30px 8px 50px;

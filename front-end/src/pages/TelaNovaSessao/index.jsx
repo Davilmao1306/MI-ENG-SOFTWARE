@@ -2,20 +2,14 @@ import { IoMdNotificationsOutline } from 'react-icons/io'
 import './tela-sessao.estilo.css'
 import { BsPersonCircle } from 'react-icons/bs'
 import { Botao } from './../../componentes/Botao/index';
+import { SidebarTerapeuta } from './../../componentes/SidebarTerapeuta/index';
+import { Navbar } from './../../componentes/Navbar/index';
 
 export function TelaNovaSessao() {
     return (
-        <main>
-            <header className='header-tela-sessao'>
-                <div className='div-img-nome'>
-                    <img src="/logo-terapeuta.png" alt="" />
-                    <p>Rodrigo Tripodi</p>
-                </div>
-                <div>
-                    <IoMdNotificationsOutline fontSize={"40px"} color='#000000' />
-                    <BsPersonCircle fontSize={"40px"} color='#000000' />
-                </div>
-            </header>
+        <main className='tela-sessao'>
+            <SidebarTerapeuta />
+            <Navbar />
             <section>
                 <h3>Sessões</h3>
                 <p>3 de 3 sessões</p>
