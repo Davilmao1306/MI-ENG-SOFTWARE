@@ -77,6 +77,14 @@ RETURNS TABLE (
 )
 AS $$
 BEGIN
+    IF p_id_terapeuta IS NULL THEN
+        RAISE EXCEPTION 'Id do terapeuta é obrigatório';
+    END IF;
+
+    IF NOT EXISTS (SELECT 1 FROM Terapeuta WHERE Id_Terapeuta = p_id_terapeuta) THEN
+        RAISE EXCEPTION 'Terapeuta % não existe', p_id_terapeuta;
+    END IF;
+
     RETURN QUERY
     SELECT Id_Diario, Id_Paciente, Titulo, Conteudo, DataRegistro
     FROM DiarioCompartilhado
@@ -100,6 +108,14 @@ RETURNS TABLE (
 )
 AS $$
 BEGIN
+    IF p_id_paciente IS NULL THEN
+        RAISE EXCEPTION 'Id do paciente é obrigatório';
+    END IF;
+
+    IF NOT EXISTS (SELECT 1 FROM Paciente WHERE Id_Paciente = p_id_paciente) THEN
+        RAISE EXCEPTION 'Paciente % não existe', p_id_paciente;
+    END IF;
+
     RETURN QUERY
     SELECT Id_Diario, Id_Terapeuta, Titulo, Conteudo, DataRegistro
     FROM DiarioCompartilhado
@@ -107,6 +123,7 @@ BEGIN
     ORDER BY DataRegistro DESC;
 END;
 $$ LANGUAGE plpgsql;
+
 
 
 -- ==========================================
@@ -124,13 +141,20 @@ RETURNS TABLE (
 )
 AS $$
 BEGIN
+    IF p_id_diario IS NULL THEN
+        RAISE EXCEPTION 'Id do diário é obrigatório';
+    END IF;
+
+    IF NOT EXISTS (SELECT 1 FROM DiarioCompartilhado WHERE Id_Diario = p_id_diario) THEN
+        RAISE EXCEPTION 'Diário % não existe', p_id_diario;
+    END IF;
+
     RETURN QUERY
     SELECT Id_Diario, Id_Paciente, Id_Terapeuta, Titulo, Conteudo, DataRegistro
     FROM DiarioCompartilhado
     WHERE Id_Diario = p_id_diario;
 END;
 $$ LANGUAGE plpgsql;
-
 
 -- ==========================================
 -- FUNÇÃO: atualizar_diario_compartilhado
@@ -149,6 +173,19 @@ RETURNS TABLE (
 )
 AS $$
 BEGIN
+    IF p_id_diario IS NULL THEN
+        RAISE EXCEPTION 'Id do diário é obrigatório';
+    END IF;
+
+    IF NOT EXISTS (SELECT 1 FROM DiarioCompartilhado WHERE Id_Diario = p_id_diario) THEN
+        RAISE EXCEPTION 'Diário % não existe', p_id_diario;
+    END IF;
+
+    -- impede atualização vazia
+    IF p_titulo IS NULL AND p_conteudo IS NULL THEN
+        RAISE EXCEPTION 'Nada para atualizar: informe título e/ou conteúdo';
+    END IF;
+
     RETURN QUERY
     UPDATE DiarioCompartilhado
     SET 
@@ -176,6 +213,14 @@ RETURNS TABLE (
 )
 AS $$
 BEGIN
+    IF p_id_diario IS NULL THEN
+        RAISE EXCEPTION 'Id do diário é obrigatório';
+    END IF;
+
+    IF NOT EXISTS (SELECT 1 FROM DiarioCompartilhado WHERE Id_Diario = p_id_diario) THEN
+        RAISE EXCEPTION 'Diário % não existe', p_id_diario;
+    END IF;
+
     RETURN QUERY
     DELETE FROM DiarioCompartilhado
     WHERE Id_Diario = p_id_diario
