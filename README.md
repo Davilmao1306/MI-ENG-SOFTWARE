@@ -2,7 +2,7 @@
 
 ## 📋 Descrição do Projeto
 
-O **NeuroLink** é uma aplicação completa desenvolvida para clínicas e terapeutas que buscam otimizar a gestão de pacientes, planos terapêuticos e o envolvimento familiar no tratamento. O sistema oferece interfaces dedicadas para Clínicas, Terapeutas e Familiares, permitindo o cadastro de usuários, a vinculação de pacientes a seus responsáveis/terapeutas e a criação de um diário de acompanhamento compartilhado.
+O **NeuroLink** é uma aplicação completa desenvolvida para clínicas e terapeutas que buscam otimizar a gestão de pacientes, planos terapêuticos e o envolvimento familiar no tratamento. O sistema oferece interfaces dedicadas para Clínicas, Terapeutas e Familiares, permitindo o cadastro de usuários, a vinculação de pacientes a seus responsáveis/terapeutas e a criação de um diário de acompanhamento compartilhado para que tanto familiares quanto terapeutas possam se comunicar em prol do tratamento do paciente.
 
 O projeto é dividido em um *frontend* (aplicação web) e um *backend* (API RESTful) que se comunicam para persistir e gerenciar os dados.
 
