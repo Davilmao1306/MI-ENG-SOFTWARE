@@ -74,8 +74,11 @@ DATABASES = {
         'NAME': os.getenv('POSTGRES_DB', 'meu_projeto_db'),
         'USER': os.getenv('POSTGRES_USER', 'admin'),
         'PASSWORD': os.getenv('POSTGRES_PASSWORD', 'admin_password'),
-        'HOST': os.getenv('POSTGRES_HOST', 'localhost'),  # <--- CORRIGIDO
+        'HOST': os.getenv('POSTGRES_HOST', 'localhost'),  
         'PORT': os.getenv('POSTGRES_PORT', '5432'),
+         'TEST': {
+            'NAME': 'test_meu_projeto_db',  
+        }
     }
 }
 
@@ -110,3 +113,4 @@ CORS_ALLOWED_ORIGINS = [
     "http://localhost:5175",
     "http://127.0.0.1:3000",
 ]
+
