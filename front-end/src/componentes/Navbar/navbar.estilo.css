@@ -22,17 +22,16 @@
   
   /* Cores de texto padrão para a Navbar */
   color: #333333; 
+  width: 200px;
 }
 
-.navbar-left {
-  /* Este div está vazio no seu JSX, mas o flex-grow empurra o .navbar-right */
-  flex-grow: 1; 
-}
+
 
 .navbar-right {
   display: flex;
   align-items: center;
   gap: 0.5rem; /* Espaçamento entre Olá Dr. Santos, sino, sair */
+  
 }
 
 .navbar-profile {

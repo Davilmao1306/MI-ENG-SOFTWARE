@@ -62,13 +62,9 @@ createRoot(document.getElementById('root')).render(
 
         {/* rotas do familiar */}
         <Route path="/:id_paciente/plano-terapeutico-familiar" element={<PlanosFamiliar />} />
-        
         <Route path="/familiar-paciente/:id_paciente" element={<TelaInicioFamiliar />} />
         <Route path="/familiar-perfil" element={<TelaPerfilPaciente />} />
-
         <Route path='/consentimento' element={<Consent />} />
-
-
 
       </Routes>
     </BrowserRouter>

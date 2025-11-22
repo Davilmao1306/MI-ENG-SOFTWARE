@@ -1,9 +1,9 @@
 import { Link, useLocation } from 'react-router-dom';
 import { FiHome, FiUsers, FiUser, FiClipboard } from 'react-icons/fi';
 import { RiPsychotherapyLine } from "react-icons/ri";
-import './sidebar.estilo.css';
+import '../Sidebar/sidebar.estilo.css';
 
-export function Sidebar() {
+export function SidebarTerapeuta({ terapeuta }) {
   const location = useLocation(); // Obtém o objeto de localização atual
 
 
@@ -13,34 +13,30 @@ export function Sidebar() {
     <aside className="sidebar-container">
       <div className="sidebar-header">
         <img src="/neurolink.png" alt="Logo Neurolink" className="sidebar-logo" />
+        {/* <p> Dr(a). {terapeuta?.nome}<br></br>
+          {new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' })}
+        </p> */}
       </div>
       <nav className="sidebar-nav">
         <ul>
           <li>
             {/* Aplica 'active' se o pathname for '/dashboard' */}
-            <Link to="/clinica" className={`sidebar-nav-item ${isActive('/clinica') ? 'active' : ''}`}>
+            <Link to="/terapeuta" className={`sidebar-nav-item ${isActive('/terapeuta') ? 'active' : ''}`}>
               <FiHome /> Dashboard
             </Link>
           </li>
           <li>
             {/* Aplica 'active' se o pathname for '/terapeutas' */}
-            <Link to="/clinica/lista-de-terapeutas" className={`sidebar-nav-item ${isActive('/clinica/lista-de-terapeutas') ? 'active' : ''}`}>
-              <RiPsychotherapyLine /> Terapeutas
+            <Link to="/terapeuta/pacientes" className={`sidebar-nav-item ${isActive('/terapeuta/pacientes') ? 'active' : ''}`}>
+              <RiPsychotherapyLine /> Pacientes
             </Link>
           </li>
           <li>
             {/* Aplica 'active' se o pathname for '/pacientes' */}
-            <Link to="/clinica/lista-de-pacientes" className={`sidebar-nav-item ${isActive('/clinica/lista-de-pacientes') ? 'active' : ''}`}>
-              <FiUser /> Pacientes
+            <Link to="/terapeuta/sessao" className={`sidebar-nav-item ${isActive('/terapeuta/sessao') ? 'active' : ''}`}>
+              <FiUser /> Sessão
             </Link>
           </li>
-          <li>
-            {/* Aplica 'active' se o pathname for '/familiares' */}
-            <Link to="/clinica/lista-de-familiares" className={`sidebar-nav-item ${isActive('/clinica/lista-de-familiares') ? 'active' : ''}`}>
-              <FiUsers /> Familiares
-            </Link>
-          </li>
-
         </ul>
       </nav>
     </aside>

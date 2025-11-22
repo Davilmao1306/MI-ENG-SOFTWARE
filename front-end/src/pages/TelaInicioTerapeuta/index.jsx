@@ -1,33 +1,22 @@
 import './tela-inicio-terapeuta.estilo.css'
-import { BsPersonCircle } from "react-icons/bs";
-import { IoMdNotificationsOutline } from "react-icons/io";
 import { IconSair } from '../../componentes/IconSair'
 import { Link } from 'react-router-dom';
 import { useExibirListas } from '../../hooks/useExibirListas';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { Navbar } from '../../componentes/Navbar';
+import { SidebarTerapeuta } from './../../componentes/SidebarTerapeuta/index';
 
 export function TelaInicioTerapeuta() {
     const [terapeutas, setTerapeutas] = useState([])
-    useExibirListas("http://localhost:8000/cadastro/lista-terapeutas",setTerapeutas)
+    useExibirListas("http://localhost:8000/cadastro/lista-terapeutas", setTerapeutas)
     const id = localStorage.getItem("id_usuario");
 
     const terapeutaAuth = terapeutas.find(t => String(t.id_usuario) === String(id));
-    
+
     return (
         <main className='main-tela-inicio-terapeuta'>
-            <header className='header-tela-inicio-terapeuta'>
-                <div className='div-img-nome'>
-                    <img src="/logo-terapeuta.png" alt="" />
-                    <p> {terapeutaAuth?.nome}<br></br>
-                        {new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' })}
-                    </p>
-
-                </div>
-                <div>
-                    <IoMdNotificationsOutline fontSize={"40px"} color='#000000' />
-                    <BsPersonCircle fontSize={"40px"} color='#000000' />
-                </div>
-            </header>
+            <SidebarTerapeuta terapeuta = {terapeutaAuth}/>
+            <Navbar userName="Terapeuta" />
             <section className='sec-tela-inicio-terapeuta'>
                 <h3>Dashboard</h3>
                 <p>visão geral das suas atividades</p>
@@ -49,7 +38,7 @@ export function TelaInicioTerapeuta() {
                         <p className='numero-pacientes-total'>0</p>
                     </div>
                 </div>
-                <div className='acoes-terapeuta'>
+                {/* <div className='acoes-terapeuta'>
                     <Link to="/terapeuta/sessao">
                         <div>
                             <h3>Sessões</h3>
@@ -63,13 +52,8 @@ export function TelaInicioTerapeuta() {
                         </div>
                     </Link>
 
-                </div>
+                </div> */}
             </section>
-            <section className='sec-sair'>
-                <IconSair />
-            </section>
-
-
         </main>
     )
 }

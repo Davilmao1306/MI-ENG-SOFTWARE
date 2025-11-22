@@ -6,6 +6,7 @@ import { Link } from "react-router";
 import { useExibirListas } from '../../hooks/useExibirListas';
 import { Navbar } from './../../componentes/Navbar/index';
 import { useState } from 'react';
+import { SidebarTerapeuta } from '../../componentes/SidebarTerapeuta';
 
 export function AcessarPacientes() {
     const id = localStorage.getItem("id_usuario");
@@ -31,19 +32,10 @@ export function AcessarPacientes() {
             v.id_paciente === p.id_paciente
         )
     );
-
     return (
         <main className='tela-exibe-pacientes'>
+            <SidebarTerapeuta terapeuta={terapeutaAuth} />
             <Navbar userName="Terapeuta" />
-            <header className='header-acessar-pacientes'>
-                <div className='div-img-nome'>
-                    <img src="/logo-terapeuta.png" alt="" />
-                    <p> Dr(a). {terapeutaAuth.nome}<br></br>
-                        {new Date().toLocaleDateString('pt-BR', { day: '2-digit', month: 'long', year: 'numeric' })}
-                    </p>
-
-                </div>
-            </header>
             <section className='section-exibe-pacientes'>
                 <div className='div-titulos'>
                     <Link to='/terapeuta' className='voltar-tela'>

@@ -1,24 +1,12 @@
-.header-tela-inicio-terapeuta {
-    background-color: #ffffff;
-    padding: 30px 30px 8px 50px;
+.main-tela-inicio-terapeuta {
     display: flex;
-    justify-content: space-between;
-}
-
-.header-tela-inicio-terapeuta div {
-    display: flex;
-    gap: 30px;
-}
-
-.header-tela-inicio-terapeuta .header-div-icons {
-    display: flex;
-    gap: 20px;
+    height: 100vh;
 }
 
 .sec-tela-inicio-terapeuta {
-    background-color: #93D9FA;
+    background-color: #fff;
     padding: 30px 70px;
-    border: 1px solid #D9D9D9;
+    
 }
 
 .sec-tela-inicio-terapeuta h3,
@@ -32,7 +20,7 @@
 }
 
 .sec-tela-inicio-terapeuta .dashboard-terapeuta {
-    padding: 27px 70px 50px 70px;
+    padding: 50px 27px 27px 27px ;
     display: flex;
     flex-wrap: wrap;
     row-gap: 50px;
@@ -41,9 +29,9 @@
 
 .dashboard-terapeuta div {
     border-radius: 10px;
-    width: 275px;
+    width: 250px;
     height: 134px;
-    background-color: #ffffff;
+    background-color: #93D9FA;
     display: flex;
     flex-direction: column;
     align-items: start;
@@ -75,10 +63,10 @@
 }
 
 .acoes-terapeuta div {
-    width: 600px;
+    width: 500px;
     height: 175px;
     margin-bottom: 50px;
-    background-color: #C5EAFC;
+    background-color: #93D9FA;
     border-radius: 10px;
     display: flex;
     flex-direction: column;

@@ -2,29 +2,20 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './vincular-terapeuta.estilo.css';
 import { FiX, FiSearch, FiUser, FiBriefcase, FiPlus } from 'react-icons/fi';
+import { useExibirListas } from '../../hooks/useExibirListas';
 
 
 
 
 
 export function VincularTerapeutaModal({ paciente, onClose, onSave }) {
-  const mockAllTerapeutas = "http://localhost:8000/cadastro/lista-terapeutas"
+
   const [terapeutas, setTerapeutas] = useState([]);
+  useExibirListas("http://localhost:8000/cadastro/lista-terapeutas", setTerapeutas)
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedTerapeutas, setSelectedTerapeutas] = useState([]);
   const [terapeutasAtuais, setTerapeutasAtuais] = useState([]);
-
-  const fetchTerapeutas = () => {
-    fetch(mockAllTerapeutas)
-      .then((res) => res.json())
-      .then((data) => setTerapeutas(data))
-      .catch((err) => console.error("Erro ao buscar terapeutas:", err));
-  };
-
-  useEffect(() => {
-    fetchTerapeutas();
-  }, []);
 
   useEffect(() => {
     if (paciente && paciente.terapeutasVinculados) {

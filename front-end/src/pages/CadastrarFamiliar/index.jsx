@@ -9,8 +9,8 @@ export function CadastrarFamiliar() {
     return (
         <main className='cadastar-familiar'>
             <header className="cadastrar-familiar-cabecalho">
-                <h1>Olá Clínica, Cadastre o familiar!</h1>
-                <div className='barra-lateral'>
+                <h1>Olá Clínica, Cadastre o familiar!</h1> 
+                <div className='barra-lateral'> 
                     <IconVoltar to={'/clinica/lista-de-familiares'} />
                 </div>
             </header>

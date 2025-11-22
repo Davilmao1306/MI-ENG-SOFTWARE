@@ -6,6 +6,8 @@ import { RiPsychotherapyLine } from "react-icons/ri";
 import { FiUser, FiActivity, FiArrowUpCircle } from 'react-icons/fi';
 import { FiLink, FiUsers, FiUserMinus } from 'react-icons/fi';
 import { useExibirListas } from "../../hooks/useExibirListas";
+import { jwtDecode } from "jwt-decode";
+import { useNavigate } from 'react-router-dom';
 
 // Dados fictícios para simular a API
 const mockData = {
@@ -27,10 +29,7 @@ const mockData = {
     { id: 3, usuario: 'Luana S.', acao: 'Atualizou informações de perfil', hora: '10:05:15', tipo: 'familiar' },
     { id: 4, usuario: 'Dr. Santos', acao: 'Criou novo plano terapêutico', hora: '09:30:00', tipo: 'terapeuta' },
   ]
-};
-
-
-
+}; 
 
 export function DashboardInicial() {
 
@@ -41,6 +40,36 @@ export function DashboardInicial() {
   useExibirListas("http://localhost:8000/cadastro/lista-familiares", setListFamiliares);
   useExibirListas("http://localhost:8000/cadastro/lista-pacientes", setListPacientes);
   const [data, setData] = useState(mockData);
+  const navigate = useNavigate();
+
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+
+    if (!token) {
+      navigate("/login");
+      return;
+    }
+
+    try {
+      const decoded = jwtDecode(token);
+      const expired = decoded.exp * 1000 < Date.now();
+
+      if (expired) {
+        console.log("Token expirado!");
+        localStorage.removeItem("token");
+        localStorage.removeItem("tipo");
+        localStorage.removeItem("id_usuario");
+        navigate("/login");
+      } else {
+        console.log("Token válido.");
+      }
+
+    } catch (e) {
+      console.log("Token inválido!");
+      navigate("/login");
+    }
+  }, [navigate]);
 
   return (
     <div className="dashboard-layout">

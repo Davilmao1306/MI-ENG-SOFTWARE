@@ -1,6 +1,7 @@
 .tela-exibe-pacientes{
-    background-color: #93D9FA;
+    background-color: #fff;
     height: 100vh;
+    display: flex;
 }
 .header-acessar-pacientes{
     
@@ -15,6 +16,7 @@
 .section-exibe-pacientes{
     display: flex;
     flex-direction: column;
+    width: 100%;
 }
 .div-titulos{
     display: flex;
