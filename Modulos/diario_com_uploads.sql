@@ -298,19 +298,26 @@ RETURNS TABLE (
     id_observacao INT,
     id_mensagem INT
 )
-AS $$
-BEGIN
-    IF p_tipo NOT IN ('foto', 'video', 'documento') THEN
-        RAISE EXCEPTION 'Tipo de mídia inválido: %', p_tipo;
+AS $$  
+BEGIN  
+    -- validar tipo
+    IF p_tipo NOT IN ('foto', 'video', 'documento') THEN  
+        RAISE EXCEPTION 'Tipo de mídia inválido: %', p_tipo;  
+    END IF;  
+
+    -- validar tamanho máximo do arquivo (5MB)
+    IF octet_length(p_arquivo) > 5242880 THEN
+        RAISE EXCEPTION 'Arquivo excede o tamanho máximo permitido de 5MB.';
     END IF;
 
-    RETURN QUERY
+    RETURN QUERY  
     INSERT INTO Midia (Tipo, Arquivo, NomeArquivo, MimeType, Id_Diario, Id_Observacao, Id_Mensagem)
     VALUES (p_tipo, p_arquivo, p_nomearquivo, p_mimetype, p_id_diario, p_id_observacao, p_id_mensagem)
     RETURNING Id_Midia, Tipo, NomeArquivo, MimeType, DataUpload,
               Id_Diario, Id_Observacao, Id_Mensagem;
-END;
+END;  
 $$ LANGUAGE plpgsql;
+
 
 
 
@@ -411,3 +418,4 @@ BEGIN
     RETURNING Id_Midia, Tipo, NomeArquivo, MimeType, DataUpload;
 END;
 $$ LANGUAGE plpgsql;
+
