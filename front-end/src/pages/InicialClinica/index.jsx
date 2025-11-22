@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, use } from 'react';
 import { Sidebar } from '../../componentes/Sidebar';
 import { Navbar } from '../../componentes/Navbar';
 import './dashboard-clinica.estilo.css';
@@ -8,41 +8,51 @@ import { FiLink, FiUsers, FiUserMinus } from 'react-icons/fi';
 import { useExibirListas } from "../../hooks/useExibirListas";
 import { jwtDecode } from "jwt-decode";
 import { useNavigate } from 'react-router-dom';
+import { ListaTerapeutas } from './../ListaTerapeutas/index';
 
 // Dados fictícios para simular a API
 const mockData = {
-  terapeutasMes: 3,
-  pacientesMes: 12,
-  familiaresMes: 8,
-  pacientesSemTerapeuta: 8,
-  pacientesSemFamiliar: 15,
-  distribuicaoPacientesTerapeuta: [ // Exemplo simplificado
-    { nome: 'Dr. Santos', pacientes: 10 },
-    { nome: 'Dra. Ana', pacientes: 8 },
-    { nome: 'Dr. Pedro', pacientes: 7 },
-  ],
-  // Fim dos NOVOS DADOS
-
-  atividadeRecente: [
-    { id: 1, usuario: 'Maria Silva', acao: 'Novo paciente cadastrado', hora: '11:20:04', tipo: 'paciente' },
-    { id: 2, usuario: 'Dr. Santos', acao: 'Utilizou plano com João P.', hora: '12:11:09', tipo: 'terapeuta' },
-    { id: 3, usuario: 'Luana S.', acao: 'Atualizou informações de perfil', hora: '10:05:15', tipo: 'familiar' },
-    { id: 4, usuario: 'Dr. Santos', acao: 'Criou novo plano terapêutico', hora: '09:30:00', tipo: 'terapeuta' },
-  ]
-}; 
-
+  terapeutasMes: 0,
+  pacientesMes: 0,
+  familiaresMes: 0,
+  pacientesSemTerapeuta: 0,
+  pacientesSemFamiliar: 0,
+  distribuicaoPacientesTerapeuta: [],
+  atividadeRecente: []
+};
+function fetchDashboardData(terapeutas, familiares, pacientes, vinculospt, vinculospf) {
+  mockData.terapeutasMes = terapeutas.length;
+  mockData.pacientesMes = pacientes.length;
+  mockData.familiaresMes = familiares.length;
+  // Pacientes sem terapeuta
+  const pacientesComTerapeuta = new Set(vinculospt.map(v => v.id_paciente));
+  mockData.pacientesSemTerapeuta = pacientes.filter(p => !pacientesComTerapeuta.has(p.id_paciente)).length;
+  // Pacientes sem familiar
+  const pacientesComFamiliar = new Set(vinculospf.map(v => v.id_paciente));
+  mockData.pacientesSemFamiliar = pacientes.filter(p => !pacientesComFamiliar.has(p.id_paciente)).length;
+  // Distribuição de pacientes por terapeuta
+  const distribuicao = terapeutas.map(t => {
+    const count = vinculospt.filter(v => v.id_terapeuta === t.id_terapeuta).length;
+    return { nome: t.nome, pacientes: count };
+  });
+  mockData.distribuicaoPacientesTerapeuta = distribuicao;
+}
 export function DashboardInicial() {
 
   const [listTerapeutas, setListTerapeutas] = useState([])
   const [listFamiliares, setListFamiliares] = useState([])
   const [listPacientes, setListPacientes] = useState([])
+  const [listVinculospt, setListVinculospt] = useState([])
+  const [listVinculospf, setListVinculospf] = useState([])
   useExibirListas("http://localhost:8000/cadastro/lista-terapeutas", setListTerapeutas)
   useExibirListas("http://localhost:8000/cadastro/lista-familiares", setListFamiliares);
   useExibirListas("http://localhost:8000/cadastro/lista-pacientes", setListPacientes);
+  useExibirListas("http://localhost:8000/cadastro/lista-vinculos-pt", setListVinculospt);
+  useExibirListas("http://localhost:8000/cadastro/lista-vinculos-pf", setListVinculospf);
   const [data, setData] = useState(mockData);
   const navigate = useNavigate();
 
-
+  fetchDashboardData(listTerapeutas, listFamiliares, listPacientes, listVinculospt, listVinculospf);
   useEffect(() => {
     const token = localStorage.getItem("token");
 

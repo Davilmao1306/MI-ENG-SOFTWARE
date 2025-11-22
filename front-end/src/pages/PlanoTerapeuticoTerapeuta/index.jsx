@@ -14,9 +14,8 @@ import { useState } from 'react';
 export function PlanosTerapeuta() {
   const [planosTerapeuta, setPlanosTerapeuta] = useState([]);
   useExibirListas("http://localhost:8000/cadastro/lista-planos", setPlanosTerapeuta);
-  const { id_paciente } = useParams();
+  const { id_paciente } = useParams(); //usado para pegar o id do paciente na url
 
-  // terapeutas?.find(t => String(t.id_usuario) === String(id));
   const planosfiltrados =  planosTerapeuta?.filter(plano => String(plano.id_paciente) === String(id_paciente));
   console.log(planosfiltrados);
 

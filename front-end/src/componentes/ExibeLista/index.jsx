@@ -14,14 +14,13 @@ export function ListaPacientes({ lista }) {
     );
 
     return (
-        <div style={{ padding: "20px" }}>
+        <div className="exibe-pacientes">
             <input
                 className="input-pesquisar-paciente"
                 type="text"
                 placeholder="Buscar por nome, responsável ou ..."
                 value={busca}
                 onChange={(e) => setBusca(e.target.value)}
-                style={{ padding: "5px", marginBottom: "10px" }}
             />
             <ul className="ul-paciente">
                 {pacientesFiltrados.map((paciente) => (

@@ -1,8 +1,5 @@
-import { ListaPacientes } from '../../componentes/ExibeLista'
 import './acessar-pacientes.estilo.css'
-
-import { ArrowLeft } from 'lucide-react';
-import { Link } from "react-router";
+import { ListaPacientes } from '../../componentes/ExibeLista'
 import { useExibirListas } from '../../hooks/useExibirListas';
 import { Navbar } from './../../componentes/Navbar/index';
 import { useState } from 'react';
@@ -29,13 +26,10 @@ export function AcessarPacientes() {
     );
     return (
         <main className='tela-exibe-pacientes'>
-            <SidebarTerapeuta terapeuta={terapeutaAuth} />
             <Navbar userName="Terapeuta" />
+            <SidebarTerapeuta terapeuta={terapeutaAuth} />
             <section className='section-exibe-pacientes'>
                 <div className='div-titulos'>
-                    <Link to='/terapeuta' className='voltar-tela'>
-                        <ArrowLeft className='voltar-tela-pacientes' />
-                    </Link>
                     <h2>Meus Pacientes</h2>
                 </div>
                 <div>

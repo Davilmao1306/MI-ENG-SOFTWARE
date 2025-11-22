@@ -1,13 +1,39 @@
-import React, { useState, useRef } from 'react';
-import { PiFolderOpenBold } from 'react-icons/pi'; // Ícone de pasta para upload
+import { useState, useRef } from 'react';
+import { PiFolderOpenBold } from 'react-icons/pi';
 import { Modal } from '../Modal';
 
 export function UploadModal({ isOpen, onClose, onUploadFile }) {
   const [isDragOver, setIsDragOver] = useState(false);
   const fileInputRef = useRef(null);
 
+  // Tamanho máximo permitido (ex: 5MB)
+  const MAX_FILE_SIZE = 5 * 1024 * 1024;
+
+  // Tipos permitidos
+  const allowedTypes = [
+    "application/pdf",
+    "image/png",
+    "image/jpeg"
+  ];
+
+  const validateFile = (file) => {
+    // Verifica tipo (se está na lista)
+    if (!allowedTypes.includes(file.type)) {
+      alert("Envie apenas PDF, PNG ou JPEG.");
+      return false;
+    }
+
+    // Verifica tamanho
+    if (file.size > MAX_FILE_SIZE) {
+      alert("O arquivo é maior que 5MB.");
+      return false;
+    }
+
+    return true;
+  };
+
   const handleDragOver = (e) => {
-    e.preventDefault(); // Necessário para permitir o drop
+    e.preventDefault();
     setIsDragOver(true);
   };
 
@@ -18,23 +44,31 @@ export function UploadModal({ isOpen, onClose, onUploadFile }) {
   const handleDrop = (e) => {
     e.preventDefault();
     setIsDragOver(false);
-    const files = e.dataTransfer.files;
-    if (files.length > 0) {
-      onUploadFile(files[0]); // Apenas o primeiro arquivo para simplificar
-      onClose();
-    }
+
+    const file = e.dataTransfer.files[0];
+    if (!file) return;
+
+    if (!validateFile(file)) return;
+
+    onUploadFile(file);
+    onClose();
   };
 
   const handleFileChange = (e) => {
-    const files = e.target.files;
-    if (files.length > 0) {
-      onUploadFile(files[0]);
-      onClose();
+    const file = e.target.files[0];
+    if (!file) return;
+
+    if (!validateFile(file)) {
+      e.target.value = "";
+      return;
     }
+
+    onUploadFile(file);
+    onClose();
   };
 
   const handleBrowseClick = () => {
-    fileInputRef.current.click(); // Abre o seletor de arquivos
+    fileInputRef.current.click();
   };
 
   return (
@@ -44,16 +78,19 @@ export function UploadModal({ isOpen, onClose, onUploadFile }) {
         onDragOver={handleDragOver}
         onDragLeave={handleDragLeave}
         onDrop={handleDrop}
-        onClick={handleBrowseClick} // Clica na área para abrir o seletor
+        onClick={handleBrowseClick}
       >
         <PiFolderOpenBold className="upload-icon" />
         <button type="button" className="upload-browse-button">Procurar</button>
+
         <input
           type="file"
           ref={fileInputRef}
-          style={{ display: 'none' }} // Esconde o input de arquivo padrão
+          style={{ display: 'none' }}
+          accept=".jpeg,.png,.pdf,application/pdf"
           onChange={handleFileChange}
         />
+
         ou arraste o arquivo até aqui
       </div>
     </Modal>

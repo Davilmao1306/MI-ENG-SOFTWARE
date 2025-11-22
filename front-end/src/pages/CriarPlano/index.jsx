@@ -9,7 +9,7 @@ import { UploadModal } from '../../componentes/UploadModal';
 
 import './criar-plano.estilo.css';
 import { useExibirListas } from '../../hooks/useExibirListas';
- 
+
 export function CriarPlanoPage() {
   const [terapeutas, setTerapeutas] = useState([]);
   useExibirListas("http://localhost:8000/cadastro/lista-terapeutas", setTerapeutas);
@@ -276,12 +276,6 @@ export function CriarPlanoPage() {
                 )}
               </fieldset>
             )}
-
-            <fieldset className="form-section assinatura-section">
-              <label>Clientes envolvidos</label>
-              <p>Assinatura do terapeuta:</p>
-              <p>Assinatura dos familiares:</p>
-            </fieldset>
 
             {/* --- Barra de Ações Inferior --- */}
             <div className="action-bar">

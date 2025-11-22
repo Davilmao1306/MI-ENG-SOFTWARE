@@ -32,7 +32,7 @@ def login_api(request):
         "id": id_usuario,
         "email": email,
         "tipo": tipo,
-        "exp": datetime.now(timezone.utc) + timedelta(minutes=1),
+        "exp": datetime.now(timezone.utc) + timedelta(minutes=30),
         "iat": datetime.now(timezone.utc),
     }
 
