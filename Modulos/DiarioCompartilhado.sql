@@ -266,46 +266,6 @@ CREATE TABLE mensagem(
   CONSTRAINT fk_msg_terapeuta FOREIGN KEY (Id_Terapeuta) REFERENCES terapeuta(Id_Terapeuta)
 );
 
--- Table relatorio
-CREATE TABLE relatorio(
-  Id_Relatorio INT GENERATED ALWAYS AS IDENTITY,
-  Arquivo BYTEA,
-  Id_Paciente INT NOT NULL,
-  Id_Terapeuta INT,
-  Id_Familiar INT,
-  CONSTRAINT relatorio_pk PRIMARY KEY (Id_Relatorio),
-  CONSTRAINT fk_relatorio_paciente FOREIGN KEY (Id_Paciente) REFERENCES paciente(Id_Paciente),
-  CONSTRAINT fk_relatorio_familiar FOREIGN KEY (Id_Familiar) REFERENCES familiar(Id_Familiar),
-  CONSTRAINT fk_relatorio_terapeuta FOREIGN KEY (Id_Terapeuta) REFERENCES terapeuta(Id_Terapeuta)
-);
-
--- Table pacientefamiliar
-CREATE TABLE pacientefamiliar(
-  Id_Familiar INT NOT NULL,
-  Id_Paciente INT NOT NULL,
-  CONSTRAINT pacientefamiliar_pk PRIMARY KEY (Id_Familiar, Id_Paciente),
-  CONSTRAINT fk_pf_paciente FOREIGN KEY (Id_Paciente) REFERENCES paciente(Id_Paciente),
-  CONSTRAINT fk_pf_familiar FOREIGN KEY (Id_Familiar) REFERENCES familiar(Id_Familiar)
-);
-
--- Table pacienteterapeuta
-CREATE TABLE pacienteterapeuta(
-  Id_Paciente INT NOT NULL,
-  Id_Terapeuta INT NOT NULL,
-  CONSTRAINT pacienteterapeuta_pk PRIMARY KEY (Id_Terapeuta, Id_Paciente),
-  CONSTRAINT fk_pt_terapeuta FOREIGN KEY (Id_Terapeuta) REFERENCES terapeuta(Id_Terapeuta),
-  CONSTRAINT fk_pt_paciente FOREIGN KEY (Id_Paciente) REFERENCES paciente(Id_Paciente)
-);
-
--- Table familiarPlanoTerapeutico
-CREATE TABLE familiarPlanoTerapeutico(
-  Id_Plano INT NOT NULL,
-  Id_Familiar INT NOT NULL,
-  CONSTRAINT familiarplano_pk PRIMARY KEY (Id_Plano, Id_Familiar),
-  CONSTRAINT fk_fp_plano FOREIGN KEY (Id_Plano) REFERENCES PlanoTerapeutico(Id_Plano),
-  CONSTRAINT fk_fp_familiar FOREIGN KEY (Id_Familiar) REFERENCES familiar(Id_Familiar)
-);
-
 -- Table diario terapeuta 
 CREATE TABLE diarioterapeuta(
   Id_Diario INT NOT NULL, 
