@@ -1,18 +1,15 @@
-/* src/paginas/GerenciarTerapeutas/gerenciar-terapeutas.estilo.css */
-
 .gerenciar-layout {
   display: flex; /* Mantenha display: flex aqui! Isso fará Sidebar e main ficarem lado a lado */
   min-height: 100vh;
   background-color: white;
   width: 100%;
-} 
+}
 
 .gerenciar-main-content {
   flex-grow: 1;
   padding: 2rem;
   overflow-y: auto;
-  margin-left: 0; /* <--- REMOVA ESTE MARGIN-LEFT. Se o .gerenciar-layout tem display: flex, não precisa. */
-  /* Adicione um min-width aqui se o conteúdo do main estiver espremendo demais em telas pequenas */
+  margin-left: 200px;
   min-width: 0;
 }
 
@@ -32,41 +29,40 @@
   gap: 1rem;
 }
 
-/* --- ESTILOS PARA A BARRA DE BUSCA AZUL E ARREDONDADA (REVISADOS) --- */
 
-/* .search-input-wrapper {
-    display: flex; /* Para alinhar o ícone e o input *
+.search-input-wrapper {
+    display: flex; /* Para alinhar o ícone e o input */
     align-items: center;
     background-color: #93D9FA;
     height: 50px;
     border-radius: 30px;
-    position: relative; /* Para posicionar o ícone e o input *
+    position: relative; /* Para posicionar o ícone e o input */
     flex-grow: 1;
     max-width: 900px;
     min-width: 250px;
 }
 
 .search-icon {
-    position: absolute; /* Posição absoluta dentro do wrapper *
-    left: 1rem; /* Distância da esquerda dentro do wrapper *
+    position: absolute; /* Posição absoluta dentro do wrapper */
+    left: 1rem; /* Distância da esquerda dentro do wrapper */
     top: 50%;
     transform: translateY(-50%);
     color: #333;
     font-size: 1.2rem;
-    z-index: 1; /* Garante que o ícone fique acima do input *
+    z-index: 1; /* Garante que o ícone fique acima do input */
 }
 
-/* O INPUT DE TEXTO DENTRO DO WRAPPER AZUL *
-.search-input { /* <--- A CLASSE CORRETA PARA O INPUT *
-  width: 100%; /* Ocupa 100% do espaço disponível no wrapper *
-  padding: 0.8rem 1rem 0.8rem 3rem; /* Ajustei o padding-left para o ícone + espaço *
+
+.search-input {
+  width: 100%; /* Ocupa 100% do espaço disponível no wrapper */
+  padding: 0.8rem 1rem 0.8rem 3rem; /* Ajustei o padding-left para o ícone + espaço */
   border: none;
   background-color: transparent;
   font-size: 1rem;
   color: #333;
   outline: none;
   box-shadow: none;
-  border-radius: 30px; /* Para o input também ter cantos arredondados, embora o wrapper já faça isso *
+  border-radius: 30px; /* Para o input também ter cantos arredondados, embora o wrapper já faça isso */
 }
 
 .search-input::placeholder {
@@ -77,9 +73,9 @@
 .search-input:focus {
   border-color: transparent;
   box-shadow: none;
-} */
+}
 
-/* --- FIM DOS ESTILOS DA BARRA DE BUSCA --- */
+
 
 .add-button {
   display: flex;
@@ -108,13 +104,12 @@
 .terapeutas-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(285px, 1fr));
-  row-gap: 40px; 
-  column-gap: 10px;
-  justify-content: center; 
-  align-items: start; 
+  gap: 0.1rem; 
+  justify-content: center; /* Alinha os itens do grid ao início */
+  align-items: start; /* Alinha os itens do grid ao início verticalmente */
 }
 
-.no-itens-found { 
+.no-itens-found { /* Mudei para no-itens-found para consistência com o JSX */
   grid-column: 1 / -1;
   text-align: center;
   color: #777;
@@ -135,7 +130,7 @@
     width: 100%;
     max-width: none;
   }
-  .gerenciar-main-content { 
+  .gerenciar-main-content { /* Em telas menores, o main não precisa de margin-left */
     margin-left: 0;
   }
 }

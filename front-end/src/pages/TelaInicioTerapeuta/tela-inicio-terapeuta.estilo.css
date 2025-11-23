@@ -1,6 +1,7 @@
 .main-tela-inicio-terapeuta {
     display: flex;
     height: 100vh;
+    margin-left: 150px;
 }
 
 .sec-tela-inicio-terapeuta {

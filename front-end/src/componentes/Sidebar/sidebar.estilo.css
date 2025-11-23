@@ -6,6 +6,14 @@
   display: flex;
   flex-direction: column;
   box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  z-index: 1001; /* Fica na frente da Navbar */
+  position: fixed; /* Faz ela ficar parada na tela */
+    top: 0;
+    left: 0;
+    height: 100vh;   /* Ocupa 100% da altura da janela de visualização */
+    overflow-y: auto; /* Se o menu for muito longo, permite rolar dentro da sidebar */
+    z-index: 1001;   /* Garante que ela fique acima do conteúdo normal */
+    /* --- FIM DA CORREÇÃO --- */
 }
 
 .sidebar-header {

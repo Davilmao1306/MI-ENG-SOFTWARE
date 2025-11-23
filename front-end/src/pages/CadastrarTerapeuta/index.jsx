@@ -3,13 +3,14 @@ import { FormCadastrarTerapeuta } from '../../componentes/FormCadastrarTerapeuta
 import { Link } from 'react-router-dom'
 import { PiSignOutBold } from 'react-icons/pi'
 import { IoArrowBack } from 'react-icons/io5';
+import { Sidebar } from '../../componentes/Sidebar';
 
 export function CadastrarTerapeuta() {
     
     return (
         <main className='cadastar-terapeuta'>
             <header className="cadastrar-terapeuta-cabecalho">
-                <div className='barra-lateral'>
+                <Sidebar>
                     <Link to="/clinica/lista-de-terapeutas" className="icon-voltar">
                         <IoArrowBack  />
                     </Link>
@@ -17,7 +18,7 @@ export function CadastrarTerapeuta() {
                     <Link to='/login' className='icon-sair'>
                         <PiSignOutBold  /> Sair
                     </Link>
-                </div>
+                </Sidebar>
                 <h1>Olá Clínica,<br></br> Cadastre o Terapeuta!</h1>
 
             </header>

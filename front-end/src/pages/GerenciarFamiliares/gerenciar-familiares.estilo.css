@@ -26,42 +26,6 @@
   flex-wrap: wrap;
 }
 
-/* .search-input-wrapper {
-  position: relative;
-  flex-grow: 1; /* Ocupa o máximo de espaço possível *
-  max-width: 600px; /* Limite a largura da barra de pesquisa *
-}
-
-.search-input {
-  width: 100%;
-  padding: 0.7rem 0.7rem 0.7rem 2.5rem; /* Espaço para o ícone *
-  border: 1px solid #ccc;
-  border-radius: 25px;
-  font-size: 1rem;
-  color: #333;
-  background-color: #e0f2f7; /* Cor de fundo similar aos seus outros inputs *
-  transition: all 0.2s ease;
-  outline: none; /* Remove o contorno padrão *
-}
-
-.search-input::placeholder {
-  color: #777;
-}
-
-.search-input:focus {
-  border-color: #3499db;
-  box-shadow: 0 0 0 3px rgba(52, 153, 219, 0.2);
-}
-
-.search-icon {
-  position: absolute;
-  left: 1rem;
-  top: 50%;
-  transform: translateY(-50%);
-  color: #777;
-  font-size: 1.1rem;
-} */
-
 
 .familiares-grid {
   display: grid;

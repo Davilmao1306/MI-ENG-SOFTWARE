@@ -1,18 +1,15 @@
-/* src/componentes/Navbar/navbar.estilo.css - REESCRITO */
 .navbar-container {
-  /* LAYOUT FLEXÍVEL INTERNO */
   display: flex;
-  justify-content: flex-end; /* Alinha o conteúdo (Olá Dr. Santos, ícones) à direita */
+  justify-content: flex-end;
   align-items: center;
-  gap: 0.5rem; /* Espaçamento entre os grupos de itens */
+  gap: 0.5rem;
 
-  /* POSICIONAMENTO EXTERNO (FIXO) */
   position: fixed; /* Fixa a navbar na tela */
   top: 20px;       /* Desloca um pouco do topo para parecer flutuante */
   left: 1255px;     /* Começa 20px à direita da sidebar (250px + 20px) */
   right: 20px;     /* Termina 20px da borda direita */
   height: 60px;    /* Altura da barra */
-  z-index: 1000;   /* Garante que fique acima de outros conteúdos */
+  z-index: 1000;  
 
   /* ESTILO DE CARD (LEVEMENTE ARREDONDADO) */
   background-color: #ffffff; /* Fundo branco, como seus outros cards */
@@ -30,7 +27,7 @@
 .navbar-right {
   display: flex;
   align-items: center;
-  gap: 0.5rem; /* Espaçamento entre Olá Dr. Santos, sino, sair */
+  gap: 0.5rem; 
   
 }
 
@@ -40,7 +37,8 @@
   gap: 0.5rem;
   font-weight: 600;
   font-size: 0.95rem;
-  color: black; /* Cor do texto "Olá, Dr. Santos" */
+  color: black; 
+  white-space: nowrap; /* Impede que o texto quebre para uma nova linha */
 }
 
 .profile-icon {

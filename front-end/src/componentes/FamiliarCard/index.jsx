@@ -27,7 +27,7 @@ export function FamiliarCard({ familiar, onRemoverOuInativar }) {
             </div>
 
             <div className="familiar-card-acoes">
-                <Link to={`/familiares/editar/${familiar.id_familiar}`} className="familiar-card-botao-acao edit">
+                <Link to={`/clinica/editar-familiar/${String(familiar.id_familiar)}`} className="familiar-card-botao-acao edit">
                     <FiEdit /> Editar
                 </Link>
                 <button

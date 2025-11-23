@@ -28,6 +28,9 @@ import { DashboardInicial } from './pages/InicialClinica/index.jsx';
 import { GerenciarPacientes } from './pages/GerenciarPacientes';
 import { GerenciarTerapeutas } from './pages/GerenciarTerapeutas/index.jsx';
 import { GerenciarFamiliares } from './pages/GerenciarFamiliares/index.jsx';
+import { EditarPaciente } from './pages/EditarPaciente/index.jsx';
+import { EditarFamiliar } from './pages/EditarFamiliar/index.jsx';
+import { EditarTerapeuta } from './pages/EditarTerapeuta/index.jsx';
 
 const TIPO_CLINICA = 'C'
 
@@ -50,6 +53,9 @@ createRoot(document.getElementById('root')).render(
         <Route path="/clinica/lista-de-terapeutas" element={<GerenciarTerapeutas />} />
         <Route path="/clinica/lista-de-pacientes" element={<GerenciarPacientes />} />
         <Route path="/clinica/lista-de-familiares" element={<GerenciarFamiliares />} />
+        <Route path="/clinica/editar-paciente/:id_paciente" element={<EditarPaciente />} />
+        <Route path="/clinica/editar-familiar/:id_familiar" element={<EditarFamiliar />} />
+        <Route path="/clinica/editar-terapeuta/:id_terapeuta" element={<EditarTerapeuta />} />
 
         {/* rotas do terapeuta */}
         <Route path="/terapeuta" element={<TelaInicioTerapeuta />} />

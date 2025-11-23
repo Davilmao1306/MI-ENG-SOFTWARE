@@ -51,7 +51,7 @@ export function PacienteCard({ paciente, onVincularFamiliar, onVincularTerapeuta
 
       
                 <div className="paciente-card-acoes-inferior">
-                    <Link to={`/pacientes/editar/${paciente.id_paciente}`} className="paciente-card-botao-acao edit"> 
+                    <Link to={`/clinica/editar-paciente/${paciente.id_paciente}`} className="paciente-card-botao-acao edit"> 
                         <FiEdit /> Editar
                     </Link>
 

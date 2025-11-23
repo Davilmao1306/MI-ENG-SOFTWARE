@@ -1,0 +1,143 @@
+/* editar-terapeuta.estilo.css */
+.editar-terapeuta-layout {
+  display: flex;
+}
+
+.editar-terapeuta-main-content {
+  flex: 1;
+  padding: 2rem;
+  background-color: white;
+  min-height: 100vh;
+}
+
+.editar-terapeuta-title {
+    color: #333;
+    margin-bottom: 2rem;
+    margin-left: 200px;
+}
+
+.editar-terapeuta-container {
+  background-color: #fff;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+  max-width: 800px;
+  margin: 20px auto;
+  margin-left: 200px;
+}
+
+h2 {
+  color: #333;
+  margin-bottom: 25px;
+}
+
+.editar-terapeuta-form .form-group {
+  margin-bottom: 20px;
+}
+
+.editar-terapeuta-form label {
+  display: block;
+  margin-bottom: 8px;
+  font-weight: 500;
+  color: #555;
+}
+
+.editar-terapeuta-form input[type="text"],
+.editar-terapeuta-form input[type="email"],
+.editar-terapeuta-form input[type="tel"],
+.editar-terapeuta-form input[type="password"] {
+  width: 100%;
+  padding: 10px 12px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-size: 14px;
+}
+
+.editar-terapeuta-form .input-disabled {
+  background-color: #e9ecef;
+  color: #6c757d;
+  cursor: not-allowed;
+}
+
+.form-row {
+  display: flex;
+  flex-wrap: wrap;
+  margin-right: -10px;
+  margin-left: -10px;
+}
+
+.form-row > .col-md-6 {
+  padding-right: 10px;
+  padding-left: 10px;
+  flex: 0 0 50%;
+  max-width: 50%;
+}
+
+.erro-senha {
+  color: #dc3545;
+  font-size: 0.9rem;
+  margin-top: -15px;
+  margin-bottom: 20px;
+}
+
+.form-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 15px;
+  margin-top: 30px;
+}
+
+.btn-cancelar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.8rem 1.5rem;
+  background-color: #d0d8dc; 
+  color: black;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+}
+
+.btn-cancelar:hover {
+  background-color: #969ea4;
+}
+
+.btn-salvar {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.8rem 1.5rem;
+  background-color: #93D9FA; 
+  color: black;
+  border: none;
+  border-radius: 8px;
+  font-size: 1rem;
+  font-weight: 500;
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.2s ease;
+}
+
+.btn-salvar:hover {
+  background-color: #8ABED9;
+}
+
+.loading {
+    text-align: center;
+    font-size: 1.2rem;
+    margin-top: 3rem;
+    color: #666;
+}
+
+@media (max-width: 768px) {
+  .form-row > .col-md-6 {
+    flex: 0 0 100%;
+    max-width: 100%;
+  }
+}
