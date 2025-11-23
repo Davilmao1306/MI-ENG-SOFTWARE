@@ -397,3 +397,4 @@ class UploadArquivosReaisTests(APITestCase):
         response = self.client.post(url, data, format='multipart')
         print(f"🎥 Upload de vídeo - Status: {response.status_code}")
         self.assertEqual(response.status_code, status.HTTP_201_CREATED)
+

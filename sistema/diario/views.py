@@ -8,6 +8,7 @@ from psycopg.errors import UndefinedFunction, ForeignKeyViolation, CheckViolatio
 from db import get_conn
 import traceback
 import logging
+logger = logging.getLogger(__name__)
 from .serializers import (
     CriarDiarioIn, AtualizarDiarioIn, ExcluirDiarioIn,
     ListarDiariosPorTerapeutaIn, ListarDiariosPorPacienteIn, BuscarDiarioPorIdIn, CriarChecklistIn, AdicionarObservacaoChecklistIn,
@@ -56,7 +57,7 @@ def _map_db_error(e):
 
 
 # Views Diário Compartilhado
-logger = logging.getLogger(__name__)
+#logger = logging.getLogger(__name__)
 
 @api_view(["POST"])
 def criar_diario(request):
@@ -301,33 +302,59 @@ def enviar_mensagem(request):
         return Response({"detail": msg}, status=code)
 
 # VIEWS MÍDIA
+
 @api_view(["POST"])
-@parser_classes([MultiPartParser, FormParser]) 
+@parser_classes([MultiPartParser, FormParser])
 def adicionar_midia(request):
-    s = AdicionarMidiaIn(data=request.data)
-    s.is_valid(raise_exception=True)
-    d = s.validated_data
-
-    if not d.get("id_diario") and not d.get("id_observacao") and not d.get("id_mensagem"):
-        return Response(
-            {"detail": "Deve informar id_diario, id_observacao ou id_mensagem"}, 
-            status=status.HTTP_400_BAD_REQUEST
-        )
-
+    logger.info("=== INICIANDO UPLOAD DE MÍDIA ===")
     try:
+
+        print("=== DEBUG: Verificando qual função será executada ===")
         
+        # Adicione esta linha para ver o SQL que será executado
+        print(f"SQL que será executado: {SQL_ADICIONAR_MIDIA}")
+        # Log dos dados recebidos
+        logger.info(f"Request data: {dict(request.data)}")
+        logger.info(f"Request FILES: {list(request.FILES.keys())}")
+        
+        if 'arquivo' in request.FILES:
+            arquivo = request.FILES['arquivo']
+            logger.info(f"Arquivo recebido: {arquivo.name}, tamanho: {arquivo.size}, tipo: {arquivo.content_type}")
+        
+        s = AdicionarMidiaIn(data=request.data)
+        if not s.is_valid():
+            logger.error(f"Erros de validação: {s.errors}")
+            return Response(s.errors, status=status.HTTP_400_BAD_REQUEST)
+        
+        d = s.validated_data
+        logger.info(f"Dados validados: {d}")
+        
+        # Resto do código original...
+        if not d.get("id_diario") and not d.get("id_observacao") and not d.get("id_mensagem"):
+            logger.error("Nenhum vínculo especificado")
+            return Response(
+                {"detail": "Deve informar id_diario, id_observacao ou id_mensagem"}, 
+                status=status.HTTP_400_BAD_REQUEST
+            )
+
         arquivo = d['arquivo']
         arquivo_bytes = arquivo.read()
+        logger.info(f"Arquivo lido: {len(arquivo_bytes)} bytes")
         
         nome_arquivo = d.get('nomearquivo') or arquivo.name
         mime_type = d.get('mimetype') or getattr(arquivo, 'content_type', 'application/octet-stream')
+        
+        logger.info(f"Executando SQL: tipo={d['tipo']}, id_diario={d.get('id_diario')}")
 
         with get_conn() as conn, conn.cursor() as cur:
+            logger.info("Conectado ao banco, executando query...")
             cur.execute(SQL_ADICIONAR_MIDIA, (
                 d["tipo"], arquivo_bytes, nome_arquivo, mime_type,
                 d.get("id_diario"), d.get("id_observacao"), d.get("id_mensagem")
             ))
             row = cur.fetchone()
+            logger.info(f"Resposta do banco: {row}")
+            
             return Response({
                 "id_midia": row[0],
                 "tipo": row[1],
@@ -338,10 +365,17 @@ def adicionar_midia(request):
                 "id_observacao": row[6],
                 "id_mensagem": row[7]
             }, status=status.HTTP_201_CREATED)
+            
     except Exception as e:
-        code, msg = _map_db_error(e)
-        return Response({"detail": msg}, status=code)
-
+        logger.error(f"ERRO NO UPLOAD: {str(e)}", exc_info=True)
+        
+        if settings.DEBUG:
+            return Response({
+                "detail": "Erro interno do servidor",
+                "error": str(e)
+            }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+        else:
+            return Response({"detail": "Erro interno do servidor."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 @api_view(["GET"])
 def listar_midias_por_diario(request, id_diario):

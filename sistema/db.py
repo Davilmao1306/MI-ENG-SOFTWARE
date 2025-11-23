@@ -10,8 +10,8 @@ def get_conn():
     Se quiser performance maior, depois troque para psycopg_pool.
     """
     host = os.getenv("POSTGRES_HOST", "localhost")
-    port = os.getenv("POSTGRES_PORT", "5432")
-    db = os.getenv("POSTGRES_DB",   "meu_projeto_db")
+    port = os.getenv("POSTGRES_PORT", "5433")
+    db = os.getenv("POSTGRES_DB",   "test_meu_projeto_db")
     user = os.getenv("POSTGRES_USER", "admin")
     pwd = os.getenv("POSTGRES_PASSWORD", "admin_password")
 
