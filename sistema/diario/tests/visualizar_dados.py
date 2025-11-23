@@ -4,7 +4,7 @@ import sys
 def conectar_banco():
     return psycopg2.connect(
         host="localhost", port="5433",
-        database="test_meu_projeto_db", 
+        database="meu_projeto_db", 
         user="admin", password="admin_password"
     )
 

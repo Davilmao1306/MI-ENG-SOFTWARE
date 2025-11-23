@@ -95,7 +95,7 @@ def menu_upload():
             if caminho.startswith('~'):
                 caminho = os.path.expanduser(caminho)
             
-            id_diario = input("ID do diário (padrão 12): ").strip()
+            id_diario = input("ID do diário: ").strip()
             id_diario = int(id_diario) if id_diario else 12
             
             fazer_upload(caminho, id_diario)
@@ -112,12 +112,19 @@ def menu_upload():
 def verificar_midias():
     """Verifica as mídias no banco"""
     try:
-        print(f"\n🔍 Verificando mídias no banco...")
-        response = requests.get(f"{BASE_URL}/diario/12/midias")
+        id_diario = input("ID do diário para ver mídias: ").strip()
+        id_diario = int(id_diario) if id_diario else 12
+        
+        print(f"\n🔍 Verificando mídias do diário {id_diario}...")
+        response = requests.get(f"{BASE_URL}/diario/{id_diario}/midias")
         
         if response.status_code == 200:
             midias = response.json()
-            print(f"📁 Total de mídias: {len(midias)}")
+            print(f"📁 Total de mídias no diário {id_diario}: {len(midias)}")
+            
+            if len(midias) == 0:
+                print("   ℹ️  Nenhuma mídia encontrada para este diário")
+                return
             
             for midia in midias:
                 tamanho_base64 = len(midia.get('arquivo_base64', ''))
@@ -126,7 +133,7 @@ def verificar_midias():
                 print(f"   ├─ Tipo: {midia.get('tipo')}")
                 print(f"   ├─ Arquivo: {midia.get('nomearquivo')}")
                 print(f"   ├─ MimeType: {midia.get('mimetype')}")
-                print(f"   └─ Tamanho: ~{tamanho_aproximado:.0f} bytes")
+                print(f"   ├─ Tamanho: ~{tamanho_aproximado:.0f} bytes")
                 print(f"   └─ Data: {midia.get('dataupload')}")
                 print("   " + "-" * 40)
                 
@@ -143,7 +150,7 @@ def upload_multiplos_arquivos():
     
     arquivos = input("Digite os caminhos dos arquivos (separados por vírgula): ").strip()
     lista_arquivos = [arq.strip() for arq in arquivos.split(',')]
-    id_diario = input("ID do diário (padrão 12): ").strip()
+    id_diario = input("ID do diário: ").strip()
     id_diario = int(id_diario) if id_diario else 12
     
     sucessos = 0
