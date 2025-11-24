@@ -17,6 +17,12 @@ SQL_CADASTRAR_PACIENTE = f"SELECT {SCHEMA}cadastrar_paciente(%s, %s, %s, %s, %s)
 SQL_CADASTRAR_CLINICA = f"SELECT {SCHEMA}cadastrar_clinica(%s, %s, %s, %s)"
 # -> void
 SQL_REGISTRAR_CONSENT = f"SELECT {SCHEMA}registrar_consentimento(%s)"
+# -> editar terapeuta
+SQL_ATUALIZAR_TERAPEUTA = f"SELECT {SCHEMA}atualizar_terapeuta(%s, %s, %s, %s, %s, %s,%s)"
+# -> editar paciente
+SQL_ATUALIZAR_PACIENTE = f"SELECT {SCHEMA}atualizar_paciente(%s, %s, %s, %s, %s, %s)"
+# -> editar familiar
+SQL_ATUALIZAR_FAMILIAR = f"SELECT {SCHEMA}atualizar_familiar(%s, %s, %s, %s, %s, %s)"
 
 
 @api_view(["POST"])
@@ -124,6 +130,70 @@ def registrar_consentimento(request, id_usuario: int):
         return Response({"detail": "Função registrar_consentimento não encontrada."}, status=500)
 
 
+@api_view(["PUT", "PATCH"])
+def atualizar_terapeuta(request, id_terapeuta: int):
+    d = request.data
+    try:
+        with get_conn() as conn, conn.cursor() as cur:
+            cur.execute(SQL_ATUALIZAR_TERAPEUTA, (
+                id_terapeuta,               # p_id_terapeuta
+                d.get("nome"),              # p_nome
+                d.get("data_nascimento"),   # p_data_nascimento (Date)
+                d.get("telefone"),          # p_telefone
+                d.get("crp"),               # p_crp
+                d.get("especialidade"),     # p_especialidade
+                d.get("email")              # p_email (Vai para tabela Usuario)
+            ))
+            cur.close()
+            return Response({"ok": True}, status=200)
+
+    except Exception as e:
+        print(f"Erro no update: {e}")  # Log para ajudar a debugar
+        return Response({"detail": str(e)}, status=500)
+
+
+@api_view(["PUT", "PATCH"])
+def atualizar_paciente(request, id_paciente: int):
+    d = request.data
+    try:
+        with get_conn() as conn, conn.cursor() as cur:
+            cur.execute(SQL_ATUALIZAR_PACIENTE, (
+                id_paciente,
+                d.get("nome"),
+                d.get("data_nascimento"),
+                d.get("telefone"),
+                d.get("cpf"),
+                d.get("genero"),
+            ))
+            conn.commit()
+            return Response({"ok": True}, status=200)
+    except Exception as e:
+        print(f"Erro ao atualizar paciente: {e}")
+        return Response({"detail": str(e)}, status=500)
+
+
+@api_view(["PUT", "PATCH"])
+def atualizar_familiar(request, id_familiar: int):
+    d = request.data
+
+    try:
+        with get_conn() as conn, conn.cursor() as cur:
+            cur.execute(SQL_ATUALIZAR_FAMILIAR, (
+                id_familiar,              # p_id_familiar
+                d.get("nome"),            # p_nome
+                d.get("data_nascimento"),
+                d.get("telefone"),        # p_telefone
+                d.get("cpf"),             # p_cpf
+                d.get("email")            # p_email (Vai para tabela Usuario)
+            ))
+            conn.commit()
+            return Response({"ok": True}, status=200)
+
+    except Exception as e:
+        print(f"Erro ao atualizar familiar: {e}")
+        return Response({"detail": str(e)}, status=500)
+
+
 def gera_listagem(nome_entidade):
     @api_view(["GET"])
     def lista_entidade(request):
@@ -157,3 +227,4 @@ lista_terapeutas = gera_listagem('terapeuta')
 lista_vinculos_pf = gera_listagem('pacientefamiliar')
 lista_vinculos_pt = gera_listagem('pacienteterapeuta')
 lista_planos = gera_listagem('planoterapeutico')
+lista_usuarios = gera_listagem('usuario')

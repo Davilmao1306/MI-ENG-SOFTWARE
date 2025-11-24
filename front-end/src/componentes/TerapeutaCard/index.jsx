@@ -19,7 +19,7 @@ export function TerapeutaCard({ terapeuta, onRemoverOuInativar }) {
             </div>
             <div className="terapeuta-card-acoes">
                 {/* Link para editar o terapeuta */}
-                <Link to={`/clinica/editar-terapeuta/${String(terapeuta.id_terapeuta)}`} className="terapeuta-card-botao-acao edit">
+                <Link to={`/clinica/editar-terapeuta/${terapeuta.id_terapeuta}`} className="terapeuta-card-botao-acao edit">
                     <FiEdit /> Editar
                 </Link>
                 {/* Botão para Remover ou Inativar */}

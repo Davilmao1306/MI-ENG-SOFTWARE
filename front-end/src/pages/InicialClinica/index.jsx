@@ -8,7 +8,7 @@ import { FiLink, FiUsers, FiUserMinus } from 'react-icons/fi';
 import { useExibirListas } from "../../hooks/useExibirListas";
 import { jwtDecode } from "jwt-decode";
 import { useNavigate } from 'react-router-dom';
-import { ListaTerapeutas } from './../ListaTerapeutas/index';
+
 
 // Dados fictícios para simular a API
 const mockData = {

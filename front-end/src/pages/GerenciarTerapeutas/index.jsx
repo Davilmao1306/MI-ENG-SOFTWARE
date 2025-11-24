@@ -1,5 +1,4 @@
-// src/paginas/GerenciarTerapeutas/index.jsx
-import React, { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { Sidebar } from '../../componentes/Sidebar';
 import { Navbar } from '../../componentes/Navbar';
 import { TerapeutaCard } from '../../componentes/TerapeutaCard'; // Importe o TerapeutaCard

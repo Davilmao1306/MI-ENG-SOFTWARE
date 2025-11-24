@@ -9,6 +9,7 @@
   flex-grow: 1; 
   padding: 2rem;
   overflow-y: auto;
+  margin-left: 200px;
 }
 
 .dashboard-title {

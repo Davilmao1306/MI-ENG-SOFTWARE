@@ -20,7 +20,7 @@ export function AcessarPacientes() {
 
     const pacientesDoTerapeuta = pacientes.filter(p =>
         vinculos.some(v =>
-            v.id_terapeuta === terapeutaAuth.id_terapeuta &&
+            v.id_terapeuta === terapeutaAuth?.id_terapeuta &&
             v.id_paciente === p.id_paciente
         )
     );

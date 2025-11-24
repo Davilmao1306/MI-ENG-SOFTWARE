@@ -41,9 +41,11 @@ export function FormLogin() {
             }
 
             if (data.access && data.tipo) {
+                console.log(data)
                 localStorage.setItem("token", data.access);
                 localStorage.setItem("tipo", data.tipo);
                 localStorage.setItem("id_usuario", data.id)
+                localStorage.setItem("ConsentimentoLGPD", data.consentimento);
     
             }
 

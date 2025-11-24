@@ -26,7 +26,7 @@ def login_api(request):
             {"success": False, "detail": "Credenciais inválidas."},
             status=status.HTTP_401_UNAUTHORIZED
         )
-    id_usuario, email, consentimento, tipo = row
+    id_usuario, email, consentimentolgdp, tipo = row
 
     payload = {
         "id": id_usuario,
@@ -42,7 +42,7 @@ def login_api(request):
         "success": True,
         "id": id_usuario,
         "email": email,
-        "consentimento": consentimento,
+        "consentimento": consentimentolgdp,
         "tipo": tipo,
         "access": access_token,
     })

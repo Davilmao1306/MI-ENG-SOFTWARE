@@ -2,7 +2,8 @@ import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Sidebar } from '../../componentes/Sidebar';
 import { Navbar } from '../../componentes/Navbar';
-import './editar-terapeuta.estilo.css'; 
+import './editar-terapeuta.estilo.css';
+import { useExibirListas } from '../../hooks/useExibirListas';
 
 export function EditarTerapeuta() {
   const { id_terapeuta } = useParams(); // Pega o ID do terapeuta da URL
@@ -15,18 +16,22 @@ export function EditarTerapeuta() {
     email: '',
     telefone: '',
     crp: '',
-    especialidade: '', 
-    senha: '', 
-    confirmarSenha: '' 
+    especialidade: '',
+    data_nascimento: '',
+    senha: '',
+    confirmarSenha: ''
   });
 
   const [isLoading, setIsLoading] = useState(true);
   const [erroSenha, setErroSenha] = useState('');
+  const [usuarios, setUsuarios] = useState([]);
+  useExibirListas("http://localhost:8000/cadastro/lista-usuarios", setUsuarios);
+
+
 
   // Busca os dados do terapeuta na API
   useEffect(() => {
-
-    const urlGetTerapeuta = `http://localhost:8000/cadastro/terapeutas/${id_terapeuta}`;
+    const urlGetTerapeuta = "http://localhost:8000/cadastro/lista-terapeutas";
     console.log("Buscando dados do terapeuta:", id_terapeuta);
 
     fetch(urlGetTerapeuta)
@@ -37,17 +42,19 @@ export function EditarTerapeuta() {
         return res.json();
       })
       .then((data) => {
+        data = data.find(t => t.id_terapeuta === parseInt(id_terapeuta));
+        const userLogado = usuarios.find(u => u.id_usuario === data.id_usuario);
         console.log("Dados do terapeuta recebidos:", data);
 
         setTerapeuta(prevState => ({
           ...prevState,
           nome: data.nome,
-          cpf: data.cpf,
-          email: data.email,
+          cpf: data.cpf || data.crp,
+          email: userLogado?.email,
           telefone: data.telefone,
-          crp: data.crp, 
-          especialidade: data.especialidade 
-          // Senha e confirmarSenha permanecem vazios
+          crp: data.crp,
+          especialidade: data.especialidade,
+          data_nascimento: data.datanascimento || data.data_nascimento || ''
         }));
         setIsLoading(false);
       })
@@ -56,7 +63,7 @@ export function EditarTerapeuta() {
         alert('Erro ao carregar os dados do terapeuta.');
         setIsLoading(false);
       });
-  }, [id_terapeuta]);
+  }, [id_terapeuta, usuarios]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -90,32 +97,30 @@ export function EditarTerapeuta() {
     }
 
     // Ajuste a URL para o seu endpoint de terapeutas
-    const urlUpdateTerapeuta = `http://localhost:8000/cadastro/terapeutas/${id_terapeuta}/`;
     console.log('Enviando dados atualizados para a API:', dadosParaEnviar);
-
-    fetch(urlUpdateTerapeuta, {
-      method: 'PUT', // Ou 'PATCH'
+    fetch(`http://localhost:8000/cadastro/editar-terapeuta/${id_terapeuta}/`, {
+      method: "PUT",
       headers: {
-        'Content-Type': 'application/json',
+        "Content-Type": "application/json",
       },
       body: JSON.stringify(dadosParaEnviar),
     })
-    .then(res => {
-      if (!res.ok) {
-        throw new Error('Falha ao atualizar o terapeuta.');
-      }
-      return res.json();
-    })
-    .then(data => {
-      console.log('Terapeuta atualizado com sucesso:', data);
-      alert('Alterações salvas com sucesso!');
-      // Redireciona para a lista de terapeutas
-      navigate('/clinica/lista-de-terapeutas');
-    })
-    .catch(err => {
-      console.error('Erro ao atualizar terapeuta:', err);
-      alert('Erro ao salvar as alterações. Tente novamente.');
-    });
+      .then(res => {
+        if (!res.ok) {
+          throw new Error('Falha ao atualizar o terapeuta.');
+        }
+        return res.json();
+      })
+      .then(data => {
+        console.log('Terapeuta atualizado com sucesso:', data);
+        alert('Alterações salvas com sucesso!');
+        // Redireciona para a lista de terapeutas
+        navigate('/clinica/lista-de-terapeutas');
+      })
+      .catch(err => {
+        console.error('Erro ao atualizar terapeuta:', err);
+        alert('Erro ao salvar as alterações. Tente novamente.');
+      });
   };
 
   const handleCancelar = () => {
@@ -136,7 +141,7 @@ export function EditarTerapeuta() {
 
         <div className="editar-terapeuta-container">
           <form onSubmit={handleSubmit} className="editar-terapeuta-form">
-            
+
             <div className="form-group">
               <label htmlFor="nome">Nome Completo</label>
               <input
@@ -169,7 +174,6 @@ export function EditarTerapeuta() {
                 name="email"
                 value={terapeuta.email || ''}
                 onChange={handleChange}
-                required
               />
             </div>
 
@@ -184,7 +188,7 @@ export function EditarTerapeuta() {
               />
             </div>
 
- 
+
             <div className="form-row">
               <div className="form-group col-md-6">
                 <label htmlFor="crp">CRP</label>

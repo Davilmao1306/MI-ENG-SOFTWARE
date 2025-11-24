@@ -4,6 +4,7 @@ import { Sidebar } from '../../componentes/Sidebar';
 import { Navbar } from '../../componentes/Navbar';
 import './editar-paciente.estilo.css'; // Importe o CSS que criamos antes
 
+
 export function EditarPaciente() {
 
   const { id_paciente } = useParams();
@@ -12,15 +13,16 @@ export function EditarPaciente() {
   const [paciente, setPaciente] = useState({
     nome: '',
     cpf: '',
-    data_nascimento: '', 
+    data_nascimento: '',
     genero: ''
   });
 
   const [isLoading, setIsLoading] = useState(true);
 
+
   // Busca os dados do paciente na API
   useEffect(() => {
-    const urlGetPaciente = `http://localhost:8000/cadastro/pacientes/${id_paciente}`; 
+    const urlGetPaciente = "http://localhost:8000/cadastro/lista-pacientes";
 
     console.log("Buscando dados do paciente:", id_paciente);
 
@@ -32,6 +34,7 @@ export function EditarPaciente() {
         return res.json();
       })
       .then((data) => {
+        data = data.find(t => t.id_paciente === parseInt(id_paciente));
         console.log("Dados do paciente recebidos:", data);
 
         setPaciente(data);
@@ -43,7 +46,7 @@ export function EditarPaciente() {
         setIsLoading(false);
 
       });
-  }, [id_paciente]); 
+  }, [id_paciente]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -56,9 +59,7 @@ export function EditarPaciente() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    
- 
-    const urlUpdatePaciente = `http://localhost:8000/cadastro/pacientes/${id_paciente}`; 
+    const urlUpdatePaciente = `http://localhost:8000/cadastro/editar-paciente/${id_paciente}/`;
 
     console.log('Enviando dados atualizados para a API:', paciente);
 
@@ -69,22 +70,22 @@ export function EditarPaciente() {
       },
       body: JSON.stringify(paciente),
     })
-    .then(res => {
-      if (!res.ok) {
-        throw new Error('Falha ao atualizar o paciente.');
-      }
-      return res.json();
-    })
-    .then(data => {
-      console.log('Paciente atualizado com sucesso:', data);
-      alert('Alterações salvas com sucesso!');
+      .then(res => {
+        if (!res.ok) {
+          throw new Error('Falha ao atualizar o paciente.');
+        }
+        return res.json();
+      })
+      .then(data => {
+        console.log('Paciente atualizado com sucesso:', data);
+        alert('Alterações salvas com sucesso!');
 
-      navigate('/clinica/lista-de-pacientes');
-    })
-    .catch(err => {
-      console.error('Erro ao atualizar paciente:', err);
-      alert('Erro ao salvar as alterações. Tente novamente.');
-    });
+        navigate('/clinica/lista-de-pacientes');
+      })
+      .catch(err => {
+        console.error('Erro ao atualizar paciente:', err);
+        alert('Erro ao salvar as alterações. Tente novamente.');
+      });
   };
 
   const handleCancelar = () => {
@@ -105,20 +106,20 @@ export function EditarPaciente() {
 
         <div className="editar-paciente-container">
           <form onSubmit={handleSubmit} className="editar-paciente-form">
-            
+
             <div className="form-group">
               <label htmlFor="nome">Nome Completo</label>
               <input
                 type="text"
                 id="nome"
-                name="nome" 
+                name="nome"
                 value={paciente.nome || ''}
                 onChange={handleChange}
                 required
               />
             </div>
 
-          
+
             <div className="form-group">
               <label htmlFor="cpf">CPF</label>
               <input
@@ -137,7 +138,7 @@ export function EditarPaciente() {
                 <input
                   type="date"
                   id="data_nascimento"
-                  name="data_nascimento" 
+                  name="data_nascimento"
                   value={paciente.data_nascimento || ''}
                   onChange={handleChange}
                   required
@@ -162,7 +163,7 @@ export function EditarPaciente() {
 
             <div className="form-actions">
               <button type="button" className="btn-cancelar" onClick={handleCancelar}>Cancelar</button>
-          
+
               <button type="submit" className="btn-salvar">Salvar Alterações</button>
             </div>
           </form>

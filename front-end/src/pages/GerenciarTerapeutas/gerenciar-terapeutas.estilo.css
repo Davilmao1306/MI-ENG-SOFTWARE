@@ -8,7 +8,6 @@
 .gerenciar-main-content {
   flex-grow: 1;
   padding: 2rem;
-  overflow-y: auto;
   margin-left: 200px;
   min-width: 0;
 }
@@ -104,7 +103,7 @@
 .terapeutas-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(285px, 1fr));
-  gap: 0.1rem; 
+  gap: 2.0rem; 
   justify-content: center; /* Alinha os itens do grid ao início */
   align-items: start; /* Alinha os itens do grid ao início verticalmente */
 }

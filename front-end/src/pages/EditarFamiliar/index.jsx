@@ -3,9 +3,10 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { Sidebar } from '../../componentes/Sidebar';
 import { Navbar } from '../../componentes/Navbar';
 import './editar-familiar.estilo.css';
+import { useExibirListas } from '../../hooks/useExibirListas';
 
 export function EditarFamiliar() {
-  const { id_familiar } = useParams(); 
+  const { id_familiar } = useParams();
   const navigate = useNavigate();
 
   // Estado para os dados do familiar
@@ -14,17 +15,20 @@ export function EditarFamiliar() {
     cpf: '',
     email: '',
     telefone: '',
-    senha: '', 
-    confirmarSenha: '' 
+    senha: '',
+    confirmarSenha: '',
+    data_nascimento: '',
   });
 
   const [isLoading, setIsLoading] = useState(true);
   const [erroSenha, setErroSenha] = useState(''); // Estado para erro de senha
+  const [usuarios, setUsuarios] = useState([]);
+  useExibirListas("http://localhost:8000/cadastro/lista-usuarios", setUsuarios);
 
   // Busca os dados do familiar na API
   useEffect(() => {
     // Ajuste a URL para o seu endpoint de familiares
-    const urlGetFamiliar = `http://localhost:8000/cadastro/familiares/${id_familiar}`;
+    const urlGetFamiliar = "http://localhost:8000/cadastro/lista-familiares";
     console.log("Buscando dados do familiar:", id_familiar);
 
     fetch(urlGetFamiliar)
@@ -35,15 +39,17 @@ export function EditarFamiliar() {
         return res.json();
       })
       .then((data) => {
+        data = data.find(f => f.id_familiar === parseInt(id_familiar));
+        const useredit = usuarios.find(u => u.id_usuario === data.id_usuario);
         console.log("Dados do familiar recebidos:", data);
         // Preenche o estado, mas não traz a senha por segurança
         setFamiliar(prevState => ({
           ...prevState,
           nome: data.nome,
           cpf: data.cpf,
-          email: data.email,
-          telefone: data.telefone
-
+          email: useredit?.email,
+          telefone: data.telefone,
+          data_nascimento: data.datanascimento || data.data_nascimento || ''
         }));
         setIsLoading(false);
       })
@@ -52,7 +58,7 @@ export function EditarFamiliar() {
         alert('Erro ao carregar os dados do familiar.');
         setIsLoading(false);
       });
-  }, [id_familiar]);
+  }, [id_familiar, usuarios]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -87,7 +93,7 @@ export function EditarFamiliar() {
     }
 
     // Ajuste a URL para o seu endpoint de familiares
-    const urlUpdateFamiliar = `http://localhost:8000/cadastro/familiares/${id_familiar}/`;
+    const urlUpdateFamiliar = `http://localhost:8000/cadastro/editar-familiar/${id_familiar}/`;
     console.log('Enviando dados atualizados para a API:', dadosParaEnviar);
 
     fetch(urlUpdateFamiliar, {
@@ -97,22 +103,22 @@ export function EditarFamiliar() {
       },
       body: JSON.stringify(dadosParaEnviar),
     })
-    .then(res => {
-      if (!res.ok) {
-        throw new Error('Falha ao atualizar o familiar.');
-      }
-      return res.json();
-    })
-    .then(data => {
-      console.log('Familiar atualizado com sucesso:', data);
-      alert('Alterações salvas com sucesso!');
-      // Redireciona para a lista de familiares
-      navigate('/clinica/lista-de-familiares'); 
-    })
-    .catch(err => {
-      console.error('Erro ao atualizar familiar:', err);
-      alert('Erro ao salvar as alterações. Tente novamente.');
-    });
+      .then(res => {
+        if (!res.ok) {
+          throw new Error('Falha ao atualizar o familiar.');
+        }
+        return res.json();
+      })
+      .then(data => {
+        console.log('Familiar atualizado com sucesso:', data);
+        alert('Alterações salvas com sucesso!');
+        // Redireciona para a lista de familiares
+        navigate('/clinica/lista-de-familiares');
+      })
+      .catch(err => {
+        console.error('Erro ao atualizar familiar:', err);
+        alert('Erro ao salvar as alterações. Tente novamente.');
+      });
   };
 
   const handleCancelar = () => {
@@ -133,7 +139,7 @@ export function EditarFamiliar() {
 
         <div className="editar-familiar-container">
           <form onSubmit={handleSubmit} className="editar-familiar-form">
-            
+
             <div className="form-group">
               <label htmlFor="nome">Nome Completo</label>
               <input
@@ -191,7 +197,7 @@ export function EditarFamiliar() {
                   name="senha"
                   value={familiar.senha || ''}
                   onChange={handleChange}
-                  // Senha não é obrigatória na edição
+                // Senha não é obrigatória na edição
                 />
               </div>
               <div className="form-group col-md-6">
