@@ -15,11 +15,8 @@ export function DiarioCompartilhadoPage() {
   useExibirListas("http://localhost:8000/cadastro/lista-pacientes", setPaciente);
 
   const [isTerapeuta] = useState(true);
-
-
   const [searchTerm, setSearchTerm] = useState('');
   const [filterType, setFilterType] = useState('todos');
-
   const { id_paciente } = useParams();
   const pacienteAuth = pacientes.find(p => String(p.id_paciente) === String(id_paciente));
 

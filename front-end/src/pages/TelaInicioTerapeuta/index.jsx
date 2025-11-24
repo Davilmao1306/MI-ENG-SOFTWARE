@@ -8,14 +8,26 @@ import { SidebarTerapeuta } from './../../componentes/SidebarTerapeuta/index';
 
 export function TelaInicioTerapeuta() {
     const [terapeutas, setTerapeutas] = useState([])
+    const [vinculos, setVinculos] = useState([])
+    const [pacientes, setPacientes] = useState([]);
+    useExibirListas("http://localhost:8000/cadastro/lista-pacientes", setPacientes);
+    useExibirListas("http://localhost:8000/cadastro/lista-vinculos-pt", setVinculos)
     useExibirListas("http://localhost:8000/cadastro/lista-terapeutas", setTerapeutas)
     const id = localStorage.getItem("id_usuario");
 
     const terapeutaAuth = terapeutas.find(t => String(t.id_usuario) === String(id));
+    // Vínculos deste terapeuta
+    const meusVinculos = vinculos.filter(v =>
+        String(v.id_terapeuta) === String(terapeutaAuth?.id_terapeuta)
+    );
 
+    // Pacientes atendidos por ele
+    const meusPacientes = pacientes.filter(p =>
+        meusVinculos.some(v => v.id_paciente === p.id_paciente)
+    );
     return (
         <main className='main-tela-inicio-terapeuta'>
-            <SidebarTerapeuta terapeuta = {terapeutaAuth}/>
+            <SidebarTerapeuta terapeuta={terapeutaAuth} />
             <Navbar userName="Terapeuta" />
             <section className='sec-tela-inicio-terapeuta'>
                 <h3>Dashboard</h3>
@@ -35,7 +47,7 @@ export function TelaInicioTerapeuta() {
                     </div>
                     <div>
                         <p>Total pacientes</p>
-                        <p className='numero-pacientes-total'>0</p>
+                        <p className='numero-pacientes-total'>{meusPacientes.length}</p>
                     </div>
                 </div>
                 {/* <div className='acoes-terapeuta'>

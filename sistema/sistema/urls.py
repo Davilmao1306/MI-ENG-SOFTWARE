@@ -14,4 +14,5 @@ urlpatterns = [
     path('cadastro/', include('cadastro.urls')),
     path('vincular/', include('vinculos.urls')),
     path("plano/", include("plano.urls")),
+    path("diario/", include("diario.urls")),
 ]

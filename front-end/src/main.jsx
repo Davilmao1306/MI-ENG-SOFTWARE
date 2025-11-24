@@ -32,7 +32,6 @@ import { EditarPaciente } from './pages/EditarPaciente/index.jsx';
 import { EditarFamiliar } from './pages/EditarFamiliar/index.jsx';
 import { EditarTerapeuta } from './pages/EditarTerapeuta/index.jsx';
 
-const TIPO_CLINICA = 'C'
 
 // Ativamos o roteador
 createRoot(document.getElementById('root')).render(
@@ -47,24 +46,24 @@ createRoot(document.getElementById('root')).render(
         {/* rotas da clinica */}
 
         <Route path='/clinica' element={<ProtectedRoute tipoPermitido="C"><DashboardInicial /></ProtectedRoute>} />
-        <Route path="/clinica/cadastrar-familiar" element={<CadastrarFamiliar />} />
-        <Route path="/clinica/cadastrar-paciente" element={<CadastrarPaciente />} />
-        <Route path="/clinica/cadastrar-terapeuta" element={<CadastrarTerapeuta />} />
-        <Route path="/clinica/lista-de-terapeutas" element={<GerenciarTerapeutas />} />
-        <Route path="/clinica/lista-de-pacientes" element={<GerenciarPacientes />} />
-        <Route path="/clinica/lista-de-familiares" element={<GerenciarFamiliares />} />
-        <Route path="/clinica/editar-paciente/:id_paciente" element={<EditarPaciente />} />
-        <Route path="/clinica/editar-familiar/:id_familiar" element={<EditarFamiliar />} />
-        <Route path="/clinica/editar-terapeuta/:id_terapeuta" element={<EditarTerapeuta />} />
+        <Route path="/clinica/cadastrar-familiar" element={<ProtectedRoute tipoPermitido="C"> <CadastrarFamiliar /></ProtectedRoute>} />
+        <Route path="/clinica/cadastrar-paciente" element={<ProtectedRoute tipoPermitido="C"> <CadastrarPaciente /></ProtectedRoute>} />
+        <Route path="/clinica/cadastrar-terapeuta" element={<ProtectedRoute tipoPermitido="C"><CadastrarTerapeuta /></ProtectedRoute>} />
+        <Route path="/clinica/lista-de-terapeutas" element={<ProtectedRoute tipoPermitido="C"> <GerenciarTerapeutas /></ProtectedRoute>} />
+        <Route path="/clinica/lista-de-pacientes" element={<ProtectedRoute tipoPermitido="C"> <GerenciarPacientes /></ProtectedRoute>} />
+        <Route path="/clinica/lista-de-familiares" element={<ProtectedRoute tipoPermitido="C"> <GerenciarFamiliares /></ProtectedRoute>} />
+        <Route path="/clinica/editar-paciente/:id_paciente" element={<ProtectedRoute tipoPermitido="C"> <EditarPaciente /></ProtectedRoute>} />
+        <Route path="/clinica/editar-familiar/:id_familiar" element={<ProtectedRoute tipoPermitido="C"> <EditarFamiliar /></ProtectedRoute>} />
+        <Route path="/clinica/editar-terapeuta/:id_terapeuta" element={<ProtectedRoute tipoPermitido="C"> <EditarTerapeuta /></ProtectedRoute>} />
 
         {/* rotas do terapeuta */}
-        <Route path="/terapeuta" element={<TelaInicioTerapeuta />} />
-        <Route path="/terapeuta/sessao" element={<TelaNovaSessao />} />
-        <Route path="/terapeuta/pacientes" element={<AcessarPacientes />} />
-        <Route path="/terapeuta/pacientes/:id_paciente/criar-plano" element={<CriarPlanoPage />} />
-        <Route path="/terapeuta/paciente/:id_paciente/plano-terapeutico-terapeuta" element={<PlanosTerapeuta />} />
-        <Route path='/terapeuta/pacientes/:id_paciente/diario' element={<DiarioCompartilhadoPage />} />
-        <Route path="/paciente/:id_paciente/acessar-plano/:id_plano" element={<AcessarPlano />} />
+        <Route path="/terapeuta" element={<ProtectedRoute tipoPermitido="T"> <TelaInicioTerapeuta /></ProtectedRoute>} />
+        <Route path="/terapeuta/sessao" element={<ProtectedRoute tipoPermitido="T"><TelaNovaSessao /></ProtectedRoute>} />
+        <Route path="/terapeuta/pacientes" element={<ProtectedRoute tipoPermitido="T"> <AcessarPacientes /></ProtectedRoute>} />
+        <Route path="/terapeuta/pacientes/:id_paciente/criar-plano" element={<ProtectedRoute tipoPermitido="T"> <CriarPlanoPage /></ProtectedRoute>} />
+        <Route path="/terapeuta/paciente/:id_paciente/plano-terapeutico-terapeuta" element={<ProtectedRoute tipoPermitido="T"><PlanosTerapeuta /></ProtectedRoute>} />
+        <Route path='/terapeuta/pacientes/:id_paciente/diario' element={<ProtectedRoute tipoPermitido={"T" || "F"}><DiarioCompartilhadoPage /></ProtectedRoute>} />
+        <Route path="/paciente/:id_paciente/acessar-plano/:id_plano" element={<ProtectedRoute tipoPermitido="T" ><AcessarPlano /></ProtectedRoute>} />
 
         {/* rotas do familiar */}
         <Route path="/:id_paciente/plano-terapeutico-familiar" element={<PlanosFamiliar />} />

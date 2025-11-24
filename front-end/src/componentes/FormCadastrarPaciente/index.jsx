@@ -25,12 +25,13 @@ export function FormCadastrarPaciente() {
     }
 
     const [erroCpf, setErroCpf] = useState('');
+    const navigate = useNavigate();
     async function dadosPaciente(event) {
 
 
         event.preventDefault();
         const formData = new FormData(event.target);
-        const navigate = useNavigate();
+
 
         if (!validarCPF(formData.get('cpfPaciente'))) {
             setErroCpf("CPF inválido. Verifique e tente novamente.");
