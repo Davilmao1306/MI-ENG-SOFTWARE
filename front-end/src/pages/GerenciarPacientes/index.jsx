@@ -134,7 +134,7 @@ export function GerenciarPacientes() {
       alert('Familiar(es) vinculado(s) com sucesso!');
       handleCloseVincularFamiliarModal();
       fetchLista(urlGetPacientes, setPacientes);
-      fetchLista(urlVinculosPt, setVinculosPf);
+      fetchLista(urlVinculosPf, setVinculosPf);
     } catch (error) {
       console.error('Erro na requisição de vínculo:', error);
       alert(`Falha ao vincular: ${error.message}`);

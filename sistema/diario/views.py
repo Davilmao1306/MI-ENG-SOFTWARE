@@ -25,7 +25,7 @@ SQL_ATUALIZAR_DIARIO = f"SELECT * FROM {SCHEMA}atualizar_diario_compartilhado(%s
 SQL_EXCLUIR_DIARIO = f"SELECT * FROM {SCHEMA}excluir_diario_compartilhado(%s)"
 SQL_LISTAR_MENSAGENS_FEED = f"SELECT * FROM {SCHEMA}listar_mensagens_feed(%s)"
 # SQL CHECKLIST E OBSERVAÇÃO
-# SQL_CRIAR_CHECKLIST = "INSERT INTO checklist (DataCriacao, Id_Terapeuta, Id_Diario) VALUES (CURRENT_DATE, %s, %s) RETURNING Id_Checklist"
+SQL_ATUALIZAR_ITEM = f"SELECT {SCHEMA}atualizar_status_item_checklist(%s, %s)"
 SQL_ADICIONAR_OBSERVACAO = "INSERT INTO observacao (Descricao_Observacao, Data_Envio, Id_Checklist, Id_Familiar) VALUES (%s, CURRENT_DATE, %s, %s) RETURNING Id_Observacao"
 SQL_CRIAR_CHECKLIST = f"SELECT {SCHEMA}criar_checklist_com_titulo(%s, %s, %s)"
 SQL_ADD_ITEM = f"SELECT {SCHEMA}adicionar_item_checklist(%s, %s)"
@@ -537,7 +537,7 @@ def listar_feed_completo(request, id_paciente):
                     "autor": "Terapeuta", 
                     "data": row[2],
                     "titulo": row[1],
-                    "itens": [] 
+                    "itens": row[3] 
                 })
 
         # Ordenar tudo por data (mais recente primeiro)
@@ -576,13 +576,26 @@ def criar_checklist(request):
 
 @api_view(["POST"])
 def adicionar_item_checklist(request):
-    # Recebe: descricao, id_checklist
     d = request.data
     try:
         with get_conn() as conn, conn.cursor() as cur:
             cur.execute(SQL_ADD_ITEM, (d["descricao"], d["id_checklist"]))
             id_item = cur.fetchone()[0]
             return Response({"id_item": id_item}, status=status.HTTP_201_CREATED)
+    except Exception as e:
+        code, msg = _map_db_error(e)
+        return Response({"detail": msg}, status=code)
+
+@api_view(["PUT"]) # Usamos PUT pois é uma atualização
+def atualizar_status_item(request):
+    # O React vai mandar: { "id": 1, "checked": true }
+    d = request.data
+    try:
+        with get_conn() as conn, conn.cursor() as cur:
+            # Mapeamos 'id' do JSON para p_id_item e 'checked' para p_is_feito
+            cur.execute(SQL_ATUALIZAR_ITEM, (d["id"], d["checked"]))
+            
+            return Response({"detail": "Status atualizado"}, status=status.HTTP_200_OK)
     except Exception as e:
         code, msg = _map_db_error(e)
         return Response({"detail": msg}, status=code)

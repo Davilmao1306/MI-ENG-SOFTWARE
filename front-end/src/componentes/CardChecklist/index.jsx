@@ -1,7 +1,7 @@
 import  { useState } from 'react';
 import './card-checklist.estilo.css';
 
-export function CardChecklist({ autor, data, titulo, itens, onSaveResponse, isTerapeutaView = false }) {
+export function CardChecklist({ autor, data, titulo, itens, onSaveResponse, isTerapeutaView  }) {
   const horaFormatada = new Date(data).toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
   
 

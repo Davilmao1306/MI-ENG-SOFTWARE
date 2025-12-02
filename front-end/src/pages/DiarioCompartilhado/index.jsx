@@ -1,5 +1,5 @@
 import { useState, useEffect, useMemo, use } from 'react';
-import { Link, useParams } from 'react-router-dom';
+import { Link, useParams, useLocation } from 'react-router-dom';
 import { IoArrowBack } from 'react-icons/io5';
 import { PiSignOutBold } from 'react-icons/pi';
 import { BsSearch } from 'react-icons/bs';
@@ -11,6 +11,7 @@ import { useExibirListas } from '../../hooks/useExibirListas';
 
 export function DiarioCompartilhadoPage() {
   const { id_paciente } = useParams();
+  const location = useLocation();
   const id = localStorage.getItem("id_usuario");
   const [loading, setLoading] = useState(true);
   const [terapeutas, setTerapeutas] = useState([])
@@ -29,17 +30,18 @@ export function DiarioCompartilhadoPage() {
   const [feedItems, setFeedItems] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterType, setFilterType] = useState('todos');
-  const [isTerapeuta] = useState(true);
-  const [isFamiliar] = useState(true);
+  const [isFamiliar] = useState();
+  const isTerapeuta = location.pathname.includes('/terapeuta/');
+  const linkVoltar = isTerapeuta ? "/terapeuta/pacientes" : `/familiar-paciente/${id_paciente}`;
   useEffect(() => {
     async function fetchFeed() {
       if (!id_paciente) return;
       try {
         setLoading(true);
         const response = await fetch(`http://localhost:8000/diario/feed/${id_paciente}`);
-        //console.log(response);
         if (response.ok) {
           const data = await response.json();
+          console.log(data);
           setFeedItems(data);
         } else {
           console.error("Erro ao buscar feed");
@@ -53,51 +55,6 @@ export function DiarioCompartilhadoPage() {
     fetchFeed();
   }, [id_paciente]);
 
-  // const [feedItems, setFeedItems] = useState([
-  //   {
-  //     id: 'f1', type: 'checklist', autor: 'Terapeuta Rodrigo Tripodi', data: '2023-10-26T10:10:00Z', titulo: 'Atividades educacionais.',
-  //     itens: [
-  //       { text: 'Foco na leitura por 15min', checked: false },
-  //       { text: 'Quebra-cabeça de 50 peças', checked: false },
-  //       { text: 'Desenho livre com tintas', checked: false },
-  //     ]
-  //   },
-
-  //   { id: 'f2', type: 'entrada', autor: 'Josilda da Silva', data: '2023-10-26T18:45:00Z', texto: 'Hoje o Matheus conseguiu ficar 20 minutos focado na atividade.', attachments: [] },
-
-  //   { id: 'f3', type: 'entrada', autor: 'Joana dos Santos', data: '2023-10-24T16:35:00Z', texto: 'Foi um bom dia de atividades, ele se mostrou bem calmo.', attachments: [] },
-  //   {
-  //     id: 'f4', type: 'checklist', autor: 'Terapeuta Rodrigo Tripodi', data: '2023-10-23T10:10:00Z', titulo: 'Rotina matinal.',
-  //     itens: [
-  //       { text: 'Escovar os dentes', checked: true },
-  //       { text: 'Arrumar a cama', checked: false },
-  //       { text: 'Tomar café da manhã', checked: true },
-  //     ]
-  //   },
-  //   {
-  //     id: 'f5',
-  //     type: 'entrada',
-  //     autor: 'Josilda da Silva',
-  //     data: '2023-10-27T09:00:00Z',
-  //     texto: 'Matheus adorou a brincadeira com blocos hoje! Ele estava super concentrado. Segue uma foto:',
-
-  //     attachments: [
-  //       { type: 'file', url: 'https://via.placeholder.com/200/ADD8E6/000000?text=BlocosMatheus', name: 'Teste.png' }
-  //     ]
-  //   },
-
-  //   {
-  //     id: 'f6',
-  //     type: 'entrada',
-  //     autor: 'Terapeuta Rodrigo Tripodi',
-  //     data: '2023-10-28T11:00:00Z',
-  //     texto: 'Exploramos novos jogos e ele se divertiu muito. Segue a foto de um desenho que ele fez e um link interessante.',
-  //     attachments: [
-  //       { type: 'file', url: 'https://via.placeholder.com/150/0000FF/FFFFFF?text=Desenho', name: 'DesenhoAzul.png' },
-  //       { type: 'link', url: 'https://www.instagram.com', name: 'RecursosTEA.org' }
-  //     ]
-  //   },
-  // ]);
 const handleNewEntry = async (entryData) => {
     const idDiario = diario[0]?.id_diario;
     
@@ -166,7 +123,6 @@ const handleNewEntry = async (entryData) => {
 
       } 
       else if (entryData.type === 'checklist') {
-          
           if (!isTerapeuta) {
               alert("Apenas terapeutas podem criar checklists.");
               return;
@@ -219,12 +175,34 @@ const handleNewEntry = async (entryData) => {
     }
   };
 
-  const handleSaveChecklistResponse = (checklistId, updatedItems) => {
-    console.log(`Salvando respostas para checklist ${checklistId}:`, updatedItems);
-    setFeedItems(prevItems => prevItems.map(item =>
-      item.id === checklistId ? { ...item, itens: updatedItems } : item
-    ));
-    alert('Respostas do checklist salvas!');
+  const handleSaveChecklistResponse = async (checklistId, updatedItems) => {
+    console.log(`Salvando checklist ${checklistId}`, updatedItems);
+
+    try {
+      const updatePromises = updatedItems.map(item => {
+        return fetch("http://localhost:8000/diario/checklist/item/atualizar", {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            id: item.id,       
+            checked: item.checked 
+          })
+        });
+      });
+
+      // Aguarda todas as atualizações terminarem
+      await Promise.all(updatePromises);
+
+      setFeedItems(prevItems => prevItems.map(item =>
+        item.id === checklistId ? { ...item, itens: updatedItems } : item
+      ));
+
+      alert('Respostas salvas com sucesso!');
+
+    } catch (error) {
+      console.error("Erro ao salvar checklist:", error);
+      alert("Erro ao salvar as respostas. Tente novamente.");
+    }
   };
 
 
@@ -259,7 +237,7 @@ const handleNewEntry = async (entryData) => {
   return (
     <div className="diario-page-container">
       <div className='sidebar-diario'>
-        <Link to="/terapeuta/pacientes" className='link-voltar-sidebar'>
+        <Link to={linkVoltar} className='link-voltar-sidebar'>
           <IoArrowBack />
         </Link>
         <Link to='/login' className='link-sair-sidebar'>
