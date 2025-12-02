@@ -50,36 +50,10 @@ export function DashboardInicial() {
   useExibirListas("http://localhost:8000/cadastro/lista-vinculos-pt", setListVinculospt);
   useExibirListas("http://localhost:8000/cadastro/lista-vinculos-pf", setListVinculospf);
   const [data, setData] = useState(mockData);
-  const navigate = useNavigate();
+  
 
   fetchDashboardData(listTerapeutas, listFamiliares, listPacientes, listVinculospt, listVinculospf);
-  useEffect(() => {
-    const token = localStorage.getItem("token");
-
-    if (!token) {
-      navigate("/login");
-      return;
-    }
-
-    try {
-      const decoded = jwtDecode(token);
-      const expired = decoded.exp * 1000 < Date.now();
-
-      if (expired) {
-        console.log("Token expirado!");
-        localStorage.removeItem("token");
-        localStorage.removeItem("tipo");
-        localStorage.removeItem("id_usuario");
-        navigate("/login");
-      } else {
-        console.log("Token válido.");
-      }
-
-    } catch (e) {
-      console.log("Token inválido!");
-      navigate("/login");
-    }
-  }, [navigate]);
+  
 
   return (
     <div className="dashboard-layout">

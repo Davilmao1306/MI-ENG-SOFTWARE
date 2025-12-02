@@ -14,6 +14,12 @@ class CriarPlanoIn(serializers.Serializer):
     cronograma_atividades = serializers.CharField(max_length=500)
     mensagem_plano = serializers.CharField(
         max_length=500, required=False, allow_blank=True, allow_null=True)
+    lista_neurodivergencias = serializers.ListField(
+        child=serializers.CharField(), required=False, default=list
+    )
+    lista_metodos = serializers.ListField(
+        child=serializers.CharField(), required=False, default=list
+    )
 
 # vínculos e adições
 

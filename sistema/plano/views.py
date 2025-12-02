@@ -34,6 +34,9 @@ SQL_ATU_ABORD = f"SELECT {SCHEMA}atualizar_abordagem_familia(%s,%s)"
 SQL_ATU_OBJ = f"SELECT {SCHEMA}atualizar_objetivos_tratamento(%s,%s)"
 SQL_ATU_GRAU = f"SELECT {SCHEMA}atualizar_grau_neurodivergencia(%s,%s)"
 SQL_EXCLUIR_ARQ = f"SELECT {SCHEMA}excluir_arquivo_plano(%s,%s)"
+SQL_LISTAR_METODOS = f"SELECT * FROM {SCHEMA}listar_metodos_plano(%s)"
+SQL_LISTAR_NEURO = f"SELECT * FROM {SCHEMA}listar_neurodivergencias_plano(%s)"
+SQL_LISTAR_ANEXOS = f"SELECT * FROM {SCHEMA}listar_anexos_plano(%s)"
 
 
 def _map_db_error(e):
@@ -50,6 +53,8 @@ def criar_plano(request):
     s.is_valid(raise_exception=True)
     d = s.validated_data
 
+    lista_neuros = d["lista_neurodivergencias"]
+    lista_metodos = d["lista_metodos"]
     try:
         with get_conn() as conn, conn.cursor() as cur:
             cur.execute(SQL_CRIAR, (
@@ -59,6 +64,22 @@ def criar_plano(request):
                     "mensagem_plano"),
             ))
             id_plano = cur.fetchone()[0]
+            for neuro_sigla in lista_neuros:
+                cur.execute(
+                    "SELECT Id_Neuro FROM Neurodivergencia WHERE Sigla = %s OR NomeCompleto = %s", (neuro_sigla, neuro_sigla))
+                res = cur.fetchone()
+                if res:
+                    id_neuro = res[0]
+                    cur.execute(SQL_ADD_NEURO, (id_plano, id_neuro))
+            for metodo_nome in lista_metodos:
+                cur.execute(
+                    "SELECT Id_Metodo FROM MetodoAcompanhamento WHERE Nome = %s", (metodo_nome.strip(),))
+                res = cur.fetchone()
+                if res:
+                    id_metodo = res[0]
+                    cur.execute(SQL_ADD_METODO, (id_plano, id_metodo))
+                else:
+                    pass
             return Response({"id_plano": id_plano}, status=status.HTTP_201_CREATED)
     except Exception as e:
         code, msg = _map_db_error(e)
@@ -149,6 +170,24 @@ def buscar_plano_completo(request, id_plano: int):
                 return Response({"detail": "Plano não encontrado"}, status=status.HTTP_404_NOT_FOUND)
             (idp, paciente, terapeuta, familiar, grau, objetivos, abordagem,
              cronograma, mensagem, data_criacao, ass_ter, ass_fam) = row
+
+            # Busca a lista de Neurodivergências
+            cur.execute(SQL_LISTAR_NEURO, (id_plano,))
+            neuro_rows = cur.fetchall()
+            # Transforma em lista de objetos.
+            lista_neuros = [{"sigla": r[0], "nome_completo": r[1]}
+                            for r in neuro_rows]
+            # Busca a lista de Métodos
+            cur.execute(SQL_LISTAR_METODOS, (id_plano,))
+            metodos_rows = cur.fetchall()
+            lista_metodos = [r[0] for r in metodos_rows]
+            # Busca Anexos
+            cur.execute(SQL_LISTAR_ANEXOS, (id_plano,))
+            anexos_rows = cur.fetchall()
+            lista_anexos = [{
+                "id_anexo": r[0], "nome_arquivo": r[1]
+            } for r in anexos_rows]
+
             return Response({
                 "id_plano": idp,
                 "paciente_nome": paciente,
@@ -159,6 +198,9 @@ def buscar_plano_completo(request, id_plano: int):
                 "abordagem_familia": abordagem,
                 "cronograma_atividades": cronograma,
                 "mensagem_plano": mensagem,
+                "lista_neurodivergencias": lista_neuros,
+                "lista_metodos": lista_metodos,
+                "lista_anexos": lista_anexos,
                 "data_criacao": data_criacao,
                 "assinatura_terapeuta": ass_ter,
                 "assinatura_familia": ass_fam

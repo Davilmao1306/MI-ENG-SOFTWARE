@@ -1,13 +1,11 @@
-import React, { useState, useEffect } from 'react';
+import './criar-plano.estilo.css';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { PiUploadSimpleBold, PiLinkBold } from "react-icons/pi";
-import { CampoBuscaPaciente } from '../../componentes/CampoBuscaPaciente';
 import { IconVoltar } from '../../componentes/IconVoltar';
 import { IconSair } from '../../componentes/IconSair';
 import { AdicionarLinkModal } from '../../componentes/AdicionarLinkModal';
 import { UploadModal } from '../../componentes/UploadModal';
-
-import './criar-plano.estilo.css';
 import { useExibirListas } from '../../hooks/useExibirListas';
 
 export function CriarPlanoPage() {
@@ -75,8 +73,14 @@ export function CriarPlanoPage() {
 
   const handleUploadFile = (file) => {
     // Simular o upload do arquivo
-    console.log("Arquivo para upload:", file.name, file);
-    setArquivosAnexados(prev => [...prev, { name: file.name, url: URL.createObjectURL(file) }]);
+    setArquivosAnexados(prev => [
+      ...prev,
+      {
+        name: file.name,
+        url: URL.createObjectURL(file),
+        fileOriginal: file
+      }
+    ]);
   };
 
   const handleRemoveLink = (indexToRemove) => {
@@ -89,13 +93,15 @@ export function CriarPlanoPage() {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    const formData = new FormData(e.target);
+    const arrayMetodos = metodosInput.split(',')
+      .map(m => m.trim())
+      .filter(m => m !== '');
     const dados = {
       id_paciente: id_paciente,
       id_terapeuta: terapeutaAuth.id_terapeuta,
-      // grau_neurodivergencia: neuroSelecionadas,
-      grau_neurodivergencia: `Diagnóstico: ${neuroSelecionadas.join(', ')}. Descrição: ${descNeuro}`,
-      // metodosAplicados: metodosInput,
+      grau_neurodivergencia: descNeuro,
+      lista_neurodivergencias: neuroSelecionadas,
+      lista_metodos: arrayMetodos,
       cronograma_atividades: cronograma,
       objetivos_tratamento: objetivos,
       abordagem_familia: abordagemFamiliares,
@@ -104,6 +110,7 @@ export function CriarPlanoPage() {
       // linksAnexados,
       // arquivosAnexados
     };
+    console.log(dados)
     try {
       const response = await fetch("http://127.0.0.1:8000/plano/plano/criar", {
         method: "POST",
@@ -115,15 +122,29 @@ export function CriarPlanoPage() {
 
       if (!response.ok) {
         const erroData = await response.json();
-        console.error("Erro do backend:", erroData);
-        const msgErro = Object.values(erroData).join(' ');
-        alert(`Erro ao criar plano: ${msgErro}`);
-        throw new Error("Erro na requisição: " + response.status);
+        throw new Error(JSON.stringify(erroData));
       }
       const data = await response.json();
       console.log("Plano criado com sucesso:", data);
       alert(`Plano criado com sucesso! ID: ${data.id_plano}`);
+      if (arquivosAnexados.length > 0) {
+        for (const arquivoObj of arquivosAnexados) {
+          if (arquivoObj.fileOriginal) {
+            const formData = new FormData();
+            formData.append("id_plano", data.id_plano);
+            formData.append("nome_arquivo", arquivoObj.name);
+            formData.append("tipo_mime", arquivoObj.fileOriginal.type);
+            formData.append("arquivo", arquivoObj.fileOriginal); // O blob binário
+
+            await fetch("http://127.0.0.1:8000/plano/plano/anexar-arquivo", {
+              method: "POST",
+              body: formData
+            });
+          }
+        }
+      }
       navigate(`/terapeuta/paciente/${id_paciente}/plano-terapeutico-terapeuta`);
+
     } catch (error) {
       console.error("Erro:", error);
       if (!error.message.includes("Erro na requisição")) {

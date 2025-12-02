@@ -50,21 +50,6 @@ export function TelaInicioTerapeuta() {
                         <p className='numero-pacientes-total'>{meusPacientes.length}</p>
                     </div>
                 </div>
-                {/* <div className='acoes-terapeuta'>
-                    <Link to="/terapeuta/sessao">
-                        <div>
-                            <h3>Sessões</h3>
-                            <p>Visualise e gerencie suas sessões</p>
-                        </div>
-                    </Link>
-                    <Link to="/terapeuta/pacientes">
-                        <div>
-                            <h3>Ver pacientes</h3>
-                            <p>Gerencie e acompanhe o progresso</p>
-                        </div>
-                    </Link>
-
-                </div> */}
             </section>
         </main>
     )

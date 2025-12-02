@@ -1,4 +1,9 @@
-from django.shortcuts import render
+from .serializers import (
+    AtualizarDiarioIn, ExcluirDiarioIn,
+    CriarChecklistIn, AdicionarObservacaoChecklistIn,
+    EnviarMensagemIn, AdicionarMidiaIn, ExcluirMidiaIn,
+    VincularDiarioTerapeutaIn, VincularDiarioFamiliarIn
+)
 from rest_framework.decorators import api_view, parser_classes
 from rest_framework.parsers import MultiPartParser, FormParser
 from rest_framework.response import Response
@@ -6,15 +11,8 @@ from rest_framework import status
 from django.conf import settings
 from psycopg.errors import UndefinedFunction, ForeignKeyViolation, CheckViolation, NotNullViolation
 from db import get_conn
-import traceback
 import logging
 logger = logging.getLogger(__name__)
-from .serializers import (
-    CriarDiarioIn, AtualizarDiarioIn, ExcluirDiarioIn,
-    ListarDiariosPorTerapeutaIn, ListarDiariosPorPacienteIn, BuscarDiarioPorIdIn, CriarChecklistIn, AdicionarObservacaoChecklistIn,
-    EnviarMensagemIn, AdicionarMidiaIn, ExcluirMidiaIn,
-    VincularDiarioTerapeutaIn, VincularDiarioFamiliarIn
-)
 
 SCHEMA = ""
 # SQL Diário Compartilhado
@@ -25,11 +23,12 @@ SQL_LISTAR_POR_PACIENTE = f"SELECT * FROM {SCHEMA}listar_diarios_por_paciente(%s
 SQL_BUSCAR_POR_ID = f"SELECT * FROM {SCHEMA}buscar_diario_por_id(%s)"
 SQL_ATUALIZAR_DIARIO = f"SELECT * FROM {SCHEMA}atualizar_diario_compartilhado(%s,%s,%s)"
 SQL_EXCLUIR_DIARIO = f"SELECT * FROM {SCHEMA}excluir_diario_compartilhado(%s)"
-
+SQL_LISTAR_MENSAGENS_FEED = f"SELECT * FROM {SCHEMA}listar_mensagens_feed(%s)"
 # SQL CHECKLIST E OBSERVAÇÃO
-SQL_CRIAR_CHECKLIST = "INSERT INTO checklist (DataCriacao, Id_Terapeuta, Id_Diario) VALUES (CURRENT_DATE, %s, %s) RETURNING Id_Checklist"
+# SQL_CRIAR_CHECKLIST = "INSERT INTO checklist (DataCriacao, Id_Terapeuta, Id_Diario) VALUES (CURRENT_DATE, %s, %s) RETURNING Id_Checklist"
 SQL_ADICIONAR_OBSERVACAO = "INSERT INTO observacao (Descricao_Observacao, Data_Envio, Id_Checklist, Id_Familiar) VALUES (%s, CURRENT_DATE, %s, %s) RETURNING Id_Observacao"
-
+SQL_CRIAR_CHECKLIST = f"SELECT {SCHEMA}criar_checklist_com_titulo(%s, %s, %s)"
+SQL_ADD_ITEM = f"SELECT {SCHEMA}adicionar_item_checklist(%s, %s)"
 # SQL MENSAGEM
 SQL_ENVIAR_MENSAGEM = "INSERT INTO mensagem (Descricao_Mensagem, Data_Envio, Id_Diario, Id_Familiar, Id_Terapeuta) VALUES (%s, CURRENT_DATE, %s, %s, %s) RETURNING Id_Mensagem"
 
@@ -38,12 +37,12 @@ SQL_ADICIONAR_MIDIA = f"SELECT * FROM {SCHEMA}adicionar_midia(%s,%s,%s,%s,%s,%s,
 SQL_LISTAR_MIDIAS_DIARIO = f"SELECT * FROM {SCHEMA}listar_midias_por_diario(%s)"
 SQL_LISTAR_MIDIAS_OBSERVACAO = f"SELECT * FROM {SCHEMA}listar_midias_por_observacao(%s)"
 SQL_LISTAR_MIDIAS_MENSAGEM = f"SELECT * FROM {SCHEMA}listar_midias_por_mensagem(%s)"
+SQL_LISTAR_CHECKLISTS_PACIENTE = f"SELECT * FROM {SCHEMA}listar_checklists_por_paciente(%s)"
 SQL_EXCLUIR_MIDIA = f"SELECT * FROM {SCHEMA}excluir_midia(%s)"
 
 # SQL DIÁRIO TERAPEUTA/FAMILIAR
 SQL_VINCULAR_TERAPEUTA = "INSERT INTO diarioterapeuta (Id_Diario, Id_Terapeuta) VALUES (%s, %s)"
 SQL_VINCULAR_FAMILIAR = "INSERT INTO diariofamiliar (Id_Diario, Id_Familiar) VALUES (%s, %s)"
-
 
 
 def _map_db_error(e):
@@ -58,44 +57,6 @@ def _map_db_error(e):
     return (status.HTTP_500_INTERNAL_SERVER_ERROR, "Erro interno do servidor.")
 
 
-# Views Diário Compartilhado
-#logger = logging.getLogger(__name__)
-
-# @api_view(["POST"])
-# def criar_diario(request):
-#     s = CriarDiarioIn(data=request.data)
-#     s.is_valid(raise_exception=True)
-#     d = s.validated_data
-
-#     try:
-#         with get_conn() as conn, conn.cursor() as cur:
-#             cur.execute(SQL_CRIAR_DIARIO, (
-#                 d["id_paciente"], d["id_terapeuta"],
-#                 d["titulo"], d["conteudo"]
-#             ))
-#             row = cur.fetchone()
-#             return Response({
-#                 "id_diario": row[0],
-#                 "id_paciente": row[1],
-#                 "id_terapeuta": row[2],
-#                 "titulo": row[3],
-#                 "conteudo": row[4],
-#                 "dataregistro": row[5]
-#             }, status=status.HTTP_201_CREATED)
-#     except Exception as e:
-#         # Log do erro completo
-#         logger.error(f"Erro em criar_diario: {str(e)}")
-#         logger.error(traceback.format_exc())
-        
-#         # Retorna o erro real em desenvolvimento
-#         if settings.DEBUG:
-#             return Response({
-#                 "detail": "Erro interno do servidor",
-#                 "error": str(e),
-#                 "traceback": traceback.format_exc()
-#             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
-#         else:
-#             return Response({"detail": "Erro interno do servidor."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
 
 @api_view(["GET"])
 def listar_diarios(request):
@@ -118,6 +79,7 @@ def listar_diarios(request):
         code, msg = _map_db_error(e)
         return Response({"detail": msg}, status=code)
 
+
 @api_view(["GET"])
 def listar_diarios_por_terapeuta(request, id_terapeuta):
     try:
@@ -138,6 +100,7 @@ def listar_diarios_por_terapeuta(request, id_terapeuta):
         code, msg = _map_db_error(e)
         return Response({"detail": msg}, status=code)
 
+
 @api_view(["GET"])
 def listar_diarios_por_paciente(request, id_paciente):
     try:
@@ -148,10 +111,9 @@ def listar_diarios_por_paciente(request, id_paciente):
             for row in rows:
                 diarios.append({
                     "id_diario": row[0],
-                    "id_terapeuta": row[1],
-                    "titulo": row[2],
-                    "conteudo": row[3],
-                    "dataregistro": row[4]
+                    "titulo": row[1],
+                    "conteudo": row[2],
+                    "datacriacao": row[3]  # nome correto
                 })
             return Response(diarios, status=status.HTTP_200_OK)
     except Exception as e:
@@ -178,6 +140,7 @@ def buscar_diario_por_id(request, id_diario):
         code, msg = _map_db_error(e)
         return Response({"detail": msg}, status=code)
 
+
 @api_view(["PUT"])
 def atualizar_diario(request):
     s = AtualizarDiarioIn(data=request.data)
@@ -201,6 +164,7 @@ def atualizar_diario(request):
     except Exception as e:
         code, msg = _map_db_error(e)
         return Response({"detail": msg}, status=code)
+
 
 @api_view(["DELETE"])
 def excluir_diario(request):
@@ -227,6 +191,8 @@ def excluir_diario(request):
         return Response({"detail": msg}, status=code)
 
 # VIEWS CHECKLIST
+
+
 @api_view(["POST"])
 def criar_checklist(request):
     s = CriarChecklistIn(data=request.data)
@@ -235,7 +201,8 @@ def criar_checklist(request):
 
     try:
         with get_conn() as conn, conn.cursor() as cur:
-            cur.execute(SQL_CRIAR_CHECKLIST, (d["id_terapeuta"], d["id_diario"]))
+            cur.execute(SQL_CRIAR_CHECKLIST,
+                        (d["id_terapeuta"], d["id_diario"]))
             id_checklist = cur.fetchone()[0]
             return Response({
                 "id_checklist": id_checklist,
@@ -246,6 +213,7 @@ def criar_checklist(request):
     except Exception as e:
         code, msg = _map_db_error(e)
         return Response({"detail": msg}, status=code)
+
 
 @api_view(["POST"])
 def adicionar_observacao_checklist(request):
@@ -280,14 +248,14 @@ def enviar_mensagem(request):
 
     if not d.get("id_familiar") and not d.get("id_terapeuta"):
         return Response(
-            {"detail": "Deve informar id_familiar ou id_terapeuta"}, 
+            {"detail": "Deve informar id_familiar ou id_terapeuta"},
             status=status.HTTP_400_BAD_REQUEST
         )
 
     try:
         with get_conn() as conn, conn.cursor() as cur:
             cur.execute(SQL_ENVIAR_MENSAGEM, (
-                d["descricao_mensagem"], d.get("id_diario"), 
+                d["descricao_mensagem"], d.get("id_diario"),
                 d.get("id_familiar"), d.get("id_terapeuta")
             ))
             id_mensagem = cur.fetchone()[0]
@@ -305,6 +273,7 @@ def enviar_mensagem(request):
 
 # VIEWS MÍDIA
 
+
 @api_view(["POST"])
 @parser_classes([MultiPartParser, FormParser])
 def adicionar_midia(request):
@@ -312,65 +281,69 @@ def adicionar_midia(request):
     try:
 
         print("=== DEBUG: Verificando qual função será executada ===")
-        
+
         # Adicione esta linha para ver o SQL que será executado
         print(f"SQL que será executado: {SQL_ADICIONAR_MIDIA}")
         # Log dos dados recebidos
         logger.info(f"Request data: {dict(request.data)}")
         logger.info(f"Request FILES: {list(request.FILES.keys())}")
-        
+
         if 'arquivo' in request.FILES:
             arquivo = request.FILES['arquivo']
-            logger.info(f"Arquivo recebido: {arquivo.name}, tamanho: {arquivo.size}, tipo: {arquivo.content_type}")
-        
+            logger.info(
+                f"Arquivo recebido: {arquivo.name}, tamanho: {arquivo.size}, tipo: {arquivo.content_type}")
+
         s = AdicionarMidiaIn(data=request.data)
         if not s.is_valid():
             logger.error(f"Erros de validação: {s.errors}")
             return Response(s.errors, status=status.HTTP_400_BAD_REQUEST)
-        
+
         d = s.validated_data
         logger.info(f"Dados validados: {d}")
-        
+
         # Resto do código original...
         if not d.get("id_diario") and not d.get("id_observacao") and not d.get("id_mensagem"):
             logger.error("Nenhum vínculo especificado")
             return Response(
-                {"detail": "Deve informar id_diario, id_observacao ou id_mensagem"}, 
+                {"detail": "Deve informar id_diario, id_observacao ou id_mensagem"},
                 status=status.HTTP_400_BAD_REQUEST
             )
 
         arquivo = d['arquivo']
         arquivo_bytes = arquivo.read()
         logger.info(f"Arquivo lido: {len(arquivo_bytes)} bytes")
-        
+
         nome_arquivo = d.get('nomearquivo') or arquivo.name
-        mime_type = d.get('mimetype') or getattr(arquivo, 'content_type', 'application/octet-stream')
-        
-        logger.info(f"Executando SQL: tipo={d['tipo']}, id_diario={d.get('id_diario')}")
+        mime_type = d.get('mimetype') or getattr(
+            arquivo, 'content_type', 'application/octet-stream')
+
+        logger.info(
+            f"Executando SQL: tipo={d['tipo']}, id_diario={d.get('id_diario')}")
 
         with get_conn() as conn, conn.cursor() as cur:
             logger.info("Conectado ao banco, executando query...")
             cur.execute(SQL_ADICIONAR_MIDIA, (
                 d["tipo"], arquivo_bytes, nome_arquivo, mime_type,
-                d.get("id_diario"), d.get("id_observacao"), d.get("id_mensagem")
+                d.get("id_diario"), d.get(
+                    "id_observacao"), d.get("id_mensagem")
             ))
             row = cur.fetchone()
             logger.info(f"Resposta do banco: {row}")
-            
+
             return Response({
                 "id_midia": row[0],
                 "tipo": row[1],
-                "nomearquivo": row[2], 
+                "nomearquivo": row[2],
                 "mimetype": row[3],
                 "dataupload": row[4],
                 "id_diario": row[5],
                 "id_observacao": row[6],
                 "id_mensagem": row[7]
             }, status=status.HTTP_201_CREATED)
-            
+
     except Exception as e:
         logger.error(f"ERRO NO UPLOAD: {str(e)}", exc_info=True)
-        
+
         if settings.DEBUG:
             return Response({
                 "detail": "Erro interno do servidor",
@@ -378,6 +351,7 @@ def adicionar_midia(request):
             }, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
         else:
             return Response({"detail": "Erro interno do servidor."}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
 
 @api_view(["GET"])
 def listar_midias_por_diario(request, id_diario):
@@ -399,7 +373,8 @@ def listar_midias_por_diario(request, id_diario):
     except Exception as e:
         code, msg = _map_db_error(e)
         return Response({"detail": msg}, status=code)
-    
+
+
 @api_view(["GET"])
 def listar_midias_por_observacao(request, id_observacao):
     try:
@@ -421,6 +396,7 @@ def listar_midias_por_observacao(request, id_observacao):
         code, msg = _map_db_error(e)
         return Response({"detail": msg}, status=code)
 
+
 @api_view(["GET"])
 def listar_midias_por_mensagem(request, id_mensagem):
     try:
@@ -441,6 +417,7 @@ def listar_midias_por_mensagem(request, id_mensagem):
     except Exception as e:
         code, msg = _map_db_error(e)
         return Response({"detail": msg}, status=code)
+
 
 @api_view(["DELETE"])
 def excluir_midia(request):
@@ -475,7 +452,8 @@ def vincular_diario_terapeuta(request):
 
     try:
         with get_conn() as conn, conn.cursor() as cur:
-            cur.execute(SQL_VINCULAR_TERAPEUTA, (d["id_diario"], d["id_terapeuta"]))
+            cur.execute(SQL_VINCULAR_TERAPEUTA,
+                        (d["id_diario"], d["id_terapeuta"]))
             return Response({
                 "detail": "Diário vinculado ao terapeuta",
                 "id_diario": d["id_diario"],
@@ -485,6 +463,7 @@ def vincular_diario_terapeuta(request):
         code, msg = _map_db_error(e)
         return Response({"detail": msg}, status=code)
 
+
 @api_view(["POST"])
 def vincular_diario_familiar(request):
     s = VincularDiarioFamiliarIn(data=request.data)
@@ -493,12 +472,117 @@ def vincular_diario_familiar(request):
 
     try:
         with get_conn() as conn, conn.cursor() as cur:
-            cur.execute(SQL_VINCULAR_FAMILIAR, (d["id_diario"], d["id_familiar"]))
+            cur.execute(SQL_VINCULAR_FAMILIAR,
+                        (d["id_diario"], d["id_familiar"]))
             return Response({
                 "detail": "Diário vinculado ao familiar",
                 "id_diario": d["id_diario"],
                 "id_familiar": d["id_familiar"]
             }, status=status.HTTP_201_CREATED)
+    except Exception as e:
+        code, msg = _map_db_error(e)
+        return Response({"detail": msg}, status=code)
+
+
+
+@api_view(["GET"])
+def listar_feed_completo(request, id_paciente):
+    """
+    Versão Corrigida: Busca MENSAGENS (tabela mensagem) e CHECKLISTS.
+    """
+    feed = []
+
+    try:
+        with get_conn() as conn, conn.cursor() as cur:
+            # --- PARTE 1: Buscar Mensagens (O que estava faltando) ---
+            # Antes você usava SQL_LISTAR_POR_PACIENTE (que lista Diários)
+            # Agora usamos SQL_LISTAR_MENSAGENS_FEED (que lista as mensagens dentro do diário)
+            cur.execute(SQL_LISTAR_MENSAGENS_FEED, (id_paciente,))
+            msg_rows = cur.fetchall()
+
+            for row in msg_rows:
+                # O SQL retorna: id_mensagem, id_diario, autor_tipo, data, descricao, id_ter, id_fam
+                id_mensagem = row[0]
+                
+                # Buscar mídias vinculadas a ESTA MENSAGEM
+                cur.execute(SQL_LISTAR_MIDIAS_MENSAGEM, (id_mensagem,))
+                midias_rows = cur.fetchall()
+                attachments = []
+                for m in midias_rows:
+                    attachments.append({
+                        "type": m[1], 
+                        "url": f"http://localhost:8000/media/{m[3]}",
+                        "name": m[3]
+                    })
+
+                feed.append({
+                    "id": f"m_{id_mensagem}", # Prefixo m_ para saber que é mensagem
+                    "db_id": id_mensagem,
+                    "type": "entrada", # Front trata como entrada de texto
+                    "autor": row[2], # Autor (Terapeuta/Familiar)
+                    "data": row[3],
+                    "texto": row[4], # O conteúdo da mensagem "Teste"
+                    "attachments": attachments
+                })
+
+            # --- PARTE 2: Buscar Checklists (Mantém igual) ---
+            cur.execute(SQL_LISTAR_CHECKLISTS_PACIENTE, (id_paciente,))
+            check_rows = cur.fetchall()
+
+            for row in check_rows:
+                feed.append({
+                    "id": f"c_{row[0]}",
+                    "db_id": row[0],
+                    "type": "checklist",
+                    "autor": "Terapeuta", 
+                    "data": row[2],
+                    "titulo": row[1],
+                    "itens": [] 
+                })
+
+        # Ordenar tudo por data (mais recente primeiro)
+        # Proteção extra caso data seja None
+        feed.sort(key=lambda x: str(x['data']) if x['data'] else '', reverse=True)
+
+        return Response(feed, status=status.HTTP_200_OK)
+
+    except Exception as e:
+        # Dica: O print ajuda a ver o erro real no terminal do Python
+        print(f"ERRO FEED: {e}") 
+        code, msg = _map_db_error(e)
+        return Response({"detail": msg}, status=code)
+
+@api_view(["POST"])
+def criar_checklist(request):
+    # Recebe: id_terapeuta, id_diario e TITULO
+    d = request.data
+    try:
+        with get_conn() as conn, conn.cursor() as cur:
+            cur.execute(SQL_CRIAR_CHECKLIST, (
+                d["id_terapeuta"], 
+                d["id_diario"], 
+                d.get("titulo", "Sem Título") # Padrão caso não venha
+            ))
+            id_checklist = cur.fetchone()[0]
+            
+            return Response({
+                "id_checklist": id_checklist,
+                "titulo": d.get("titulo"),
+                "id_diario": d["id_diario"]
+            }, status=status.HTTP_201_CREATED)
+    except Exception as e:
+        code, msg = _map_db_error(e)
+        return Response({"detail": msg}, status=code)
+
+@api_view(["POST"])
+def adicionar_item_checklist(request):
+    # Recebe: descricao, id_checklist
+    d = request.data
+    try:
+        with get_conn() as conn, conn.cursor() as cur:
+            cur.execute(SQL_ADD_ITEM, (d["descricao"], d["id_checklist"]))
+            id_item = cur.fetchone()[0]
+            return Response({"id_item": id_item}, status=status.HTTP_201_CREATED)
     except Exception as e:
         code, msg = _map_db_error(e)
         return Response({"detail": msg}, status=code)
