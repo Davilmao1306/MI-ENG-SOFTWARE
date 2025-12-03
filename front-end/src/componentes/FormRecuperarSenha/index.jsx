@@ -9,22 +9,18 @@ import { useState } from 'react';
 export function FormRecuperarSenha() {
     const [email, setEmail] = useState("")
 
-    const enviarEmail = async (event) => {
-        event.preventDefault()
-        try {
-            const resposta = await fetch("endpoint que irá ser criado", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                body: JSON.stringify({ email })
-            })
-            if (!resposta.ok) {
-                alert("Email não encontrado ou erro no servidor.")
-                return
-            }
-            alert("Se o email existir, enviaremos um link de recuperação!")
-        } catch (erro) {
-            console.error(erro)
-            alert("Erro ao enviar solicitação. Tente novamente.")
+    const enviarEmail = async (e) => {
+        e.preventDefault();
+        const res = await fetch('http://localhost:8000/login/auth/esqueci-senha', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ email })
+        });
+
+        if (res.ok) {
+            alert('Verifique seu e-mail (ou o terminal do backend se estiver em teste).');
+        } else {
+            alert('Erro ao solicitar.');
         }
     }
     return (

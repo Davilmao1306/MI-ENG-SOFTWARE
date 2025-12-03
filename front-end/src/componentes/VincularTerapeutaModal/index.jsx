@@ -33,8 +33,8 @@ export function VincularTerapeutaModal({ paciente, onClose, onSave }) {
 
   const filteredSearchTerapeutas = terapeutas.filter(
     (t) =>
-    (t.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      t.email.toLowerCase().includes(searchTerm.toLowerCase()))
+    (t.nome.toLowerCase().includes(searchTerm.toLowerCase()) )
+    // ||      t.email.toLowerCase().includes(searchTerm.toLowerCase()))
   );
 
 

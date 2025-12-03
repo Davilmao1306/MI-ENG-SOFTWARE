@@ -6,7 +6,7 @@ import './card-plano-terapeutico.estilo.css';
 import { Link, useParams } from 'react-router-dom';
 
 
-export function PlanoCard({ data, status, descricao, userRole, plano }) {
+export function PlanoCard({ data, status, descricao, userRole, plano,onFeedback, onViewFeedbacks,  }) {
   const [isOpen, setIsOpen] = useState(false);
   const { id_paciente } = useParams();
   const toggleOpen = () => {
@@ -14,7 +14,13 @@ export function PlanoCard({ data, status, descricao, userRole, plano }) {
   };
 
   // Determina se o usuário é um terapeuta
+  let linkPlano = useState();
   const isTerapeuta = userRole === 'terapeuta';
+  if (isTerapeuta) {
+    linkPlano = `/paciente/${id_paciente}/acessar-plano/${plano.id_plano}`;
+  } else {
+    linkPlano = `/familiar-paciente/${id_paciente}/acessar-plano/${plano.id_plano}`;
+  }
 
   return (
     <div className={`plano-card-container ${isOpen ? 'is-open' : ''}`}>
@@ -32,7 +38,7 @@ export function PlanoCard({ data, status, descricao, userRole, plano }) {
 
           <div className="plano-card-acoes">
 
-            <Link to={`/paciente/${id_paciente}/acessar-plano/${plano.id_plano}`} className="plano-card-botao-acao">
+            <Link to={linkPlano} className="plano-card-botao-acao">
               <IoChevronForwardOutline /> Acessar Plano
             </Link>
 
@@ -44,15 +50,21 @@ export function PlanoCard({ data, status, descricao, userRole, plano }) {
 
 
             {isTerapeuta ? (
-
-              <Link to="/ver-feedbacks-plano" className="plano-card-botao-acao">
+              <button
+                type="button"
+                className="plano-card-botao-acao"
+                onClick={onViewFeedbacks}
+              >
                 <PiChatCircleDots /> Feedbacks
-              </Link>
+              </button>
             ) : (
-
-              <Link to="/adicionar-feedback-plano" className="plano-card-botao-acao">
+              <button
+                type="button"
+                className="plano-card-botao-acao"
+                onClick={onFeedback}
+              >
                 <PiChatCircleDots /> Dar Feedback
-              </Link>
+              </button>
             )}
 
 

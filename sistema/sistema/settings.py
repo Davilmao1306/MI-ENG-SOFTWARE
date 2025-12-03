@@ -7,6 +7,7 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'changeme-in-production')
 DEBUG = os.getenv('DEBUG', '1') == '1'
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '*').split(',')
 
+
 INSTALLED_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
@@ -105,6 +106,13 @@ AUTH_USER_MODEL = 'contas.Usuario'
 LOGIN_REDIRECT_URL = '/'
 LOGOUT_REDIRECT_URL = '/'
 LOGIN_URL = '/entrar/'
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.gmail.com'
+EMAIL_PORT = 587
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = 'neurolinkadm@gmail.com'
+EMAIL_HOST_PASSWORD = 'ehsm jkkw xrqc dacr' # Não é a senha normal, é a App Password
 
 
 CORS_ALLOWED_ORIGINS = [

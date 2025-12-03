@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './vincular-familiar.estilo.css';
 import { FiX, FiSearch, FiUser, FiPlus } from 'react-icons/fi';
+import { useExibirListas } from '../../hooks/useExibirListas';
 
 
 
@@ -12,17 +13,9 @@ export function VincularFamiliarModal({ paciente, onClose, onSave }) {
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedFamiliares, setSelectedFamiliares] = useState([]);
   const [familiaresAtuais, setFamiliaresAtuais] = useState([]);
+  let isSelected;
 
-  const fetchFamiliares = () => {
-    fetch(mockAllFamiliares)
-      .then((res) => res.json())
-      .then((data) => setFamiliares(data))
-      .catch((err) => console.error("Erro ao buscar familiares:", err));
-  };
-
-  useEffect(() => {
-    fetchFamiliares();
-  }, []);
+  useExibirListas(mockAllFamiliares, setFamiliares);
   
   useEffect(() => {
     if (paciente && paciente.familiarVinculado) {
@@ -37,8 +30,8 @@ export function VincularFamiliarModal({ paciente, onClose, onSave }) {
 
   const filteredSearchFamiliares = familiares.filter(
     (f) =>
-    (f.nome.toLowerCase().includes(searchTerm.toLowerCase()) ||
-      f.email.toLowerCase().includes(searchTerm.toLowerCase()))
+    (f.nome.toLowerCase().includes(searchTerm.toLowerCase()) )
+    // ||      f.email.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
   const familiareaParaExibirNaListaDeSelecao = filteredSearchFamiliares.filter(
@@ -97,7 +90,8 @@ export function VincularFamiliarModal({ paciente, onClose, onSave }) {
               <ul className="familiares-list current-familiares">
                 {familiaresAtuais.map((f) => (
                   <li key={f.id_familiar} className="familiares-item">
-                    <FiUser /> {f.nome} ({f.parentesco})
+                    <FiUser /> {f.nome} 
+                    {/* ({f.parentesco}) */}
                     <button className="remove-button" onClick={() => handleRemoveFamiliarAtual(f.id_familiar)}>
                       <FiX />
                     </button>
@@ -126,12 +120,24 @@ export function VincularFamiliarModal({ paciente, onClose, onSave }) {
               <ul className="familiares-list available-familiares">
                 {familiareaParaExibirNaListaDeSelecao.map((f) => (
                   <li key={f.id_familiar} className="familiares-item">
-                    <FiUser /> {f.nome} ({f.parentesco})
+                    <FiUser /> {f.nome} 
+                    {/* ({f.parentesco}) */}
                     <input
                       type="checkbox"
-                      checked={selectedFamiliares.includes(f.id_familiar)}
+                      checked={isSelected = selectedFamiliares.includes(f.id_familiar)}
                       onChange={() => handleCheckboxChange(f.id_familiar)}
                     />
+                    {isSelected && (
+                          <div className="parentesco-input-container">
+                              <input 
+                                type="text" 
+                                placeholder="Qual o parentesco? (Ex: Pai, Mãe)"
+                                className="parentesco-input"
+                                value={parentescos[f.id_familiar] || ''}
+                                onChange={(e) => handleParentescoChange(f.id_familiar, e.target.value)}
+                              />
+                          </div>
+                      )}
                   </li>
                 ))}
               </ul>

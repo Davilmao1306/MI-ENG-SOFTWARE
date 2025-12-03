@@ -13,7 +13,7 @@ export function TerapeutaCard({ terapeuta, onRemoverOuInativar }) {
             </div>
             <div className="terapeuta-card-info">
                 <p><strong>ID:</strong> {terapeuta.id_terapeuta}</p>
-                <p><strong>E-mail:</strong> {terapeuta.email}</p>
+                <p><strong>Data de Nascimento:</strong> {terapeuta.datanascimento}</p>
                 <p><strong>Especialidade:</strong> {terapeuta.especialidade}</p>
                 <p><strong>CRP:</strong> {terapeuta.crp}</p>
             </div>

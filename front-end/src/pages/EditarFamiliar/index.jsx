@@ -88,16 +88,13 @@ export function EditarFamiliar() {
       delete dadosParaEnviar.senha;
       delete dadosParaEnviar.confirmarSenha;
     } else {
-      // Remove o campo de confirmação antes de enviar
       delete dadosParaEnviar.confirmarSenha;
     }
-
-    // Ajuste a URL para o seu endpoint de familiares
     const urlUpdateFamiliar = `http://localhost:8000/cadastro/editar-familiar/${id_familiar}/`;
     console.log('Enviando dados atualizados para a API:', dadosParaEnviar);
 
     fetch(urlUpdateFamiliar, {
-      method: 'PUT', // Ou 'PATCH'
+      method: 'PUT',
       headers: {
         'Content-Type': 'application/json',
       },
@@ -112,7 +109,6 @@ export function EditarFamiliar() {
       .then(data => {
         console.log('Familiar atualizado com sucesso:', data);
         alert('Alterações salvas com sucesso!');
-        // Redireciona para a lista de familiares
         navigate('/clinica/lista-de-familiares');
       })
       .catch(err => {
@@ -122,7 +118,6 @@ export function EditarFamiliar() {
   };
 
   const handleCancelar = () => {
-    // Redireciona para a lista de familiares
     navigate('/clinica/lista-de-familiares');
   };
 
@@ -187,7 +182,7 @@ export function EditarFamiliar() {
               />
             </div>
 
-            {/* Campos de Senha */}
+
             <div className="form-row">
               <div className="form-group col-md-6">
                 <label htmlFor="senha">Nova Senha (deixe em branco para não alterar)</label>
@@ -197,7 +192,6 @@ export function EditarFamiliar() {
                   name="senha"
                   value={familiar.senha || ''}
                   onChange={handleChange}
-                // Senha não é obrigatória na edição
                 />
               </div>
               <div className="form-group col-md-6">
@@ -208,7 +202,6 @@ export function EditarFamiliar() {
                   name="confirmarSenha"
                   value={familiar.confirmarSenha || ''}
                   onChange={handleChange}
-                  // Obrigatório apenas se uma nova senha for digitada
                   required={!!familiar.senha}
                 />
               </div>

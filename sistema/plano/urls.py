@@ -22,4 +22,6 @@ urlpatterns = [
     path("plano/atualizar-objetivos", views.atualizar_objetivos),
     path("plano/atualizar-grau-neuro", views.atualizar_grau_neurodivergencia),
     path("plano/excluir-arquivo", views.excluir_arquivo_plano),
+    path("plano/feedback/adicionar", views.adicionar_feedback),
+    path("plano/<int:id_plano>/feedbacks", views.listar_feedbacks),
 ]

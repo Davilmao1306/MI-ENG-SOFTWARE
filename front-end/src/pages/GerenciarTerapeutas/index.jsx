@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom';
 import './gerenciar-terapeutas.estilo.css'; // O CSS da tela principal
 import { useExibirListas } from '../../hooks/useExibirListas';
 
-export function GerenciarTerapeutas() {
+export function GerenciarTerapeutas() { 
   const [terapeutas, setTerapeutas] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   useExibirListas("http://localhost:8000/cadastro/lista-terapeutas", setTerapeutas)
@@ -27,39 +27,29 @@ export function GerenciarTerapeutas() {
 
   // Função para lidar com a ação de Remover/Inativar
   const handleRemoverOuInativarTerapeuta = (terapeuta) => {
-    // Aqui você implementaria a lógica para remover ou inativar o terapeuta
-    // Geralmente, isso envolveria:
-    // 1. Uma requisição DELETE ou PATCH (para inativar) à sua API.
-    // 2. Uma confirmação do usuário (ex: alert, modal de confirmação).
-    // 3. Atualizar o estado 'terapeutas' após a operação bem-sucedida.
-
     const confirmAction = window.confirm(
       `Deseja realmente remover/inativar o terapeuta ${terapeuta.nome} (ID: ${terapeuta.id_terapeuta})?`
     );
 
     if (confirmAction) {
       console.log(`Ação de remover/inativar para o terapeuta: ${terapeuta.nome}`);
-      // Exemplo de requisição (AJUSTE PARA SUA API REAL)
-      // fetch(`http://localhost:8000/cadastro/terapeutas/${terapeuta.id_terapeuta}/`, {
-      //   method: 'DELETE', // Ou 'PATCH' para inativar
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //   },
-      //   // body: JSON.stringify({ ativo: false }) // Se for para inativar
-      // })
-      // .then(response => {
-      //   if (response.ok) {
-      //     alert('Terapeuta removido/inativado com sucesso!');
-      //     fetchTerapeutas(); // Recarrega a lista de terapeutas
-      //   } else {
-      //     alert('Erro ao remover/inativar terapeuta.');
-      //   }
-      // })
-      // .catch(error => console.error('Erro na requisição:', error));
-
-      // Por enquanto, apenas um console.log e recarregar para simular
-      alert(`Terapeuta ${terapeuta.nome} (ID: ${terapeuta.id_terapeuta}) seria removido/inativado.`);
-      fetchTerapeutas(); // Recarrega a lista para refletir a mudança (se fosse real)
+      fetch(`http://localhost:8000/cadastro/terapeuta/excluir/${terapeuta.id_terapeuta}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then(response => {
+        if (response.ok) {
+          alert('Terapeuta removido/inativado com sucesso!');
+          fetch("http://localhost:8000/cadastro/lista-terapeutas")
+              .then(r => r.json())
+              .then(data => setTerapeutas(data));
+        } else {
+          alert('Erro ao remover/inativar terapeuta.');
+        }
+      })
+      .catch(error => console.error('Erro na requisição:', error));
     }
   };
 

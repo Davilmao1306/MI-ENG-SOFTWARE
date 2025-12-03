@@ -8,6 +8,9 @@ import { Link } from 'react-router-dom';
 import './gerenciar-familiares.estilo.css';
 import { useExibirListas } from '../../hooks/useExibirListas';
 
+
+
+
 export function GerenciarFamiliares() {
   const [familiares, setFamiliares] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
@@ -28,32 +31,31 @@ export function GerenciarFamiliares() {
 
   const handleRemoverOuInativarFamiliar = (familiar) => {
     const confirmAction = window.confirm(
-      `Deseja realmente remover/inativar o familiar ${familiar.nome} (ID: ${familiar.id_familiar})?`
+      `Deseja realmente remover/inativar o familiar ${familiar.nome}?`
     );
 
     if (confirmAction) {
-      // << ALERTA: AJUSTE ESTA URL PARA A SUA API DE REMOÇÃO/INATIVAÇÃO DE FAMILIAR >>
-      fetch(`http://localhost:8000/cadastro/familiares/${familiar.id_familiar}/`, {
-        method: 'DELETE', // Ou 'PATCH' se for inativar
+      fetch(`http://localhost:8000/cadastro/familiar/excluir/${familiar.id_familiar}`, {
+        method: 'DELETE',
         headers: {
           'Content-Type': 'application/json',
-          // 'Authorization': `Bearer ${seuTokenAqui}` // Se precisar de autenticação
         },
       })
-        .then(response => {
-          if (response.ok) {
-            alert(`Familiar ${familiar.nome} removido/inativado com sucesso!`);
-            fetchFamiliares(); // Recarrega a lista
+        .then(async (res) => {
+          if (res.ok) {
+            alert('Familiar removido com sucesso!');
+
+            fetch("http://localhost:8000/cadastro/lista-familiares")
+              .then(r => r.json())
+              .then(data => setFamiliares(data));
           } else {
-            return response.json().then(errorData => {
-              alert(`Erro ao remover/inativar familiar: ${errorData.detail || response.statusText}`);
-              console.error('Erro detalhado da API:', errorData);
-            });
+            const errorData = await res.json();
+            alert(`Erro ao remover: ${errorData.detail}`);
           }
         })
-        .catch(error => {
-          alert('Erro de conexão ao tentar remover/inativar familiar.');
+        .catch((error) => {
           console.error('Erro na requisição:', error);
+          alert('Erro de conexão ao tentar remover.');
         });
     }
   };

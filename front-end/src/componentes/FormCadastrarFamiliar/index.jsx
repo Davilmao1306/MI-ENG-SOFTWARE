@@ -149,7 +149,7 @@ export function FormCadastrarFamiliar() {
                         <CampoDeEntrada
                             type={mostrarSenha ? 'text' : 'password'}
                             name='firstPasswordFamiliar'
-                            placeholder='Digite seu senha'
+                            placeholder='Digite sua senha'
                             required
                             value={senha}
                             onChange={(e) => setSenha(e.target.value)}
@@ -179,7 +179,7 @@ export function FormCadastrarFamiliar() {
                         <CampoDeEntrada
                             type={mostrarSenha ? 'text' : 'password'}
                             name='PasswordFamiliarRepetida'
-                            placeholder='Digite seu senha novamente'
+                            placeholder='Digite sua senha novamente'
                             required
                             value={confirmaSenha}
                             onChange={(e) => setConfirmaSenha(e.target.value)}

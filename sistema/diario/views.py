@@ -57,7 +57,6 @@ def _map_db_error(e):
     return (status.HTTP_500_INTERNAL_SERVER_ERROR, "Erro interno do servidor.")
 
 
-
 @api_view(["GET"])
 def listar_diarios(request):
     try:
@@ -119,6 +118,7 @@ def listar_diarios_por_paciente(request, id_paciente):
     except Exception as e:
         code, msg = _map_db_error(e)
         return Response({"detail": msg}, status=code)
+
 
 @api_view(["GET"])
 def buscar_diario_por_id(request, id_diario):
@@ -484,7 +484,6 @@ def vincular_diario_familiar(request):
         return Response({"detail": msg}, status=code)
 
 
-
 @api_view(["GET"])
 def listar_feed_completo(request, id_paciente):
     """
@@ -503,26 +502,32 @@ def listar_feed_completo(request, id_paciente):
             for row in msg_rows:
                 # O SQL retorna: id_mensagem, id_diario, autor_tipo, data, descricao, id_ter, id_fam
                 id_mensagem = row[0]
-                
+
                 # Buscar mídias vinculadas a ESTA MENSAGEM
                 cur.execute(SQL_LISTAR_MIDIAS_MENSAGEM, (id_mensagem,))
                 midias_rows = cur.fetchall()
                 attachments = []
                 for m in midias_rows:
+                    base64_string = m[2]
+                    mime_type = m[4]
+                    if base64_string:
+                        url_imagem = f"data:{mime_type};base64,{base64_string}"
+                    else:
+                        url_imagem = ""
                     attachments.append({
-                        "type": m[1], 
-                        "url": f"http://localhost:8000/media/{m[3]}",
+                        "type": m[1],
+                        "url": url_imagem,  
                         "name": m[3]
                     })
 
                 feed.append({
-                    "id": f"m_{id_mensagem}", # Prefixo m_ para saber que é mensagem
-                    "db_id": id_mensagem,
-                    "type": "entrada", # Front trata como entrada de texto
-                    "autor": row[2], # Autor (Terapeuta/Familiar)
-                    "data": row[3],
-                    "texto": row[4], # O conteúdo da mensagem "Teste"
-                    "attachments": attachments
+                    "id": f"m_{row[0]}",
+                    "db_id": row[0],
+                    "type": "entrada",
+                    "autor": row[2], # <--- Pega o nome vindo do banco
+                    "data": row[3],  
+                    "texto": row[4],
+                    "attachments": attachments # (sua lógica de anexo continua aqui)
                 })
 
             # --- PARTE 2: Buscar Checklists (Mantém igual) ---
@@ -534,23 +539,25 @@ def listar_feed_completo(request, id_paciente):
                     "id": f"c_{row[0]}",
                     "db_id": row[0],
                     "type": "checklist",
-                    "autor": "Terapeuta", 
-                    "data": row[2],
+                    "autor": row[3], 
                     "titulo": row[1],
-                    "itens": row[3] 
+                    "data": row[2],  
+                    "itens": row[4]  
                 })
 
         # Ordenar tudo por data (mais recente primeiro)
         # Proteção extra caso data seja None
-        feed.sort(key=lambda x: str(x['data']) if x['data'] else '', reverse=True)
+        feed.sort(key=lambda x: str(x['data'])
+                  if x['data'] else '', reverse=True)
 
         return Response(feed, status=status.HTTP_200_OK)
 
     except Exception as e:
         # Dica: O print ajuda a ver o erro real no terminal do Python
-        print(f"ERRO FEED: {e}") 
+        print(f"ERRO FEED: {e}")
         code, msg = _map_db_error(e)
         return Response({"detail": msg}, status=code)
+
 
 @api_view(["POST"])
 def criar_checklist(request):
@@ -559,12 +566,12 @@ def criar_checklist(request):
     try:
         with get_conn() as conn, conn.cursor() as cur:
             cur.execute(SQL_CRIAR_CHECKLIST, (
-                d["id_terapeuta"], 
-                d["id_diario"], 
-                d.get("titulo", "Sem Título") # Padrão caso não venha
+                d["id_terapeuta"],
+                d["id_diario"],
+                d.get("titulo", "Sem Título")  # Padrão caso não venha
             ))
             id_checklist = cur.fetchone()[0]
-            
+
             return Response({
                 "id_checklist": id_checklist,
                 "titulo": d.get("titulo"),
@@ -573,6 +580,7 @@ def criar_checklist(request):
     except Exception as e:
         code, msg = _map_db_error(e)
         return Response({"detail": msg}, status=code)
+
 
 @api_view(["POST"])
 def adicionar_item_checklist(request):
@@ -586,7 +594,8 @@ def adicionar_item_checklist(request):
         code, msg = _map_db_error(e)
         return Response({"detail": msg}, status=code)
 
-@api_view(["PUT"]) # Usamos PUT pois é uma atualização
+
+@api_view(["PUT"])  # Usamos PUT pois é uma atualização
 def atualizar_status_item(request):
     # O React vai mandar: { "id": 1, "checked": true }
     d = request.data
@@ -594,7 +603,7 @@ def atualizar_status_item(request):
         with get_conn() as conn, conn.cursor() as cur:
             # Mapeamos 'id' do JSON para p_id_item e 'checked' para p_is_feito
             cur.execute(SQL_ATUALIZAR_ITEM, (d["id"], d["checked"]))
-            
+
             return Response({"detail": "Status atualizado"}, status=status.HTTP_200_OK)
     except Exception as e:
         code, msg = _map_db_error(e)

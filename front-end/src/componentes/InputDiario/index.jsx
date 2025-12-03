@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 import { BsChatText, BsUpload, BsListCheck, BsLink45Deg, BsX } from 'react-icons/bs';
 import './input-diario.estilo.css';
 
-export function InputDiario({ isOpen, onClose, onPost, isTerapeuta }) {
+export function InputDiario({ isOpen, onClose, onPost, isTerapeuta, autorNome }) {
   const [activeTab, setActiveTab] = useState('entrada'); 
   const [textoEntrada, setTextoEntrada] = useState('');
   const [uploadedFile, setUploadedFile] = useState(null); 
@@ -47,7 +47,8 @@ export function InputDiario({ isOpen, onClose, onPost, isTerapeuta }) {
         attachments.push({
           type: 'file',
           url: uploadedFileUrl,
-          name: uploadedFile.name
+          name: uploadedFile.name,
+          file: uploadedFile
         });
       }
 
@@ -64,7 +65,7 @@ export function InputDiario({ isOpen, onClose, onPost, isTerapeuta }) {
           type: 'entrada',
           texto: textoEntrada.trim(),
           attachments: attachments, 
-          autor: 'Nome do Usuário Logado' 
+          autor: autorNome,
         };
         isValid = true;
       }
@@ -73,7 +74,7 @@ export function InputDiario({ isOpen, onClose, onPost, isTerapeuta }) {
         type: 'checklist',
         titulo: checklistTitle.trim(),
         itens: checklistItems.filter(item => item.text.trim()).map(item => ({ text: item.text.trim(), checked: false })),
-        autor: 'Nome do Usuário Logado', 
+        autor: autorNome, 
       };
       isValid = true;
     }
@@ -151,10 +152,11 @@ export function InputDiario({ isOpen, onClose, onPost, isTerapeuta }) {
         
             <div className="compositor-anexo-inline">
                 <label htmlFor="file-upload" className="btn-anexo-upload">
-                  <BsUpload /> Enviar Foto/Arquivo
+                  <BsUpload /> Enviar Foto
                   <input
                     id="file-upload"
                     type="file"
+                    accept=".jpeg,.png,.jpg,.gif,.webp,.svg"
                     style={{ display: 'none' }}
                     onChange={(e) => setUploadedFile(e.target.files[0])}
                     onClick={(e) => e.target.value = null} 

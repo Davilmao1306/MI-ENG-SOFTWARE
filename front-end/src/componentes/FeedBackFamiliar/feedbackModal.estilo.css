@@ -1,0 +1,135 @@
+.feedback-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.35);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+}
+
+/* CAIXA DO MODAL */
+.feedback-modal {
+  background: #ffffff;
+  border-radius: 12px;
+  width: 480px;
+  max-width: 95%;
+  padding: 25px 28px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+}
+
+.feedback-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.feedback-header h2 {
+  margin: 0;
+  font-size: 20px;
+}
+
+.close-button {
+  border: none;
+  background: transparent;
+  font-size: 22px;
+  cursor: pointer;
+}
+
+/* CAMPOS */
+.feedback-field {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 12px;
+}
+
+.feedback-field label {
+  margin-bottom: 4px;
+  font-size: 14px;
+  font-weight: 500;
+}
+
+.feedback-field select,
+.feedback-field textarea {
+  border: 1px solid #d0d0d0;
+  border-radius: 12px;
+  padding: 10px 14px;
+  font-size: 15px;
+  outline: none;
+  transition: border-color 0.2s ease;
+}
+
+.feedback-field select:focus,
+.feedback-field textarea:focus {
+  border-color: #93D9FA; /* azul da paleta */
+}
+
+.feedback-field textarea {
+  min-height: 80px;
+  resize: vertical;
+}
+
+/* EMOJIS DE SENTIMENTO */
+.sentiment-group {
+  display: flex;
+  gap: 10px;
+}
+
+.sentiment-btn {
+  width: 52px;
+  height: 52px;
+  border-radius: 12px;
+  border: 1px solid #d0d0d0;
+  background: #f9fafb;
+  cursor: pointer;
+  font-size: 22px;
+  transition: all 0.2s ease;
+}
+
+.sentiment-btn:hover {
+  border-color: #93D9FA;
+  background: #eef9ff;
+}
+
+.sentiment-selected {
+  border-color: #007AFF;
+  background: #e0f0ff;
+}
+
+/* RODAPÉ DO MODAL (BOTÕES) */
+.feedback-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+/* CANCELAR */
+.btn-secondary {
+  background: transparent;
+  border: 1px solid #d0d0d0;
+  padding: 10px 22px;
+  border-radius: 30px;
+  cursor: pointer;
+  font-size: 14px;
+}
+
+/* ENVIAR – mesmo estilo dos botões azuis dos cards */
+.btn-primary {
+  background: #93D9FA;
+  color: black;
+  border: none;
+  padding: 10px 22px;
+  border-radius: 30px;
+  cursor: pointer;
+  font-weight: bold;
+  font-size: 14px;
+  transition: background-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.btn-primary:hover {
+  background-color: #8ABED9;
+  box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+}

@@ -45,14 +45,15 @@ class EnviarMensagemIn(serializers.Serializer):
 
 # MÍDIA
 class AdicionarMidiaIn(serializers.Serializer):
+    tipo = serializers.CharField() 
+    arquivo = serializers.FileField()
+    nomearquivo = serializers.CharField(required=False)
+    mimetype = serializers.CharField(required=False)
     
-    tipo = serializers.ChoiceField(choices=['foto', 'video', 'documento'])
-    arquivo = serializers.FileField() 
-    nomearquivo = serializers.CharField(max_length=255, required=False, allow_blank=True)
-    mimetype = serializers.CharField(max_length=100, required=False, allow_blank=True)
-    id_diario = serializers.IntegerField(min_value=1, required=False, allow_null=True)
-    id_observacao = serializers.IntegerField(min_value=1, required=False, allow_null=True)
-    id_mensagem = serializers.IntegerField(min_value=1, required=False, allow_null=True)
+    # ESTES CAMPOS PRECISAM ESTAR AQUI:
+    id_diario = serializers.IntegerField(required=False)
+    id_observacao = serializers.IntegerField(required=False)
+    id_mensagem = serializers.IntegerField(required=False)
 
     
     TAMANHO_MAXIMO = 5 * 1024 * 1024

@@ -37,6 +37,8 @@ SQL_EXCLUIR_ARQ = f"SELECT {SCHEMA}excluir_arquivo_plano(%s,%s)"
 SQL_LISTAR_METODOS = f"SELECT * FROM {SCHEMA}listar_metodos_plano(%s)"
 SQL_LISTAR_NEURO = f"SELECT * FROM {SCHEMA}listar_neurodivergencias_plano(%s)"
 SQL_LISTAR_ANEXOS = f"SELECT * FROM {SCHEMA}listar_anexos_plano(%s)"
+SQL_ADICIONAR_FEEDBACK = f"SELECT {SCHEMA}adicionar_feedback(%s, %s, %s, %s, %s)"
+SQL_LISTAR_FEEDBACKS = f"SELECT * FROM {SCHEMA}listar_feedbacks_por_plano(%s)"
 
 
 def _map_db_error(e):
@@ -353,3 +355,39 @@ def excluir_arquivo_plano(request):
     except Exception as e:
         code, msg = _map_db_error(e)
         return Response({"detail": msg}, status=code)
+
+@api_view(["POST"])
+def adicionar_feedback(request):
+    d = request.data
+    try:
+        with get_conn() as conn, conn.cursor() as cur:
+            cur.execute(SQL_ADICIONAR_FEEDBACK, (
+                d["id_plano"],
+                d["id_familiar"], # Lembre de pegar isso do login/contexto
+                d["section"],     # O front manda 'section', o banco espera 'secao'
+                d["sentiment"],   # O front manda 'sentiment'
+                d["comment"]      # O front manda 'comment'
+            ))
+            new_id = cur.fetchone()[0]
+            return Response({"id_feedback": new_id}, status=201)
+    except Exception as e:
+        return Response({"detail": str(e)}, status=500)
+
+@api_view(["GET"])
+def listar_feedbacks(request, id_plano):
+    try:
+        with get_conn() as conn, conn.cursor() as cur:
+            cur.execute(SQL_LISTAR_FEEDBACKS, (id_plano,))
+            rows = cur.fetchall()
+            feedbacks = [{
+                "id": r[0],
+                "nome_familiar": r[1],
+                "section": r[2],
+                "sentiment": r[3],
+                "comment": r[4],
+                "dataEnvio": r[5],
+                "resposta": r[6]
+            } for r in rows]
+            return Response(feedbacks, status=200)
+    except Exception as e:
+        return Response({"detail": str(e)}, status=500)

@@ -1,0 +1,95 @@
+/* ====== CARD DE CADA FEEDBACK ====== */
+
+.lista-feedbacks-terapeuta {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  max-height: 260px;
+  overflow-y: auto;
+}
+
+
+.item-feedback-terapeuta {
+  background: #ffffff;
+  border: 1px solid #e5e7eb;
+  border-radius: 16px;
+  padding: 14px 18px 16px;
+  box-shadow: 0 1px 3px rgba(15, 23, 42, 0.04);
+}
+
+/* Linha superior: emoji, tag e data */
+.feedback-top-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+/* Bolinha do emoji  */
+.feedback-icon-round {
+  width: 40px;
+  height: 40px;
+  border-radius: 999px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+  background: #e8fdeb; 
+}
+
+/* Tag azul da seção (METODOLOGIA, CRONOGRAMA, etc.) */
+.feedback-section-tag {
+  background: #e3edff;
+  color: #1d4ed8;
+  font-size: 11px;
+  padding: 4px 8px;
+  border-radius: 6px;
+  font-weight: 600;
+  letter-spacing: 0.03em;
+}
+
+/* Data no canto direito */
+.feedback-date {
+  margin-left: auto;
+  font-size: 13px;
+  color: #9ca3af;
+}
+
+/* Texto "Enviado por: ..." */
+.feedback-enviado-por {
+  margin: 8px 0 6px;
+  font-size: 14px;
+  color: #374151;
+}
+
+.feedback-comment-box {
+  background: #f9fafb;
+  border-radius: 10px;
+  padding: 10px 14px;
+  font-size: 14px;
+  color: #4b5563;
+}
+
+.item-feedback-terapeuta {
+  border: 1px solid #e0e0e0;
+  border-radius: 10px;
+  padding: 10px 12px;
+  background: #fafafa;
+}
+
+.linha-feedback-topo {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 6px;
+  font-size: 13px;
+}
+
+.feedback-comentario {
+  font-size: 14px;
+  margin: 4px 0 6px;
+}
+
+.feedback-data {
+  font-size: 12px;
+  color: #777;
+}

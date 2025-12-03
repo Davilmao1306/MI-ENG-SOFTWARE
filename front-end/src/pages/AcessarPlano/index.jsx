@@ -6,52 +6,25 @@ import { IconSair } from '../../componentes/IconSair'
 import { useState } from 'react';
 import { useExibirListas } from '../../hooks/useExibirListas';
 
-const planoExemplo = {
-  pacienteNome: "",
-  neurodivergencia_lista: [],
-  neurodivergencia_desc: "",
-  metodologia: [],
-  cronograma: [],
-  objetivos: "...",
-  abordagemFamilia: "...",
-  sobrePlano: "...",
-  assinaturas: "...",
-  linkExterno: "/",
-  anexo: "",
-};
 
 export function AcessarPlano() {
   const { id_paciente, id_plano } = useParams();
-  const [paciente, setpaciente] = useState([]);
   const [plano, setPlano] = useState(null);
   useExibirListas(`http://localhost:8000/plano/plano/${id_plano}`, setPlano);
-  useExibirListas("http://localhost:8000/cadastro/lista-pacientes", setpaciente);
-  console.log(plano);
+  const origem = localStorage.getItem('tipo')
+  const voltarPara =
+    origem === "T"
+      ? `/terapeuta/paciente/${id_paciente}/plano-terapeutico-terapeuta` : `/${id_paciente}/plano-terapeutico-familiar`;
   if (!plano) {
     return <div className="loading">Carregando dados do plano...</div>;
   }
-  const planoExibido = plano;
-  const pacienteExibido = paciente?.find(p => String(p.id_paciente) === String(id_paciente));
-  //console.log(planoExibido);
-  if (pacienteExibido) {
-    planoExemplo.pacienteNome = pacienteExibido.nome;
-  }
-  if (planoExibido) {
-    planoExemplo.neurodivergencia_lista = planoExibido.lista_neurodivergencias;
-    planoExemplo.neurodivergencia_desc = planoExibido.grauneurodivergencia;
-    planoExemplo.metodologia = planoExibido.lista_metodos;
-    planoExemplo.objetivos = planoExibido.objetivostratamento;
-    planoExemplo.abordagemFamilia = planoExibido.abordagemfamilia;
-    planoExemplo.sobrePlano = planoExibido.mensagemplano;
-    planoExemplo.cronograma = [planoExibido.cronogramaatividades];
-    planoExemplo.anexo = planoExibido.lista_anexos;
-  }
+
 
   return (
 
     <div className="acessar-plano-page-wrapper">
       <div className='sidebar-acessar-plano'>
-        <IconVoltar to={`/terapeuta/paciente/${id_paciente}/plano-terapeutico-terapeuta`} />
+        <IconVoltar to={voltarPara} />
         <IconSair to='/login' />
       </div>
 

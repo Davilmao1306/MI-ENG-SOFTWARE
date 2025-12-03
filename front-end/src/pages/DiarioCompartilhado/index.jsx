@@ -22,58 +22,37 @@ export function DiarioCompartilhadoPage() {
   useExibirListas("http://localhost:8000/cadastro/lista-terapeutas", setTerapeutas)
   useExibirListas("http://localhost:8000/cadastro/lista-familiares", setFamiliares)
   useExibirListas(`http://localhost:8000/diario/diario/paciente/${id_paciente}`, setDiario)
-  //console.log(diario);
+  
   const pacienteAuth = pacientes?.find(p => String(p.id_paciente) === String(id_paciente));
   const terapeutaAuth = terapeutas?.find(t => String(t.id_usuario) === String(id));
   const familiarAuth = familiares?.find(f => String(f.id_usuario) === String(id));
+
   const [isCompositorOpen, setIsCompositorOpen] = useState(false);
   const [feedItems, setFeedItems] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterType, setFilterType] = useState('todos');
   const [isFamiliar] = useState();
+
+  // Determina se o usuário é terapeuta ou familiar com base na URL
   const isTerapeuta = location.pathname.includes('/terapeuta/');
   const linkVoltar = isTerapeuta ? "/terapeuta/pacientes" : `/familiar-paciente/${id_paciente}`;
-  useEffect(() => {
-    async function fetchFeed() {
-      if (!id_paciente) return;
-      try {
-        setLoading(true);
-        const response = await fetch(`http://localhost:8000/diario/feed/${id_paciente}`);
-        if (response.ok) {
-          const data = await response.json();
-          console.log(data);
-          setFeedItems(data);
-        } else {
-          console.error("Erro ao buscar feed");
-        }
-      } catch (error) {
-        console.error("Erro de rede:", error);
-      } finally {
-        setLoading(false);
-      }
-    }
-    fetchFeed();
-  }, [id_paciente]);
+  
+  //Carrega as mensagens do feed
+  useExibirListas(`http://localhost:8000/diario/feed/${id_paciente}`, setFeedItems);
+
 
 const handleNewEntry = async (entryData) => {
-    const idDiario = diario[0]?.id_diario;
     
-    // Validação de segurança
-    if (!idDiario) {
-        alert("Erro: Diário não encontrado para este paciente.");
-        return;
-    }
-
     try {
       if (entryData.type === 'entrada') {
           // Salvar o texto na tabela Mensagem
           const corpoMensagem = {
             descricao_mensagem: entryData.texto,
-            id_diario: idDiario,
+            id_diario: diario[0]?.id_diario,
             id_terapeuta: isTerapeuta ? terapeutaAuth?.id_terapeuta : null, 
             id_familiar: isFamiliar ? familiarAuth?.id_familiar : null,
           };
-
+          
           const respMsg = await fetch("http://localhost:8000/diario/mensagem/enviar", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
@@ -82,7 +61,7 @@ const handleNewEntry = async (entryData) => {
 
           if (!respMsg.ok) throw new Error("Erro ao salvar mensagem");
           const msgCriada = await respMsg.json();
-
+          
           // Salvar os Anexos (Mídia) vinculados à Mensagem
           const novosAnexos = [];
           if (entryData.attachments?.length > 0) {
@@ -93,7 +72,6 @@ const handleNewEntry = async (entryData) => {
                    formData.append("arquivo", anexo.file); // O objeto File real
                    formData.append("tipo", anexo.file.type.startsWith('image') ? 'foto' : 'file');
                    formData.append("id_mensagem", msgCriada.id_mensagem); // VINCULA AQUI
-                   
                    const respMidia = await fetch("http://localhost:8000/diario/midia/adicionar", {
                        method: "POST", 
                        body: formData 
@@ -128,11 +106,11 @@ const handleNewEntry = async (entryData) => {
               return;
           }
 
-          // 1. Criar o Cabeçalho do Checklist
+          
           const corpoChecklist = {
               id_terapeuta: terapeutaAuth?.id_terapeuta,
               id_diario: idDiario,
-              titulo: entryData.titulo // Agora o banco aceita título!
+              titulo: entryData.titulo 
           };
           
           const respCheck = await fetch("http://localhost:8000/diario/checklist/criar", {
@@ -144,8 +122,6 @@ const handleNewEntry = async (entryData) => {
           if(!respCheck.ok) throw new Error("Erro ao criar checklist");
           const checkCriado = await respCheck.json();
 
-          // 2. Salvar cada Item do Checklist
-          // entryData.itens vem como array: [{ text: 'Ler livro' }, { text: 'Dormir' }]
           for (const item of entryData.itens) {
               await fetch("http://localhost:8000/diario/checklist/item/adicionar", {
                   method: "POST",
@@ -158,7 +134,7 @@ const handleNewEntry = async (entryData) => {
           }
 
           // Atualiza a tela (Feed)
-          setFeedItems(prev => [{
+          setFeedIxtems(prev => [{
               id: `c_${checkCriado.id_checklist}`, 
               type: 'checklist',
               autor: 'Você', 
@@ -267,6 +243,7 @@ const handleNewEntry = async (entryData) => {
             onClose={() => setIsCompositorOpen(false)}
             onPost={handleNewEntry}
             isTerapeuta={isTerapeuta}
+            autor ={isTerapeuta ? terapeutaAuth?.nome : familiarAuth?.nome}
           />
 
           <div className="filtro-diario-container">

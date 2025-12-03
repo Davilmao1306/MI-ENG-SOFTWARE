@@ -23,6 +23,20 @@ SQL_ATUALIZAR_TERAPEUTA = f"SELECT {SCHEMA}atualizar_terapeuta(%s, %s, %s, %s, %
 SQL_ATUALIZAR_PACIENTE = f"SELECT {SCHEMA}atualizar_paciente(%s, %s, %s, %s, %s, %s)"
 # -> editar familiar
 SQL_ATUALIZAR_FAMILIAR = f"SELECT {SCHEMA}atualizar_familiar(%s, %s, %s, %s, %s, %s)"
+# -> listar vínculos por familiar
+SQL_LISTAR_VINCULOS_FAMILIAR = f"SELECT * FROM {SCHEMA}listar_vinculos_por_familiar(%s)"
+# -> excluir familiar
+SQL_EXCLUIR_FAMILIAR = f"SELECT * FROM {SCHEMA}excluir_familiar(%s)"
+SQL_EXCLUIR_TERAPEUTA = f"SELECT * FROM {SCHEMA}excluir_terapeuta(%s)"
+SQL_EXCLUIR_PACIENTE = f"SELECT * FROM {SCHEMA}excluir_paciente(%s)"
+
+
+def _map_db_error(e):
+    if isinstance(e, ForeignKeyViolation):
+        return (status.HTTP_404_NOT_FOUND, "Dependência não encontrada.")
+    if isinstance(e, UndefinedFunction):
+        return (status.HTTP_500_INTERNAL_SERVER_ERROR, "Função SQL não encontrada.")
+    return (status.HTTP_500_INTERNAL_SERVER_ERROR, "Erro interno.")
 
 
 @api_view(["POST"])
@@ -193,6 +207,96 @@ def atualizar_familiar(request, id_familiar: int):
         print(f"Erro ao atualizar familiar: {e}")
         return Response({"detail": str(e)}, status=500)
 
+@api_view(["GET"])
+def listar_vinculos_por_familiar(request, id_familiar):
+    try:
+        with get_conn() as conn, conn.cursor() as cur:
+            cur.execute(SQL_LISTAR_VINCULOS_FAMILIAR, (id_familiar,))
+            rows = cur.fetchall()
+            
+            pacientes = [
+                {
+                    "id_paciente": row[0],
+                    "nome": row[1],
+                    "cpf": row[2],
+                    "data_nascimento": row[3]
+                } 
+                for row in rows
+            ]
+            
+            return Response(pacientes, status=200)
+    except Exception as e:
+        # Usando sua função helper de erro
+        code, msg = _map_db_error(e) 
+        return Response({"detail": msg}, status=code)
+
+@api_view(["DELETE"])
+def excluir_familiar(request, id_familiar):
+    
+    
+    if not id_familiar:
+        return Response({"detail": "ID do familiar é obrigatório"}, status=400)
+
+    try:
+        with get_conn() as conn, conn.cursor() as cur:
+            cur.execute(SQL_EXCLUIR_FAMILIAR, (id_familiar,))
+            row = cur.fetchone()
+            
+            return Response({
+                "detail": "Familiar excluído com sucesso",
+                "id_familiar": row[0],
+                "nome": row[1]
+            }, status=status.HTTP_200_OK)
+            
+    except Exception as e:
+        code, msg = _map_db_error(e)
+        return Response({"detail": msg}, status=code)
+    
+@api_view(["DELETE"])
+def excluir_terapeuta(request, id_terapeuta):
+    
+    
+    if not id_terapeuta:
+        return Response({"detail": "ID do terapeuta é obrigatório"}, status=400)
+
+    try:
+        with get_conn() as conn, conn.cursor() as cur:
+            cur.execute(SQL_EXCLUIR_TERAPEUTA, (id_terapeuta,))
+            row = cur.fetchone()
+            
+            return Response({
+                "detail": "Terapeuta excluído com sucesso",
+                "id_terapeuta": row[0],
+                "nome": row[1]
+            }, status=status.HTTP_200_OK)
+            
+    except Exception as e:
+        code, msg = _map_db_error(e)
+        return Response({"detail": msg}, status=code)
+    
+
+@api_view(["DELETE"])
+def excluir_paciente(request, id_paciente):
+    if not id_paciente:
+        return Response({"detail": "ID do paciente é obrigatório"}, status=400)
+
+    try:
+        with get_conn() as conn, conn.cursor() as cur:
+            cur.execute(SQL_EXCLUIR_PACIENTE, (id_paciente,))
+            row = cur.fetchone()
+            
+            if not row:
+                return Response({"detail": "Paciente não encontrado"}, status=404)
+            
+            return Response({
+                "detail": "Paciente excluído com sucesso",
+                "id_paciente": row[0],
+                "nome": row[1]
+            }, status=200)
+            
+    except Exception as e:
+        code, msg = _map_db_error(e)
+        return Response({"detail": msg}, status=code)
 
 def gera_listagem(nome_entidade):
     @api_view(["GET"])

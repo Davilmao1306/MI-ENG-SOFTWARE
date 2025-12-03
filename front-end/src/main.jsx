@@ -41,7 +41,7 @@ createRoot(document.getElementById('root')).render(
         <Route path="/" element={<LandingPage />} />
         <Route path="/login" element={<Login />} />
         <Route path="/login/recuperar-senha" element={<RecuperarSenha />} />
-        <Route path="/login/recuperar-senha/nova-senha" element={<NovaSenha />} />
+        <Route path="/login/recuperar-senha/nova-senha/:uid/:token" element={<NovaSenha />} />
 
         {/* rotas da clinica */}
 
@@ -62,17 +62,18 @@ createRoot(document.getElementById('root')).render(
         <Route path="/terapeuta/pacientes" element={<ProtectedRoute tipoPermitido="T"> <AcessarPacientes /></ProtectedRoute>} />
         <Route path="/terapeuta/pacientes/:id_paciente/criar-plano" element={<ProtectedRoute tipoPermitido="T"> <CriarPlanoPage /></ProtectedRoute>} />
         <Route path="/terapeuta/paciente/:id_paciente/plano-terapeutico-terapeuta" element={<ProtectedRoute tipoPermitido="T"><PlanosTerapeuta /></ProtectedRoute>} />
-        <Route path='/terapeuta/pacientes/:id_paciente/diario' element={<ProtectedRoute tipoPermitido={"T" || "F"}><DiarioCompartilhadoPage /></ProtectedRoute>} />
+        <Route path='/terapeuta/pacientes/:id_paciente/diario' element={<ProtectedRoute tipoPermitido="T"><DiarioCompartilhadoPage /></ProtectedRoute>} />
         <Route path="/paciente/:id_paciente/acessar-plano/:id_plano" element={<ProtectedRoute tipoPermitido="T" ><AcessarPlano /></ProtectedRoute>} />
         {/* <Route path"/ver-feedbacks-plano" element={<ProtectedRoute tipoPermitido={"T"}><FeedbackFamiliar /></ProtectedRoute>} />  */}
 
         {/* rotas do familiar */}
-        <Route path='/:id_paciente/diario-compartilhado-familiar' element={<ProtectedRoute tipoPermitido={"F"}><DiarioCompartilhadoPage /></ProtectedRoute>} />
-        <Route path="/:id_paciente/plano-terapeutico-familiar" element={<ProtectedRoute tipoPermitido={"F"}><PlanosFamiliar /></ProtectedRoute>} />
-        <Route path="/familiar-paciente/:id_paciente" element={<ProtectedRoute tipoPermitido={"F"}><TelaInicioFamiliar /></ProtectedRoute>} />
-        <Route path="/familiar-perfil" element={<ProtectedRoute tipoPermitido={"F"}><TelaPerfilPaciente /></ProtectedRoute>} />
+        <Route path='/:id_paciente/diario-compartilhado-familiar' element={<ProtectedRoute tipoPermitido="F"><DiarioCompartilhadoPage /></ProtectedRoute>} />
+        <Route path='/familiar-paciente/:id_paciente/acessar-plano/:id_plano' element={<ProtectedRoute tipoPermitido="F"><AcessarPlano /></ProtectedRoute>} />
+        <Route path="/:id_paciente/plano-terapeutico-familiar" element={<ProtectedRoute tipoPermitido="F"><PlanosFamiliar /></ProtectedRoute>} />
+        <Route path="/familiar-paciente/:id_paciente" element={<ProtectedRoute tipoPermitido="F"><TelaInicioFamiliar /></ProtectedRoute>} />
+        <Route path="/familiar-perfil" element={<ProtectedRoute tipoPermitido="F"><TelaPerfilPaciente /></ProtectedRoute>} />
         <Route path='/consentimento' element={<Consent />} />
-        {/* <Route path="/feedbackFamiliar" element={<ProtectedRoute tipoPermitido={"F"}><FeedbackFamiliar /></ProtectedRoute>} /> */}
+        {/* <Route path="/feedbackFamiliar" element={<ProtectedRoute tipoPermitido="F"><FeedbackFamiliar /></ProtectedRoute>} /> */}
       </Routes>
     </BrowserRouter>
   </StrictMode>,

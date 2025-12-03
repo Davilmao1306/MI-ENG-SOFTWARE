@@ -29,9 +29,6 @@ export function CardEntrada({ autor, data, texto, attachments = [] }) {
           const isImageUrl = anexo.type === 'file' && /\.(jpeg|jpg|gif|png|webp|svg)$/i.test(anexo.url);
           // 2. Verificar se é um link
           const isLink = anexo.type === 'link';
-          // 3. Verificar se é um arquivo genérico (não é imagem e não é link)
-          const isGenericFile = anexo.type === 'file' && !isImageUrl;
-
           if (isImageUrl) {
             return (
               <a key={index} href={anexo.url} target="_blank" rel="noopener noreferrer" className="combinada-anexo-visualizavel">
@@ -43,13 +40,6 @@ export function CardEntrada({ autor, data, texto, attachments = [] }) {
               <div key={index} className="combinada-anexo-link">
                 <BsLink45Deg />
                 <a href={anexo.url} target="_blank" rel="noopener noreferrer">{anexo.name || anexo.url}</a>
-              </div>
-            );
-          } else if (isGenericFile) { // Se for um arquivo, mas não uma imagem, trata como arquivo genérico
-            return (
-              <div key={index} className="combinada-anexo-file">
-                <BsFileEarmark />
-                <a href={anexo.url} target="_blank" rel="noopener noreferrer">{anexo.name || 'Arquivo'}</a>
               </div>
             );
           }

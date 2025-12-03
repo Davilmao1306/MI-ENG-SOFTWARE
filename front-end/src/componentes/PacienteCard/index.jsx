@@ -27,7 +27,7 @@ export function PacienteCard({ paciente, onVincularFamiliar, onVincularTerapeuta
                 <p><strong>ID:</strong> {paciente.id_paciente}</p>
                 <p><strong>Data de Nascimento:</strong> {paciente.data_nascimento}</p>
                 <p><strong>Gênero:</strong> {paciente.genero}</p>
-                <p><strong>Endereço:</strong> {paciente.endereco}</p>
+                <p><strong>Telefone:</strong> {paciente.telefone}</p>
 
                 {/* Exibindo os terapeutas vinculados */}
                 <p><strong>Terapeuta:</strong> {getTerapeutasNomes(paciente.terapeutasVinculados)}</p>

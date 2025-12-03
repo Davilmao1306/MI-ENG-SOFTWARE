@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, use } from 'react';
 import { PacienteCard } from '../../componentes/PacienteCard';
 import { Sidebar } from '../../componentes/Sidebar';
 import { Navbar } from '../../componentes/Navbar';
@@ -7,6 +7,7 @@ import { Link } from 'react-router-dom';
 import { VincularFamiliarModal } from '../../componentes/VincularFamiliarModal';
 import { VincularTerapeutaModal } from '../../componentes/VincularTerapeutaModal';
 import './gerenciar-pacientes.estilo.css';
+import { useExibirListas } from '../../hooks/useExibirListas';
 
 function fetchLista(url, set) {
   fetch(url)
@@ -15,29 +16,23 @@ function fetchLista(url, set) {
     .catch((err) => console.error("Erro ao buscar pacientes:", err));
 }
 export function GerenciarPacientes() {
-
+  const urlGetPacientes = "http://localhost:8000/cadastro/lista-pacientes";
+  const urlVinculosPf = "http://localhost:8000/cadastro/lista-vinculos-pf";
+  const urlVinculosPt = "http://localhost:8000/cadastro/lista-vinculos-pt";
   const [pacientes, setPacientes] = useState([]);
   const [vinculosPf, setVinculosPf] = useState([]);
   const [vinculosPt, setVinculosPt] = useState([]);
   const [familiares, setFamiliares] = useState([]);
   const [terapeutas, setTerapeutas] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
-  const urlGetPacientes = "http://localhost:8000/cadastro/lista-pacientes";
-  const urlVinculosPf = 'http://localhost:8000/cadastro/lista-vinculos-pf';
-  const urlVinculosPt = 'http://localhost:8000/cadastro/lista-vinculos-pt';
-  const urlFamiliar = 'http://localhost:8000/cadastro/lista-familiares';
-  const urlTerapeuta = 'http://localhost:8000/cadastro/lista-terapeutas';
+  useExibirListas("http://localhost:8000/cadastro/lista-pacientes", setPacientes)
+  useExibirListas("http://localhost:8000/cadastro/lista-familiares", setFamiliares)
+  useExibirListas("http://localhost:8000/cadastro/lista-terapeutas", setTerapeutas)
+  useExibirListas("http://localhost:8000/cadastro/lista-vinculos-pf", setVinculosPf)
+  useExibirListas("http://localhost:8000/cadastro/lista-vinculos-pt", setVinculosPt)
+  
 
 
-
-  useEffect(() => {
-    fetchLista(urlGetPacientes, setPacientes);
-    fetchLista(urlVinculosPf, setVinculosPf);
-    fetchLista(urlFamiliar, setFamiliares);
-    fetchLista(urlTerapeuta, setTerapeutas);
-    fetchLista(urlVinculosPt, setVinculosPt);
-  }, []);
-  // Isso é um teste fim
   // console.log(vinculosPt, vinculosPf)
 
   // Estados para o modal de familiar
@@ -70,34 +65,36 @@ export function GerenciarPacientes() {
 
   const handleRemoverOuInativarPaciente = (paciente) => {
     const confirmAction = window.confirm(
-      `Deseja realmente remover/inativar o paciente ${paciente.nome} (ID: ${paciente.id_paciente})?`
+      `Deseja realmente remover o paciente ${paciente.nome}?\nIsso apagará o diário, planos e todos os vínculos dele.`
     );
 
     if (confirmAction) {
-      console.log(`Ação de remover/inativar para o paciente: ${paciente.nome}`);
-      // Lógica para chamar sua API de remoção/inativação aqui (DELETE ou PATCH)
-      // Exemplo (AJUSTE PARA SUA API REAL):
-      // fetch(`http://localhost:8000/cadastro/pacientes/${paciente.id_paciente}/`, {
-      //   method: 'DELETE', // Ou 'PATCH' para inativar
-      //   headers: {
-      //     'Content-Type': 'application/json',
-      //   },
-      // })
-      // .then(response => {
-      //   if (response.ok) {
-      //     alert('Paciente removido/inativado com sucesso!');
-      //     fetchPacientes(); // Recarrega a lista de pacientes
-      //   } else {
-      //     alert('Erro ao remover/inativar paciente.');
-      //   }
-      // })
-      // .catch(error => console.error('Erro na requisição:', error));
+      // Chama a rota de exclusão
+      fetch(`http://localhost:8000/cadastro/paciente/excluir/${paciente.id_paciente}`, {
+        method: 'DELETE',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+      })
+      .then(async (res) => {
+        if (res.ok) {
+          alert('Paciente removido com sucesso!');
 
-      // Por enquanto, apenas um console.log e recarregar para simular
-      alert(`Paciente ${paciente.nome} (ID: ${paciente.id_paciente}) seria removido/inativado.`);
-      fetchLista(urlGetPacientes, setPacientes);
+          fetchLista(urlGetPacientes, setPacientes); 
+          fetchLista(urlVinculosPf, setVinculosPf);
+          fetchLista(urlVinculosPt, setVinculosPt);
+        } else {
+          const errorData = await res.json();
+          alert(`Erro ao remover: ${errorData.detail}`);
+        }
+      })
+      .catch((error) => {
+        console.error('Erro na requisição:', error);
+        alert('Erro de conexão ao tentar remover.');
+      });
     }
   };
+
   // Funções para abrir/fechar o modal de FAMILIAR
   const handleOpenVincularFamiliarModal = (paciente) => {
     setSelectedPacienteForVincularFamiliar(paciente);
@@ -133,8 +130,8 @@ export function GerenciarPacientes() {
       }
       alert('Familiar(es) vinculado(s) com sucesso!');
       handleCloseVincularFamiliarModal();
-      fetchLista(urlGetPacientes, setPacientes);
-      fetchLista(urlVinculosPf, setVinculosPf);
+      fetchLista("http://localhost:8000/cadastro/lista-pacientes", setPacientes);
+      fetchLista("http://localhost:8000/cadastro/lista-vinculos-pf", setVinculosPf);
     } catch (error) {
       console.error('Erro na requisição de vínculo:', error);
       alert(`Falha ao vincular: ${error.message}`);
@@ -178,8 +175,8 @@ export function GerenciarPacientes() {
 
       alert('Terapeuta vinculado(s) com sucesso!');
       handleCloseVincularTerapeutaModal();
-      fetchLista(urlGetPacientes, setPacientes);
-      fetchLista(urlVinculosPt, setVinculosPt);
+      fetchLista("http://localhost:8000/cadastro/lista-pacientes", setPacientes);
+      fetchLista("http://localhost:8000/cadastro/lista-vinculos-pt", setVinculosPt);
     } catch (error) {
       console.error('Erro na requisição de vínculo:', error);
       alert(`Falha ao vincular: ${error.message}`);
@@ -233,6 +230,7 @@ export function GerenciarPacientes() {
                   }}
                   onVincularFamiliar={handleOpenVincularFamiliarModal}
                   onVincularTerapeuta={handleOpenVincularTerapeutaModal}
+                  onRemoverOuInativar={handleRemoverOuInativarPaciente}
                 />
               );
             })

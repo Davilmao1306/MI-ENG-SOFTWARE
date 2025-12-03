@@ -76,3 +76,4 @@ class ClinicaIn(serializers.Serializer):
             raise serializers.ValidationError(
                 "CNPJ deve ter 14 dígitos (apenas números).")
         return v
+
