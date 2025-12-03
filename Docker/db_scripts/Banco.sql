@@ -1,3 +1,6 @@
+CREATE EXTENSION IF NOT EXISTS pgcrypto;
+
+
 --======================================== Tabelas ========================================
 
 CREATE TABLE public.usuario (
@@ -23,17 +26,47 @@ CREATE TABLE public.terapeuta (
 	CONSTRAINT terapeuta_pk PRIMARY KEY (id_terapeuta),
 	CONSTRAINT fk_terapeuta_usuario FOREIGN KEY (id_usuario) REFERENCES public.usuario(id_usuario)
 );
-CREATE TABLE public.relatorio (
-	id_relatorio int4 GENERATED ALWAYS AS IDENTITY( INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START 1 CACHE 1 NO CYCLE) NOT NULL,
-	arquivo bytea NULL,
-	id_paciente int4 NOT NULL,
-	id_terapeuta int4 NULL,
-	id_familiar int4 NULL,
-	CONSTRAINT relatorio_pk PRIMARY KEY (id_relatorio),
-	CONSTRAINT fk_relatorio_familiar FOREIGN KEY (id_familiar) REFERENCES public.familiar(id_familiar),
-	CONSTRAINT fk_relatorio_paciente FOREIGN KEY (id_paciente) REFERENCES public.paciente(id_paciente),
-	CONSTRAINT fk_relatorio_terapeuta FOREIGN KEY (id_terapeuta) REFERENCES public.terapeuta(id_terapeuta)
+
+CREATE TABLE public.familiar (
+	id_familiar int4 GENERATED ALWAYS AS IDENTITY( INCREMENT BY
+     1 MINVALUE 1 MAXVALUE 2147483647 START 1 CACHE 1 NO CYCLE) NOT NULL,
+	nome varchar(255) NOT NULL,
+	datanascimento date NOT NULL,
+	telefone varchar(12) NOT NULL,
+	cpf varchar(11) NOT NULL,
+	id_usuario int4 NOT NULL,
+	datacriacao timestamp DEFAULT CURRENT_TIMESTAMP NULL,
+	CONSTRAINT familiar_cpf_key UNIQUE (cpf),
+	CONSTRAINT familiar_pk PRIMARY KEY (id_familiar),
+	CONSTRAINT fk_familiar_usuario FOREIGN KEY (id_usuario) REFERENCES public.usuario(id_usuario)
 );
+
+CREATE TABLE public.paciente (
+	id_paciente int4 GENERATED ALWAYS AS IDENTITY( INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START 1 CACHE 1 NO CYCLE) NOT NULL,
+	nome varchar(255) NOT NULL,
+	data_nascimento date NOT NULL,
+	cpf varchar(11) NOT NULL,
+	genero varchar(20) DEFAULT 'Não informado'::character varying NOT NULL,
+	telefone varchar(11) DEFAULT '00000000000'::character varying NOT NULL,
+	CONSTRAINT paciente_cpf_key UNIQUE (cpf),
+	CONSTRAINT paciente_pk PRIMARY KEY (id_paciente)
+);
+
+CREATE TABLE public.neurodivergencia (
+	id_neuro int4 GENERATED ALWAYS AS IDENTITY( INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START 1 CACHE 1 NO CYCLE) NOT NULL,
+	sigla varchar(20) NOT NULL,
+	nomecompleto varchar(100) NULL,
+	CONSTRAINT neurodivergencia_pkey PRIMARY KEY (id_neuro),
+	CONSTRAINT neurodivergencia_sigla_key UNIQUE (sigla)
+);
+
+CREATE TABLE public.metodoacompanhamento (
+	id_metodo serial4 NOT NULL,
+	nome varchar(255) NOT NULL,
+	CONSTRAINT metodoacompanhamento_nome_key UNIQUE (nome),
+	CONSTRAINT metodoacompanhamento_pkey PRIMARY KEY (id_metodo)
+);
+
 CREATE TABLE public.planoterapeutico (
 	id_plano int4 GENERATED ALWAYS AS IDENTITY( INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START 1 CACHE 1 NO CYCLE) NOT NULL,
 	id_paciente int4 NOT NULL,
@@ -52,6 +85,18 @@ CREATE TABLE public.planoterapeutico (
 	CONSTRAINT planoterapeutico_id_paciente_fkey FOREIGN KEY (id_paciente) REFERENCES public.paciente(id_paciente),
 	CONSTRAINT planoterapeutico_id_terapeuta_fkey FOREIGN KEY (id_terapeuta) REFERENCES public.terapeuta(id_terapeuta)
 );
+
+CREATE TABLE public.diariocompartilhado (
+	id_diario int4 GENERATED ALWAYS AS IDENTITY( INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START 1 CACHE 1 NO CYCLE) NOT NULL,
+	id_paciente int4 NOT NULL,
+	titulo varchar(255) DEFAULT 'Diário de Acompanhamento'::character varying NULL,
+	conteudo text DEFAULT ''::text NULL,
+	datacriacao timestamp DEFAULT CURRENT_TIMESTAMP NULL,
+	CONSTRAINT diariocompartilhado_id_paciente_key UNIQUE (id_paciente),
+	CONSTRAINT diariocompartilhado_pkey PRIMARY KEY (id_diario),
+	CONSTRAINT diariocompartilhado_id_paciente_fkey FOREIGN KEY (id_paciente) REFERENCES public.paciente(id_paciente) ON DELETE CASCADE
+);
+
 CREATE TABLE public.planoneurodivergencia (
 	id_plano int4 NOT NULL,
 	id_neuro int4 NOT NULL,
@@ -59,6 +104,7 @@ CREATE TABLE public.planoneurodivergencia (
 	CONSTRAINT planoneurodivergencia_id_neuro_fkey FOREIGN KEY (id_neuro) REFERENCES public.neurodivergencia(id_neuro),
 	CONSTRAINT planoneurodivergencia_id_plano_fkey FOREIGN KEY (id_plano) REFERENCES public.planoterapeutico(id_plano)
 );
+
 CREATE TABLE public.planometodo (
 	id_plano int4 NOT NULL,
 	id_metodo int4 NOT NULL,
@@ -66,6 +112,19 @@ CREATE TABLE public.planometodo (
 	CONSTRAINT planometodo_id_metodo_fkey FOREIGN KEY (id_metodo) REFERENCES public.metodoacompanhamento(id_metodo),
 	CONSTRAINT planometodo_id_plano_fkey FOREIGN KEY (id_plano) REFERENCES public.planoterapeutico(id_plano)
 );
+
+CREATE TABLE public.relatorio (
+	id_relatorio int4 GENERATED ALWAYS AS IDENTITY( INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START 1 CACHE 1 NO CYCLE) NOT NULL,
+	arquivo bytea NULL,
+	id_paciente int4 NOT NULL,
+	id_terapeuta int4 NULL,
+	id_familiar int4 NULL,
+	CONSTRAINT relatorio_pk PRIMARY KEY (id_relatorio),
+	CONSTRAINT fk_relatorio_familiar FOREIGN KEY (id_familiar) REFERENCES public.familiar(id_familiar),
+	CONSTRAINT fk_relatorio_paciente FOREIGN KEY (id_paciente) REFERENCES public.paciente(id_paciente),
+	CONSTRAINT fk_relatorio_terapeuta FOREIGN KEY (id_terapeuta) REFERENCES public.terapeuta(id_terapeuta)
+);
+
 CREATE TABLE public.pacienteterapeuta (
 	id_paciente int4 NOT NULL,
 	id_terapeuta int4 NOT NULL,
@@ -73,6 +132,7 @@ CREATE TABLE public.pacienteterapeuta (
 	CONSTRAINT fk_pt_paciente FOREIGN KEY (id_paciente) REFERENCES public.paciente(id_paciente),
 	CONSTRAINT fk_pt_terapeuta FOREIGN KEY (id_terapeuta) REFERENCES public.terapeuta(id_terapeuta)
 );
+
 CREATE TABLE public.pacientefamiliar (
 	id_familiar int4 NOT NULL,
 	id_paciente int4 NOT NULL,
@@ -80,16 +140,29 @@ CREATE TABLE public.pacientefamiliar (
 	CONSTRAINT fk_pf_familiar FOREIGN KEY (id_familiar) REFERENCES public.familiar(id_familiar),
 	CONSTRAINT fk_pf_paciente FOREIGN KEY (id_paciente) REFERENCES public.paciente(id_paciente)
 );
-CREATE TABLE public.paciente (
-	id_paciente int4 GENERATED ALWAYS AS IDENTITY( INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START 1 CACHE 1 NO CYCLE) NOT NULL,
-	nome varchar(255) NOT NULL,
-	data_nascimento date NOT NULL,
-	cpf varchar(11) NOT NULL,
-	genero varchar(20) DEFAULT 'Não informado'::character varying NOT NULL,
-	telefone varchar(11) DEFAULT '00000000000'::character varying NOT NULL,
-	CONSTRAINT paciente_cpf_key UNIQUE (cpf),
-	CONSTRAINT paciente_pk PRIMARY KEY (id_paciente)
+
+CREATE TABLE public.clinica (
+	id_clinica int4 GENERATED ALWAYS AS IDENTITY( INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START 1 CACHE 1 NO CYCLE) NOT NULL,
+	cnpj varchar(14) NOT NULL,
+	senha varchar(255) NOT NULL,
+	consentimentolgdp bool NOT NULL,
+	id_usuario int4 NOT NULL,
+	CONSTRAINT clinica_cnpj_key UNIQUE (cnpj),
+	CONSTRAINT clinica_pk PRIMARY KEY (id_clinica),
+	CONSTRAINT fk_clinica_usuario FOREIGN KEY (id_usuario) REFERENCES public.usuario(id_usuario)
 );
+
+CREATE TABLE public.checklist (
+	id_checklist int4 GENERATED ALWAYS AS IDENTITY( INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START 1 CACHE 1 NO CYCLE) NOT NULL,
+	datacriacao timestamp NOT NULL,
+	id_terapeuta int4 NOT NULL,
+	id_diario int4 NOT NULL,
+	titulo varchar(255) NULL,
+	CONSTRAINT checklist_pk PRIMARY KEY (id_checklist),
+	CONSTRAINT fk_checklist_terapeuta FOREIGN KEY (id_terapeuta) REFERENCES public.terapeuta(id_terapeuta),
+	CONSTRAINT fk_checklist_diario FOREIGN KEY (id_diario) REFERENCES public.diariocompartilhado(id_diario)
+);
+
 CREATE TABLE public.observacao (
 	id_observacao int4 GENERATED ALWAYS AS IDENTITY( INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START 1 CACHE 1 NO CYCLE) NOT NULL,
 	descricao_observacao varchar(255) NOT NULL,
@@ -101,13 +174,20 @@ CREATE TABLE public.observacao (
 	CONSTRAINT fk_observacao_checklist FOREIGN KEY (id_checklist) REFERENCES public.checklist(id_checklist),
 	CONSTRAINT fk_observacao_familiar FOREIGN KEY (id_familiar) REFERENCES public.familiar(id_familiar)
 );
-CREATE TABLE public.neurodivergencia (
-	id_neuro int4 GENERATED ALWAYS AS IDENTITY( INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START 1 CACHE 1 NO CYCLE) NOT NULL,
-	sigla varchar(20) NOT NULL,
-	nomecompleto varchar(100) NULL,
-	CONSTRAINT neurodivergencia_pkey PRIMARY KEY (id_neuro),
-	CONSTRAINT neurodivergencia_sigla_key UNIQUE (sigla)
+
+CREATE TABLE public.mensagem (
+	id_mensagem int4 GENERATED ALWAYS AS IDENTITY( INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START 1 CACHE 1 NO CYCLE) NOT NULL,
+	descricao_mensagem varchar(500) NOT NULL,
+	data_envio timestamp NOT NULL,
+	data_edicao date NULL,
+	id_diario int4 NULL,
+	id_familiar int4 NULL,
+	id_terapeuta int4 NULL,
+	CONSTRAINT mensagem_pk PRIMARY KEY (id_mensagem),
+	CONSTRAINT fk_msg_familiar FOREIGN KEY (id_familiar) REFERENCES public.familiar(id_familiar),
+	CONSTRAINT fk_msg_terapeuta FOREIGN KEY (id_terapeuta) REFERENCES public.terapeuta(id_terapeuta)
 );
+
 CREATE TABLE public.midia (
 	id_midia serial4 NOT NULL,
 	tipo varchar(20) NOT NULL,
@@ -121,33 +201,10 @@ CREATE TABLE public.midia (
 	CONSTRAINT midia_pkey PRIMARY KEY (id_midia),
 	CONSTRAINT midia_tipo_check CHECK (((tipo)::text = ANY ((ARRAY['foto'::character varying, 'video'::character varying, 'documento'::character varying])::text[]))),
 	CONSTRAINT midia_id_diario_fkey FOREIGN KEY (id_diario) REFERENCES public.diariocompartilhado(id_diario) ON DELETE CASCADE,
-	CONSTRAINT midia_id_mensagem_fkey FOREIGN KEY (id_mensagem) REFERENCES public.mensagem(id_mensagem) ON DELETE CASCADE,
-	CONSTRAINT midia_id_observacao_fkey FOREIGN KEY (id_observacao) REFERENCES public.observacao(id_observacao) ON DELETE CASCADE
+	CONSTRAINT midia_id_observacao_fkey FOREIGN KEY (id_observacao) REFERENCES public.observacao(id_observacao) ON DELETE CASCADE,
+	CONSTRAINT midia_id_mensagem_fkey FOREIGN KEY (id_mensagem) REFERENCES public.mensagem(id_mensagem) ON DELETE CASCADE
 );
-CREATE TABLE public.metodoacompanhamento (
-	id_metodo serial4 NOT NULL,
-	nome varchar(255) NOT NULL,
-	CONSTRAINT metodoacompanhamento_nome_key UNIQUE (nome),
-	CONSTRAINT metodoacompanhamento_pkey PRIMARY KEY (id_metodo)
-);
-CREATE TABLE public.mensagem (
-	id_mensagem int4 GENERATED ALWAYS AS IDENTITY( INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START 1 CACHE 1 NO CYCLE) NOT NULL,
-	descricao_mensagem varchar(500) NOT NULL,
-	data_envio timestamp NOT NULL,
-	data_edicao date NULL,
-	id_diario int4 NULL,
-	id_familiar int4 NULL,
-	id_terapeuta int4 NULL,
-	CONSTRAINT mensagem_pk PRIMARY KEY (id_mensagem),
-	CONSTRAINT fk_msg_familiar FOREIGN KEY (id_familiar) REFERENCES public.familiar(id_familiar),
-	CONSTRAINT fk_msg_terapeuta FOREIGN KEY (id_terapeuta) REFERENCES public.terapeuta(id_terapeuta)
-);
-CREATE TABLE public.historicoplanoterapeuta (
-	id_historico int4 GENERATED ALWAYS AS IDENTITY( INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START 1 CACHE 1 NO CYCLE) NOT NULL,
-	datafim date NOT NULL,
-	id_plano int4 NOT NULL,
-	CONSTRAINT historicoplano_pk PRIMARY KEY (id_historico)
-);
+
 CREATE TABLE public.feedback (
 	id_feedback int4 GENERATED ALWAYS AS IDENTITY( INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START 1 CACHE 1 NO CYCLE) NOT NULL,
 	secao varchar(100) NOT NULL,
@@ -161,46 +218,46 @@ CREATE TABLE public.feedback (
 	CONSTRAINT fk_feedback_familiar FOREIGN KEY (id_familiar) REFERENCES public.familiar(id_familiar),
 	CONSTRAINT fk_feedback_plano FOREIGN KEY (id_plano) REFERENCES public.planoterapeutico(id_plano)
 );
+
 CREATE TABLE public.familiarplanoterapeuta (
 	id_plano int4 NOT NULL,
 	id_familiar int4 NOT NULL,
 	CONSTRAINT familiarplano_pk PRIMARY KEY (id_plano, id_familiar),
 	CONSTRAINT fk_fp_familiar FOREIGN KEY (id_familiar) REFERENCES public.familiar(id_familiar)
 );
-CREATE TABLE public.familiar (
-	id_familiar int4 GENERATED ALWAYS AS IDENTITY( INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START 1 CACHE 1 NO CYCLE) NOT NULL,
-	nome varchar(255) NOT NULL,
-	datanascimento date NOT NULL,
-	telefone varchar(12) NOT NULL,
-	cpf varchar(11) NOT NULL,
-	id_usuario int4 NOT NULL,
-	datacriacao timestamp DEFAULT CURRENT_TIMESTAMP NULL,
-	CONSTRAINT familiar_cpf_key UNIQUE (cpf),
-	CONSTRAINT familiar_pk PRIMARY KEY (id_familiar),
-	CONSTRAINT fk_familiar_usuario FOREIGN KEY (id_usuario) REFERENCES public.usuario(id_usuario)
-);
+
 CREATE TABLE public.diarioterapeuta (
 	id_diario int4 NOT NULL,
 	id_terapeuta int4 NOT NULL,
 	CONSTRAINT diarioterapeuta_pk PRIMARY KEY (id_terapeuta, id_diario),
+	CONSTRAINT fk_dt_diario FOREIGN KEY (id_diario) REFERENCES public.diariocompartilhado(id_diario),
 	CONSTRAINT fk_dt_terapeuta FOREIGN KEY (id_terapeuta) REFERENCES public.terapeuta(id_terapeuta)
 );
+
 CREATE TABLE public.diariofamiliar (
 	id_diario int4 NOT NULL,
 	id_familiar int4 NOT NULL,
 	CONSTRAINT diariofamiliar_pk PRIMARY KEY (id_familiar, id_diario),
+	CONSTRAINT fk_df_diario FOREIGN KEY (id_diario) REFERENCES public.diariocompartilhado(id_diario),
 	CONSTRAINT fk_df_familiar FOREIGN KEY (id_familiar) REFERENCES public.familiar(id_familiar)
 );
-CREATE TABLE public.diariocompartilhado (
-	id_diario int4 GENERATED ALWAYS AS IDENTITY( INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START 1 CACHE 1 NO CYCLE) NOT NULL,
-	id_paciente int4 NOT NULL,
-	titulo varchar(255) DEFAULT 'Diário de Acompanhamento'::character varying NULL,
-	conteudo text DEFAULT ''::text NULL,
-	datacriacao timestamp DEFAULT CURRENT_TIMESTAMP NULL,
-	CONSTRAINT diariocompartilhado_id_paciente_key UNIQUE (id_paciente),
-	CONSTRAINT diariocompartilhado_pkey PRIMARY KEY (id_diario),
-	CONSTRAINT diariocompartilhado_id_paciente_fkey FOREIGN KEY (id_paciente) REFERENCES public.paciente(id_paciente) ON DELETE CASCADE
+
+CREATE TABLE public.checklist_item (
+	id_item int4 GENERATED ALWAYS AS IDENTITY( INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START 1 CACHE 1 NO CYCLE) NOT NULL,
+	descricao varchar(255) NOT NULL,
+	is_feito bool DEFAULT false NULL,
+	id_checklist int4 NOT NULL,
+	CONSTRAINT checklist_item_pkey PRIMARY KEY (id_item),
+	CONSTRAINT fk_item_checklist FOREIGN KEY (id_checklist) REFERENCES public.checklist(id_checklist) ON DELETE CASCADE
 );
+
+CREATE TABLE public.historicoplanoterapeuta (
+	id_historico int4 GENERATED ALWAYS AS IDENTITY( INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START 1 CACHE 1 NO CYCLE) NOT NULL,
+	datafim date NOT NULL,
+	id_plano int4 NOT NULL,
+	CONSTRAINT historicoplano_pk PRIMARY KEY (id_historico)
+);
+
 CREATE TABLE public.consulta (
 	id_sessao int4 GENERATED ALWAYS AS IDENTITY( INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START 1 CACHE 1 NO CYCLE) NOT NULL,
 	datasessao date NOT NULL,
@@ -212,33 +269,7 @@ CREATE TABLE public.consulta (
 	CONSTRAINT fk_consulta_paciente FOREIGN KEY (id_paciente) REFERENCES public.paciente(id_paciente),
 	CONSTRAINT fk_consulta_terapeuta FOREIGN KEY (id_terapeuta) REFERENCES public.terapeuta(id_terapeuta)
 );
-CREATE TABLE public.clinica (
-	id_clinica int4 GENERATED ALWAYS AS IDENTITY( INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START 1 CACHE 1 NO CYCLE) NOT NULL,
-	cnpj varchar(14) NOT NULL,
-	senha varchar(255) NOT NULL,
-	consentimentolgdp bool NOT NULL,
-	id_usuario int4 NOT NULL,
-	CONSTRAINT clinica_cnpj_key UNIQUE (cnpj),
-	CONSTRAINT clinica_pk PRIMARY KEY (id_clinica),
-	CONSTRAINT fk_clinica_usuario FOREIGN KEY (id_usuario) REFERENCES public.usuario(id_usuario)
-);
-CREATE TABLE public.checklist_item (
-	id_item int4 GENERATED ALWAYS AS IDENTITY( INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START 1 CACHE 1 NO CYCLE) NOT NULL,
-	descricao varchar(255) NOT NULL,
-	is_feito bool DEFAULT false NULL,
-	id_checklist int4 NOT NULL,
-	CONSTRAINT checklist_item_pkey PRIMARY KEY (id_item),
-	CONSTRAINT fk_item_checklist FOREIGN KEY (id_checklist) REFERENCES public.checklist(id_checklist) ON DELETE CASCADE
-);
-CREATE TABLE public.checklist (
-	id_checklist int4 GENERATED ALWAYS AS IDENTITY( INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START 1 CACHE 1 NO CYCLE) NOT NULL,
-	datacriacao timestamp NOT NULL,
-	id_terapeuta int4 NOT NULL,
-	id_diario int4 NOT NULL,
-	titulo varchar(255) NULL,
-	CONSTRAINT checklist_pk PRIMARY KEY (id_checklist),
-	CONSTRAINT fk_checklist_terapeuta FOREIGN KEY (id_terapeuta) REFERENCES public.terapeuta(id_terapeuta)
-);
+
 CREATE TABLE public.anexos (
 	id_anexo int4 GENERATED ALWAYS AS IDENTITY( INCREMENT BY 1 MINVALUE 1 MAXVALUE 2147483647 START 1 CACHE 1 NO CYCLE) NOT NULL,
 	id_plano int4 NOT NULL,
