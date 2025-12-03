@@ -11,6 +11,7 @@ export function AcessarPlano() {
   const { id_paciente, id_plano } = useParams();
   const [plano, setPlano] = useState(null);
   useExibirListas(`http://localhost:8000/plano/plano/${id_plano}`, setPlano);
+  
   const origem = localStorage.getItem('tipo')
   const voltarPara =
     origem === "T"
@@ -42,7 +43,7 @@ export function AcessarPlano() {
                 ))}
               </ul>
               <p style={{ marginTop: '10px' }}>
-                Descrição: {plano.grau_neurodivergencia_descricao || plano.grau_neurodivergencia}
+                Descrição: {plano.grau_neurodivergencia}
               </p>
             </CampoDetalhes>
             <CampoDetalhes titulo="Metodologia de acompanhamento">

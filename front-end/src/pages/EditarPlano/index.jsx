@@ -3,23 +3,30 @@ import { useParams, useNavigate } from 'react-router-dom';
 import { PiUploadSimpleBold, PiLinkBold } from "react-icons/pi";
 import { IoMdClose } from "react-icons/io";
 import { IconVoltar } from '../../componentes/IconVoltar';
-// Certifique-se de importar o arquivo CSS correto
-import './editar-plano.estilo.css'; 
+import './editar-plano.estilo.css';
+import { AdicionarLinkModal } from '../../componentes/AdicionarLinkModal';
+import { UploadModal } from '../../componentes/UploadModal';
+import { IconSair } from '../../componentes/IconSair';
 
 export function EditarPlanoPage() {
-    const { idPlano } = useParams();
+    const { id_paciente,id_plano } = useParams();
     const navigate = useNavigate();
 
-    // --- ESTADOS ---
-    const [pacienteNome, setPacienteNome] = useState('Carregando...');
-    
-    // Neurodivergências (Lista de opções e seleção)
-    const opcoesNeuro = ["TEA", "TAB", "TDAH", "TPN", "TOC", "Dislexia", "Discaústica", "Disgrafia", "Outros"];
-    const [neuroSelecionadas, setNeuroSelecionadas] = useState([]); 
-    const [descNeuro, setDescNeuro] = useState(''); // "Descreva o grau..."
 
-    // Métodos (Tags)
-    const [metodos, setMetodos] = useState([]); 
+    const [loading, setLoading] = useState(true);
+    const [pacienteNome, setPacienteNome] = useState('');
+    const [isLinkModalOpen, setIsLinkModalOpen] = useState(false);
+    const [isUploadModalOpen, setIsUploadModalOpen] = useState(false);
+    const [linksAnexados, setLinksAnexados] = useState([]);
+    const [arquivosAnexados, setArquivosAnexados] = useState([]);
+
+
+    const opcoesNeuro = ["TEA", "TAB", "TDAH", "TPN", "TOC", "Dislexia", "Discalculia", "Disgrafia", "Outros"];
+    const [neuroSelecionadas, setNeuroSelecionadas] = useState([]);
+    const [descNeuro, setDescNeuro] = useState('');
+
+
+    const [metodos, setMetodos] = useState([]);
     const [metodoInput, setMetodoInput] = useState('');
 
     const [cronograma, setCronograma] = useState('');
@@ -27,38 +34,56 @@ export function EditarPlanoPage() {
     const [abordagemFamiliares, setAbordagemFamiliares] = useState('');
     const [sobrePlano, setSobrePlano] = useState('');
 
-    // --- CARREGAMENTO ---
+    const handleAddLink = (newLink) => {
+        setLinksAnexados(prev => [...prev, newLink]);
+    };
+
+    const handleUploadFile = (file) => {
+        setArquivosAnexados(prev => [
+            ...prev,
+            {
+                name: file.name,
+                url: URL.createObjectURL(file),
+                fileOriginal: file
+            }
+        ]);
+    };
+
     useEffect(() => {
         const fetchPlano = async () => {
             try {
-                // Simulação de fetch (Substitua pela sua URL real)
-                const response = await fetch(`http://localhost:8000/plano/${idPlano}`);
+
+                const response = await fetch(`http://localhost:8000/plano/plano/${id_plano}`);
                 if (!response.ok) throw new Error('Erro ao buscar');
                 const data = await response.json();
 
-                setPacienteNome(data.nome_paciente || 'Paciente Teste');
-                setDescNeuro(data.neurodivergencia_descricao || ''); // Ajuste conforme seu backend
+                setPacienteNome(data.paciente_nome);
+                setDescNeuro(data.grau_neurodivergencia || '');
                 setCronograma(data.cronograma_atividades || '');
                 setObjetivos(data.objetivos_tratamento || '');
-                setAbordagemFamiliares(data.abordagem_familiares || '');
-                setSobrePlano(data.sobre_plano || '');
+                setAbordagemFamiliares(data.abordagem_familia || '');
+                setSobrePlano(data.mensagem_plano || '');
 
-                // Se o backend retornar as neuros e métodos como string separada por virgula, convertemos para array
-                if (data.neurodivergencias) {
-                    setNeuroSelecionadas(typeof data.neurodivergencias === 'string' ? data.neurodivergencias.split(',') : data.neurodivergencias);
+
+                if (data.lista_neurodivergencias) {
+                    setNeuroSelecionadas(data.lista_neurodivergencias.map(n => n.sigla));
                 }
-                if (data.metodos_utilizados) {
-                    setMetodos(typeof data.metodos_utilizados === 'string' ? data.metodos_utilizados.split(',') : data.metodos_utilizados);
+                if (data.lista_metodos) {
+                    setMetodos(data.lista_metodos);
                 }
 
             } catch (error) {
                 console.error("Erro:", error);
+                alert("Erro ao carregar os dados do plano.");
+            } finally {
+                setLoading(false);
             }
         };
-        if (idPlano) fetchPlano();
-    }, [idPlano]);
 
-    // --- HANDLERS ---
+        if (id_plano) fetchPlano();
+    }, [id_plano]);
+
+
 
     // Alternar seleção dos botões de Neuro
     const toggleNeuro = (neuro) => {
@@ -88,151 +113,208 @@ export function EditarPlanoPage() {
 
     const handleSubmit = async (e) => {
         e.preventDefault();
+
+        // Monta o JSON igual ao que definimos no Serializer 'EditarPlanoIn'
         const dadosAtualizados = {
-            neurodivergencias: neuroSelecionadas, // Envia array ou converte .join(',') se o back esperar string
-            neurodivergencia_descricao: descNeuro,
-            metodos_utilizados: metodos, 
-            cronograma_atividades: cronograma,
+            grau_neurodivergencia: descNeuro,
             objetivos_tratamento: objetivos,
-            abordagem_familiares: abordagemFamiliares,
-            sobre_plano: sobrePlano
+            abordagem_familia: abordagemFamiliares,
+            cronograma_atividades: cronograma,
+            mensagem_plano: sobrePlano,
+
+            // Listas
+            lista_neurodivergencias: neuroSelecionadas,
+            lista_metodos: metodos
         };
-        console.log("Enviando:", dadosAtualizados);
-        // ... Lógica de fetch PUT aqui ...
+
+        try {
+            const response = await fetch(`http://localhost:8000/plano/plano/editar/${id_plano}`, {
+                method: "PUT",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                body: JSON.stringify(dadosAtualizados)
+            });
+
+            if (!response.ok) {
+                const erro = await response.json();
+                throw new Error(erro.detail || "Erro ao atualizar");
+            }
+
+            alert("Plano atualizado com sucesso!");
+            navigate(-1);
+
+        } catch (error) {
+            console.error("Erro ao salvar:", error);
+            alert("Erro ao salvar as alterações: " + error.message);
+        }
     };
+    if (loading) return <div className="loading-container">Carregando dados do plano...</div>;
 
     return (
         <div className="editar-plano-container">
-            <header className="header-simples">
-               {/* Se quiser o titulo fora do form */}
-            </header>
 
-            <form onSubmit={handleSubmit} className="form-plano">
-                
-                {/* 1. Selecione o Paciente */}
-                <div className="form-group">
-                    <label>Selecione o paciente</label>
-                    <div className="input-fake-select">
-                        {pacienteNome}
-                        <span className="icon-list">☰</span>
-                    </div>
-                </div>
+            <div className='sidebar-plano'>
+                <IconVoltar to={`/terapeuta/paciente/${id_paciente}/plano-terapeutico-terapeuta`} />
+                <IconSair to='/login' className='link-sair-sidebar' />
+            </div>
 
-                {/* 2. Neurodivergência (Botões) */}
-                <div className="form-group">
-                    <label>Selecione a neurodivergência do seu paciente:</label>
-                    <div className="neuro-grid">
-                        {opcoesNeuro.map(neuro => (
-                            <button
-                                type="button"
-                                key={neuro}
-                                className={`btn-neuro ${neuroSelecionadas.includes(neuro) ? 'active' : ''}`}
-                                onClick={() => toggleNeuro(neuro)}
-                            >
-                                {neuro}
-                            </button>
-                        ))}
-                    </div>
-                </div>
+            <main className="editar-plano-main-content">
+                <header className="plano-header">
+                    <h1>Editando Plano: {pacienteNome}</h1>
+                </header>
 
-                {/* 3. Grau / Descrição */}
-                <div className="form-group">
-                    <label>Descreva o grau da(s) neurodivergência(s) do paciente:</label>
-                    <input 
-                        className="input-gray" 
-                        placeholder="mensagem..." 
-                        value={descNeuro}
-                        onChange={e => setDescNeuro(e.target.value)}
-                    />
-                </div>
+                <form onSubmit={handleSubmit} className="form-plano">
 
-                {/* 4. Métodos (Tags) */}
-                <div className="form-group">
-                    <label>Selecione os métodos a serem usados durante o acompanhamento</label>
-                    <div className="metodos-container">
-                        <input
-                            type="text"
-                            className="input-transparent"
-                            placeholder="Digite os métodos separando por virgula"
-                            value={metodoInput}
-                            onChange={e => setMetodoInput(e.target.value)}
-                            onKeyDown={handleMetodoKeyDown}
-                        />
-                        <div className="tags-list">
-                            {metodos.map((metodo, idx) => (
-                                <span key={idx} className="tag-roxa">
-                                    {metodo}
-                                    {/* Opcional: botão de fechar na tag */}
-                                    {/* <IoMdClose onClick={() => removeMetodo(metodo)} /> */} 
-                                </span>
+                    {/* Neurodivergências */}
+                    <div className="form-group">
+                        <label>Selecione a neurodivergência do seu paciente:</label>
+                        <div className="neuro-grid">
+                            {opcoesNeuro.map(neuro => (
+                                <button
+                                    type="button"
+                                    key={neuro}
+                                    className={`btn-neuro ${neuroSelecionadas.includes(neuro) ? 'active' : ''}`}
+                                    onClick={() => toggleNeuro(neuro)}
+                                >
+                                    {neuro}
+                                </button>
                             ))}
                         </div>
                     </div>
-                </div>
 
-                {/* 5. Cronograma */}
-                <div className="form-group">
-                    <label>Cronograma da atividade</label>
-                    <textarea 
-                        className="textarea-gray" 
-                        placeholder="Breve descrição sobre o cronograma..."
-                        value={cronograma}
-                        onChange={e => setCronograma(e.target.value)}
-                    />
-                </div>
-
-                {/* 6. Objetivos */}
-                <div className="form-group">
-                    <label>Objetivos do tratamento</label>
-                    <textarea 
-                        className="textarea-gray" 
-                        placeholder="Breve descrição sobre os objetivos..."
-                        value={objetivos}
-                        onChange={e => setObjetivos(e.target.value)}
-                    />
-                </div>
-
-                {/* 7. Abordagem Familiar */}
-                <div className="form-group">
-                    <label>Abordagem família/cuidadores/responsáveis:</label>
-                    <textarea 
-                        className="textarea-gray" 
-                        placeholder="Breve descrição sobre os objetivos/metas junto aos familiares..."
-                        value={abordagemFamiliares}
-                        onChange={e => setAbordagemFamiliares(e.target.value)}
-                    />
-                </div>
-
-                 {/* 8. Sobre o Plano */}
-                 <div className="form-group">
-                    <label>Sobre o Plano:</label>
-                    <textarea 
-                        className="textarea-gray big" 
-                        placeholder="Mensagem"
-                        value={sobrePlano}
-                        onChange={e => setSobrePlano(e.target.value)}
-                    />
-                </div>
-
-                {/* Área de Assinaturas (Visual apenas) */}
-                <div className="assinaturas-section">
-                    <p><strong>Clientes envolvidos</strong></p>
-                    <p><strong>Assinatura do terapeuta:</strong></p>
-                    <p><strong>Assinatura dos familiares:</strong></p>
-                </div>
-
-                {/* Footer de Ações */}
-                <div className="footer-actions">
-                    <div className="left-icons">
-                        <button type="button" className="icon-box blue"><PiUploadSimpleBold /></button>
-                        <button type="button" className="icon-box blue"><PiLinkBold /></button>
+                    {/* Descrição Neuro */}
+                    <div className="form-group">
+                        <label>Descreva o grau da(s) neurodivergência(s):</label>
+                        <textarea
+                            className="form-textarea"
+                            rows={3}
+                            value={descNeuro}
+                            onChange={e => setDescNeuro(e.target.value)}
+                        />
                     </div>
-                    <div className="right-buttons">
-                        <button type="button" className="btn-cancelar" onClick={() => navigate(-1)}>Cancelar</button>
-                        <button type="submit" className="btn-salvar">Salvar</button>
+
+                    {/* Métodos */}
+                    <div className="form-group">
+                        <label>Métodos utilizados (pressione Enter para adicionar):</label>
+                        <div className="metodos-container">
+                            <input
+                                type="text"
+                                className="form-input-text"
+                                placeholder="Digite e dê Enter..."
+                                value={metodoInput}
+                                onChange={e => setMetodoInput(e.target.value)}
+                                onKeyDown={handleMetodoKeyDown}
+                            />
+                            <div className="tags-list">
+                                {metodos.map((metodo, idx) => (
+                                    <span key={idx} className="tag-roxa">
+                                        {metodo}
+                                        <IoMdClose
+                                            className="tag-close-icon"
+                                            onClick={() => removeMetodo(metodo)}
+                                        />
+                                    </span>
+                                ))}
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </form>
+
+                    {/* Cronograma */}
+                    <div className="form-group">
+                        <label>Cronograma das atividades:</label>
+                        <textarea
+                            className="form-textarea"
+                            rows={4}
+                            value={cronograma}
+                            onChange={e => setCronograma(e.target.value)}
+                        />
+                    </div>
+
+                    {/* Objetivos */}
+                    <div className="form-group">
+                        <label>Objetivos do tratamento:</label>
+                        <textarea
+                            className="form-textarea"
+                            rows={4}
+                            value={objetivos}
+                            onChange={e => setObjetivos(e.target.value)}
+                        />
+                    </div>
+
+                    {/* Abordagem */}
+                    <div className="form-group">
+                        <label>Abordagem família/cuidadores:</label>
+                        <textarea
+                            className="form-textarea"
+                            rows={4}
+                            value={abordagemFamiliares}
+                            onChange={e => setAbordagemFamiliares(e.target.value)}
+                        />
+                    </div>
+
+                    {/* Sobre o Plano */}
+                    <div className="form-group">
+                        <label>Mensagem / Sobre o Plano:</label>
+                        <textarea
+                            className="form-textarea"
+                            rows={5}
+                            value={sobrePlano}
+                            onChange={e => setSobrePlano(e.target.value)}
+                        />
+                    </div>
+                    {(linksAnexados.length > 0 || arquivosAnexados.length > 0) && (
+                        <fieldset className="form-section anexos-section">
+                            <label>Anexos:</label>
+                            {linksAnexados.length > 0 && (
+                                <div className="anexos-list">
+                                    <h4>Links:</h4>
+                                    {linksAnexados.map((link, index) => (
+                                        <div key={index} className="anexo-item link-item">
+                                            <a href={link} target="_blank" rel="noopener noreferrer">{link}</a>
+                                            <button type="button" className="remove-anexo-btn" onClick={() => handleRemoveLink(index)}>X</button>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                            {arquivosAnexados.length > 0 && (
+                                <div className="anexos-list">
+                                    <h4>Arquivos:</h4>
+                                    {arquivosAnexados.map((file, index) => (
+                                        <div key={index} className="anexo-item file-item">
+                                            <span>{file.name}</span>
+                                            {file.url && <a href={file.url} target="_blank" rel="noopener noreferrer">Ver</a>}
+                                            <button type="button" className="remove-anexo-btn" onClick={() => handleRemoveFile(index)}>X</button>
+                                        </div>
+                                    ))}
+                                </div>
+                            )}
+                        </fieldset>
+                    )}
+
+                    <div className="footer-actions">
+                        <div className="left-icons">
+
+                            <button type="button" className="icon-box blue" onClick={() => setIsUploadModalOpen(true)}><PiUploadSimpleBold /></button>
+                            <button type="button" className="icon-box blue" onClick={() => setIsLinkModalOpen(true)}><PiLinkBold /></button>
+                        </div>
+                        <div className="right-buttons">
+                            <button type="button" className="btn-cancelar" onClick={() => navigate(-1)}>Cancelar</button>
+                            <button type="submit" className="btn-salvar">Salvar Alterações</button>
+                        </div>
+                    </div>
+                </form>
+            </main>
+            <AdicionarLinkModal
+                isOpen={isLinkModalOpen}
+                onClose={() => setIsLinkModalOpen(false)}
+                onAddLink={handleAddLink}
+            />
+            <UploadModal
+                isOpen={isUploadModalOpen}
+                onClose={() => setIsUploadModalOpen(false)}
+                onUploadFile={handleUploadFile}
+            />
         </div>
     );
 }

@@ -5,27 +5,27 @@ export function AdicionarLinkModal({ isOpen, onClose, onAddLink }) {
   const [link, setLink] = useState('');
 
   const handleAddLink = () => {
-    if (link.trim()) { // Apenas adiciona se o link não estiver vazio
+    if (link.trim()) { 
       onAddLink(link);
-      setLink(''); // Limpa o input
-      onClose(); // Fecha o modal
+      setLink(''); 
+      onClose(); 
     }
   };
 
   const handleCancel = () => {
-    setLink(''); // Limpa o input
-    onClose(); // Fecha o modal
+    setLink(''); 
+    onClose(); 
   };
 
   return (
     <Modal isOpen={isOpen} onClose={handleCancel} title="Adicionar link">
       <input
         type="text"
-        className="modal-link-input" // Usaremos um estilo para isso no modal.estilo.css
+        className="modal-link-input" 
         placeholder="Link"
         value={link}
         onChange={(e) => setLink(e.target.value)}
-        onKeyPress={(e) => { // MUDANÇA: Permite adicionar link com Enter
+        onKeyPress={(e) => {
           if (e.key === 'Enter') {
             handleAddLink();
           }

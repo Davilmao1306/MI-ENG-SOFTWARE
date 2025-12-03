@@ -106,3 +106,21 @@ class AnexarArquivoPlanoIn(serializers.Serializer):
 class ExcluirArquivoPlanoIn(serializers.Serializer):
     id_plano = serializers.IntegerField(min_value=1)
     id_arquivo = serializers.IntegerField(min_value=1)
+
+class EditarPlanoIn(serializers.Serializer):
+    # Campos de texto
+    grau_neurodivergencia = serializers.CharField(max_length=2000)
+    objetivos_tratamento = serializers.CharField(max_length=2000)
+    abordagem_familia = serializers.CharField(max_length=2000)
+    cronograma_atividades = serializers.CharField(max_length=2000)
+    mensagem_plano = serializers.CharField(
+        max_length=2000, required=False, allow_blank=True, allow_null=True
+    )
+
+    # Listas (Arrays de strings/siglas)
+    lista_neurodivergencias = serializers.ListField(
+        child=serializers.CharField(), required=False, default=list
+    )
+    lista_metodos = serializers.ListField(
+        child=serializers.CharField(), required=False, default=list
+    )

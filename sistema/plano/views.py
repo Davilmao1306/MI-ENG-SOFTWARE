@@ -9,7 +9,7 @@ from .serializers import (
     AssinarPlanoTerapeutaIn, AnexarArquivoPlanoIn,
     AssinarPlanoFamiliarIn, DesvincularFamiliarIn, RemoverNeuroIn, RemoverMetodoIn,
     AtualizarMensagemIn, AtualizarCronogramaIn, AtualizarAbordagemIn,
-    AtualizarObjetivosIn, AtualizarGrauNeuroIn, ExcluirArquivoPlanoIn
+    AtualizarObjetivosIn, AtualizarGrauNeuroIn, ExcluirArquivoPlanoIn,EditarPlanoIn
 )
 
 SCHEMA = ""
@@ -41,6 +41,8 @@ SQL_ADICIONAR_FEEDBACK = f"SELECT {SCHEMA}adicionar_feedback(%s, %s, %s, %s, %s)
 SQL_LISTAR_FEEDBACKS = f"SELECT * FROM {SCHEMA}listar_feedbacks_por_plano(%s)"
 SQL_ADD_LINK_PLANO = f"SELECT {SCHEMA}adicionar_link_plano(%s, %s, %s)"
 SQL_LISTAR_LINKS_PLANO = f"SELECT * FROM {SCHEMA}listar_links_plano(%s)"
+SQL_ATUALIZAR_DADOS_PLANO = f"SELECT {SCHEMA}atualizar_dados_plano(%s, %s, %s, %s, %s, %s)"
+SQL_LIMPAR_VINCULOS_PLANO = f"SELECT {SCHEMA}limpar_vinculos_plano(%s)"
 
 
 def _map_db_error(e):
@@ -76,14 +78,20 @@ def criar_plano(request):
                     id_neuro = res[0]
                     cur.execute(SQL_ADD_NEURO, (id_plano, id_neuro))
             for metodo_nome in lista_metodos:
+                
                 cur.execute(
-                    "SELECT Id_Metodo FROM MetodoAcompanhamento WHERE Nome = %s", (metodo_nome.strip(),))
+                    "SELECT Id_Metodo FROM MetodoAcompanhamento WHERE LOWER(Nome) = LOWER(%s)", (metodo_nome.strip(),))
                 res = cur.fetchone()
                 if res:
                     id_metodo = res[0]
                     cur.execute(SQL_ADD_METODO, (id_plano, id_metodo))
                 else:
-                    pass
+                    cur.execute(
+                        "INSERT INTO MetodoAcompanhamento (Nome) VALUES (%s) RETURNING Id_Metodo",
+                        (metodo_nome.strip(),)
+                    )
+                    id_metodo = cur.fetchone()[0]
+                    cur.execute(SQL_ADD_METODO, (id_plano, id_metodo))
             return Response({"id_plano": id_plano}, status=status.HTTP_201_CREATED)
     except Exception as e:
         code, msg = _map_db_error(e)
@@ -410,3 +418,42 @@ def adicionar_link_plano(request):
             return Response({"id_link": new_id}, status=201)
     except Exception as e:
         return Response({"detail": str(e)}, status=500)
+    
+@api_view(["PUT"])
+def editar_plano(request, id_plano):
+    s = EditarPlanoIn(data=request.data)
+    s.is_valid(raise_exception=True)
+    d = s.validated_data
+
+    try:
+        with get_conn() as conn, conn.cursor() as cur:
+
+            cur.execute(SQL_ATUALIZAR_DADOS_PLANO, (
+                id_plano,
+                d["grau_neurodivergencia"],
+                d["objetivos_tratamento"],
+                d["abordagem_familia"],
+                d["cronograma_atividades"],
+                d.get("mensagem_plano")
+            ))
+
+            cur.execute(SQL_LIMPAR_VINCULOS_PLANO, (id_plano,))
+            for neuro_sigla in d["lista_neurodivergencias"]:
+
+                cur.execute("SELECT Id_Neuro FROM Neurodivergencia WHERE Sigla = %s OR NomeCompleto = %s", (neuro_sigla, neuro_sigla))
+                res = cur.fetchone()
+                if res:
+
+                    cur.execute(SQL_ADD_NEURO, (id_plano, res[0]))
+            for metodo_nome in d["lista_metodos"]:
+
+                cur.execute("SELECT Id_Metodo FROM MetodoAcompanhamento WHERE Nome = %s", (metodo_nome.strip(),))
+                res = cur.fetchone()
+                if res:
+                    cur.execute(SQL_ADD_METODO, (id_plano, res[0]))
+
+            return Response({"detail": "Plano atualizado com sucesso", "id_plano": id_plano}, status=status.HTTP_200_OK)
+
+    except Exception as e:
+        code, msg = _map_db_error(e)
+        return Response({"detail": msg}, status=code)

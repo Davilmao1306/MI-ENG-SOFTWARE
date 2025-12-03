@@ -25,4 +25,5 @@ urlpatterns = [
     path("plano/feedback/adicionar", views.adicionar_feedback),
     path("plano/<int:id_plano>/feedbacks", views.listar_feedbacks),
     path("plano/link/adicionar", views.adicionar_link_plano),
+    path("plano/editar/<int:id_plano>", views.editar_plano),
 ]

@@ -65,7 +65,7 @@ createRoot(document.getElementById('root')).render(
         <Route path="/terapeuta/paciente/:id_paciente/plano-terapeutico-terapeuta" element={<ProtectedRoute tipoPermitido="T"><PlanosTerapeuta /></ProtectedRoute>} />
         <Route path='/terapeuta/pacientes/:id_paciente/diario' element={<ProtectedRoute tipoPermitido="T"><DiarioCompartilhadoPage /></ProtectedRoute>} />
         <Route path="/paciente/:id_paciente/acessar-plano/:id_plano" element={<ProtectedRoute tipoPermitido="T" ><AcessarPlano /></ProtectedRoute>} />
-        <Route path="/editar-plano/:id_plano" element={<ProtectedRoute tipoPermitido={"T"}><EditarPlanoPage /></ProtectedRoute>} />
+        <Route path="/terapeuta/:id_paciente/editar-plano/:id_plano" element={<ProtectedRoute tipoPermitido={"T"}><EditarPlanoPage /></ProtectedRoute>} />
 
         {/* rotas do familiar */}
         <Route path='/:id_paciente/diario-compartilhado-familiar' element={<ProtectedRoute tipoPermitido="F"><DiarioCompartilhadoPage /></ProtectedRoute>} />

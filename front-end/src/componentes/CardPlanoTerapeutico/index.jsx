@@ -6,7 +6,7 @@ import './card-plano-terapeutico.estilo.css';
 import { Link, useParams } from 'react-router-dom';
 
 
-export function PlanoCard({ data, status, descricao, userRole, plano,onFeedback, onViewFeedbacks,  }) {
+export function PlanoCard({ data, status, descricao, userRole, plano,onFeedback, onViewFeedbacks, idPaciente  }) {
   const [isOpen, setIsOpen] = useState(false);
   const { id_paciente } = useParams();
   const toggleOpen = () => {
@@ -43,7 +43,7 @@ export function PlanoCard({ data, status, descricao, userRole, plano,onFeedback,
             </Link>
 
             {isTerapeuta && (
-              <Link to={`/editar-plano/${plano.id_plano}`} className="plano-card-botao-acao">
+              <Link to={`/terapeuta/${idPaciente}/editar-plano/${plano.id_plano}`} className="plano-card-botao-acao">
                 <FiEdit /> Editar Plano
               </Link>
             )}

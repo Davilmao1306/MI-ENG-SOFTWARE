@@ -44,8 +44,42 @@ export function CriarPlanoPage() {
     if (id_paciente) {
       setPacienteInfo({ id: id_paciente, nome: `Paciente ${id_paciente}` });
     }
+    if (isEditing) {
+      const carregarDadosEdicao = async () => {
+        try {
+          const respPlano = await fetch(`http://localhost:8000/plano/plano/${idDoPlano}`);
+          if (respPlano.ok) {
+            const dados = await respPlano.json();
+            
+            setDescNeuro(dados.grau_neurodivergencia_descricao || dados.grau_neurodivergencia); 
+            setCronograma(dados.cronograma_atividades);
+            setObjetivos(dados.objetivos_tratamento);
+            setAbordagemFamiliares(dados.abordagem_familia);
+            setSobrePlano(dados.mensagem_plano);
+          }
+          const respNeuro = await fetch(`http://localhost:8000/plano/plano/${idDoPlano}/neurodivergencias`);
+          if (respNeuro.ok) {
+            const lista = await respNeuro.json();
+            setNeuroSelecionadas(lista.map(item => item.sigla));
+          }
+          const respMetodos = await fetch(`http://localhost:8000/plano/plano/${idDoPlano}/metodos`);
+          if (respMetodos.ok) {
+            const lista = await respMetodos.json();
+            const stringMetodos = lista.map(item => item.nome_metodo || item).join(', ');
+            setMetodosInput(stringMetodos);
+          }
 
-  }, [id_paciente, idDoPlano]);
+          // Busca Anexos/Links 
+          // 
+
+        } catch (error) {
+          console.error("Erro ao carregar dados para edição:", error);
+        }
+      };
+
+      carregarDadosEdicao();
+    }
+  }, [id_paciente, idDoPlano, isEditing]);
 
 
   const handleChipClick = (item) => {
@@ -64,11 +98,11 @@ export function CriarPlanoPage() {
       }
       return currentMethods.length > 0 ? `${prev}, ${item}` : item;
     });
+    
   };
 
   const handleAddLink = (newLink) => {
     setLinksAnexados(prev => [...prev, newLink]);
-    
   };
 
   const handleUploadFile = (file) => {
@@ -95,6 +129,7 @@ export function CriarPlanoPage() {
     const arrayMetodos = metodosInput.split(',')
       .map(m => m.trim())
       .filter(m => m !== '');
+    console.log(arrayMetodos)
     const dados = {
       id_paciente: id_paciente,
       id_terapeuta: terapeutaAuth.id_terapeuta,

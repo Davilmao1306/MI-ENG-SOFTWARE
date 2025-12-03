@@ -62,6 +62,7 @@ export function PlanosTerapeuta() {
                   descricao={"Abordagem Familiar: " + plano.abordagemfamilia + ". Cronograma de Atividades: " + plano.cronogramaatividades + ". Objetivos: " + plano.objetivostratamento}
                   userRole={"terapeuta"}
                   plano={plano}
+                  idPaciente = {id_paciente}
                   onViewFeedbacks={() => handleOpenFeedbacks(plano)}
                 />
               ))}
