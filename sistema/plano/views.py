@@ -39,6 +39,8 @@ SQL_LISTAR_NEURO = f"SELECT * FROM {SCHEMA}listar_neurodivergencias_plano(%s)"
 SQL_LISTAR_ANEXOS = f"SELECT * FROM {SCHEMA}listar_anexos_plano(%s)"
 SQL_ADICIONAR_FEEDBACK = f"SELECT {SCHEMA}adicionar_feedback(%s, %s, %s, %s, %s)"
 SQL_LISTAR_FEEDBACKS = f"SELECT * FROM {SCHEMA}listar_feedbacks_por_plano(%s)"
+SQL_ADD_LINK_PLANO = f"SELECT {SCHEMA}adicionar_link_plano(%s, %s, %s)"
+SQL_LISTAR_LINKS_PLANO = f"SELECT * FROM {SCHEMA}listar_links_plano(%s)"
 
 
 def _map_db_error(e):
@@ -190,6 +192,10 @@ def buscar_plano_completo(request, id_plano: int):
                 "id_anexo": r[0], "nome_arquivo": r[1]
             } for r in anexos_rows]
 
+            cur.execute(SQL_LISTAR_LINKS_PLANO, (id_plano,))
+            links_rows = cur.fetchall()
+            lista_links = [{"id_link": r[0], "url": r[1], "nome": r[2]} for r in links_rows]
+
             return Response({
                 "id_plano": idp,
                 "paciente_nome": paciente,
@@ -203,6 +209,8 @@ def buscar_plano_completo(request, id_plano: int):
                 "lista_neurodivergencias": lista_neuros,
                 "lista_metodos": lista_metodos,
                 "lista_anexos": lista_anexos,
+                "lista_anexos": lista_anexos,
+                "lista_links": lista_links,
                 "data_criacao": data_criacao,
                 "assinatura_terapeuta": ass_ter,
                 "assinatura_familia": ass_fam
@@ -389,5 +397,16 @@ def listar_feedbacks(request, id_plano):
                 "resposta": r[6]
             } for r in rows]
             return Response(feedbacks, status=200)
+    except Exception as e:
+        return Response({"detail": str(e)}, status=500)
+
+@api_view(["POST"])
+def adicionar_link_plano(request):
+    d = request.data
+    try:
+        with get_conn() as conn, conn.cursor() as cur:
+            cur.execute(SQL_ADD_LINK_PLANO, (d["id_plano"], d["url"], d.get("nome")))
+            new_id = cur.fetchone()[0]
+            return Response({"id_link": new_id}, status=201)
     except Exception as e:
         return Response({"detail": str(e)}, status=500)

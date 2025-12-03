@@ -26,6 +26,7 @@ urlpatterns = [
     path("feed/<int:id_paciente>", views.listar_feed_completo,name="listar-feed-completo"),
     path("mensagem/<int:id_mensagem>/midias",views.listar_midias_por_mensagem, name="listar-midias-mensagem"),
     path("checklist/item/atualizar", views.atualizar_status_item,name="atualizar-item-checklist"),
+    path("mensagem/link/adicionar", views.adicionar_link_mensagem),
 
     # VINCULAÇÃO DIÁRIO
     path("diario/vincular/terapeuta", views.vincular_diario_terapeuta,name="vincular-diario-terapeuta"),

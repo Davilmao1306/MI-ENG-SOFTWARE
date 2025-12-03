@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, use } from 'react';
+import { useState, useMemo } from 'react';
 import { Link, useParams, useLocation } from 'react-router-dom';
 import { IoArrowBack } from 'react-icons/io5';
 import { PiSignOutBold } from 'react-icons/pi';
@@ -13,7 +13,6 @@ export function DiarioCompartilhadoPage() {
   const { id_paciente } = useParams();
   const location = useLocation();
   const id = localStorage.getItem("id_usuario");
-  const [loading, setLoading] = useState(true);
   const [terapeutas, setTerapeutas] = useState([])
   const [pacientes, setPaciente] = useState([]);
   const [familiares, setFamiliares] = useState([]);
@@ -22,7 +21,7 @@ export function DiarioCompartilhadoPage() {
   useExibirListas("http://localhost:8000/cadastro/lista-terapeutas", setTerapeutas)
   useExibirListas("http://localhost:8000/cadastro/lista-familiares", setFamiliares)
   useExibirListas(`http://localhost:8000/diario/diario/paciente/${id_paciente}`, setDiario)
-  
+
   const pacienteAuth = pacientes?.find(p => String(p.id_paciente) === String(id_paciente));
   const terapeutaAuth = terapeutas?.find(t => String(t.id_usuario) === String(id));
   const familiarAuth = familiares?.find(f => String(f.id_usuario) === String(id));
@@ -31,120 +30,131 @@ export function DiarioCompartilhadoPage() {
   const [feedItems, setFeedItems] = useState([]);
   const [searchTerm, setSearchTerm] = useState('');
   const [filterType, setFilterType] = useState('todos');
-  const [isFamiliar] = useState();
 
-  // Determina se o usuário é terapeuta ou familiar com base na URL
   const isTerapeuta = location.pathname.includes('/terapeuta/');
   const linkVoltar = isTerapeuta ? "/terapeuta/pacientes" : `/familiar-paciente/${id_paciente}`;
-  
-  //Carrega as mensagens do feed
+
+
   useExibirListas(`http://localhost:8000/diario/feed/${id_paciente}`, setFeedItems);
 
 
-const handleNewEntry = async (entryData) => {
-    
+  const handleNewEntry = async (entryData) => {
+
     try {
       if (entryData.type === 'entrada') {
-          // Salvar o texto na tabela Mensagem
-          const corpoMensagem = {
-            descricao_mensagem: entryData.texto,
-            id_diario: diario[0]?.id_diario,
-            id_terapeuta: isTerapeuta ? terapeutaAuth?.id_terapeuta : null, 
-            id_familiar: isFamiliar ? familiarAuth?.id_familiar : null,
-          };
-          
-          const respMsg = await fetch("http://localhost:8000/diario/mensagem/enviar", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(corpoMensagem)
-          });
 
-          if (!respMsg.ok) throw new Error("Erro ao salvar mensagem");
-          const msgCriada = await respMsg.json();
-          
-          // Salvar os Anexos (Mídia) vinculados à Mensagem
-          const novosAnexos = [];
-          if (entryData.attachments?.length > 0) {
-            for (const anexo of entryData.attachments) {
-               // Verifica se é arquivo para upload (tem propriedade 'file' ou é blob)
-               if (anexo.file instanceof File) {
-                   const formData = new FormData();
-                   formData.append("arquivo", anexo.file); // O objeto File real
-                   formData.append("tipo", anexo.file.type.startsWith('image') ? 'foto' : 'file');
-                   formData.append("id_mensagem", msgCriada.id_mensagem); // VINCULA AQUI
-                   const respMidia = await fetch("http://localhost:8000/diario/midia/adicionar", {
-                       method: "POST", 
-                       body: formData 
-                   });
-                   
-                   if(respMidia.ok) {
-                       const m = await respMidia.json();
-                       novosAnexos.push({ 
-                           type: m.tipo, 
-                           url: `http://localhost:8000/diario/media/${m.nomearquivo}`, 
-                           name: m.nomearquivo 
-                       });
-                   }
-               }
+        const corpoMensagem = {
+          descricao_mensagem: entryData.texto,
+          id_diario: diario[0]?.id_diario,
+          id_terapeuta: isTerapeuta ? terapeutaAuth?.id_terapeuta : null,
+          id_familiar: !isTerapeuta ? familiarAuth?.id_familiar : null
+        };
+
+        const respMsg = await fetch("http://localhost:8000/diario/mensagem/enviar", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(corpoMensagem)
+        });
+
+        if (!respMsg.ok) throw new Error("Erro ao salvar mensagem");
+        const msgCriada = await respMsg.json();
+
+
+        const novosAnexos = [];
+        if (entryData.attachments?.length > 0) {
+          for (const anexo of entryData.attachments) {
+
+            if (anexo.file instanceof File) {
+              const formData = new FormData();
+              formData.append("arquivo", anexo.file);
+              formData.append("tipo", anexo.file.type.startsWith('image') ? 'foto' : 'file');
+              formData.append("id_mensagem", msgCriada.id_mensagem);
+              const respMidia = await fetch("http://localhost:8000/diario/midia/adicionar", {
+                method: "POST",
+                body: formData
+              });
+
+              if (respMidia.ok) {
+                const m = await respMidia.json();
+                novosAnexos.push({
+                  type: m.tipo,
+                  url: `http://localhost:8000/diario/media/${m.nomearquivo}`,
+                  name: m.nomearquivo
+                });
+              }
+            }
+            if (anexo.type === 'link') {
+              await fetch("http://localhost:8000/diario/mensagem/link/adicionar", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                  id_mensagem: msgCriada.id_mensagem,
+                  url: anexo.url,
+                  nome: anexo.name
+                })
+              });
+              novosAnexos.push({
+                type: 'link',
+                url: anexo.url,
+                name: anexo.name
+              });
             }
           }
+        }
+        setFeedItems(prev => [{
+          id: `m_${msgCriada.id_mensagem}`,
+          type: 'entrada',
+          autor: 'Você',
+          data: new Date().toISOString(),
+          texto: entryData.texto,
+          attachments: novosAnexos
+        }, ...prev]);
 
-          // Atualiza a tela (Feed)
-          setFeedItems(prev => [{
-              id: `m_${msgCriada.id_mensagem}`, 
-              type: 'entrada',
-              autor: 'Você', 
-              data: new Date().toISOString(),
-              texto: entryData.texto, 
-              attachments: novosAnexos
-          }, ...prev]);
-
-      } 
+      }
       else if (entryData.type === 'checklist') {
-          if (!isTerapeuta) {
-              alert("Apenas terapeutas podem criar checklists.");
-              return;
-          }
+        if (!isTerapeuta) {
+          alert("Apenas terapeutas podem criar checklists.");
+          return;
+        }
 
-          
-          const corpoChecklist = {
-              id_terapeuta: terapeutaAuth?.id_terapeuta,
-              id_diario: idDiario,
-              titulo: entryData.titulo 
-          };
-          
-          const respCheck = await fetch("http://localhost:8000/diario/checklist/criar", {
-             method: "POST",
-             headers: { "Content-Type": "application/json" },
-             body: JSON.stringify(corpoChecklist)
+
+        const corpoChecklist = {
+          id_terapeuta: terapeutaAuth?.id_terapeuta,
+          id_diario: diario[0]?.id_diario,
+          titulo: entryData.titulo
+        };
+
+        const respCheck = await fetch("http://localhost:8000/diario/checklist/criar", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(corpoChecklist)
+        });
+
+        if (!respCheck.ok) throw new Error("Erro ao criar checklist");
+        const checkCriado = await respCheck.json();
+
+        for (const item of entryData.itens) {
+          await fetch("http://localhost:8000/diario/checklist/item/adicionar", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              descricao: item.text,
+              id_checklist: checkCriado.id_checklist
+            })
           });
+        }
 
-          if(!respCheck.ok) throw new Error("Erro ao criar checklist");
-          const checkCriado = await respCheck.json();
-
-          for (const item of entryData.itens) {
-              await fetch("http://localhost:8000/diario/checklist/item/adicionar", {
-                  method: "POST",
-                  headers: { "Content-Type": "application/json" },
-                  body: JSON.stringify({
-                      descricao: item.text,
-                      id_checklist: checkCriado.id_checklist
-                  })
-              });
-          }
-
-          // Atualiza a tela (Feed)
-          setFeedIxtems(prev => [{
-              id: `c_${checkCriado.id_checklist}`, 
-              type: 'checklist',
-              autor: 'Você', 
-              data: new Date().toISOString(),
-              titulo: entryData.titulo,
-              itens: entryData.itens
-          }, ...prev]);
+        setFeedItems(prev => [{
+          id: `c_${checkCriado.id_checklist}`,
+          type: 'checklist',
+          autor: 'Você',
+          data: new Date().toISOString(),
+          titulo: entryData.titulo,
+          itens: entryData.itens
+        }, ...prev]);
       }
 
-      setIsCompositorOpen(false); // Fecha o modal
+      setIsCompositorOpen(false);
     } catch (error) {
       console.error(error);
       alert("Erro ao salvar: " + error.message);
@@ -152,7 +162,7 @@ const handleNewEntry = async (entryData) => {
   };
 
   const handleSaveChecklistResponse = async (checklistId, updatedItems) => {
-    console.log(`Salvando checklist ${checklistId}`, updatedItems);
+
 
     try {
       const updatePromises = updatedItems.map(item => {
@@ -160,13 +170,11 @@ const handleNewEntry = async (entryData) => {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({
-            id: item.id,       
-            checked: item.checked 
+            id: item.id,
+            checked: item.checked
           })
         });
       });
-
-      // Aguarda todas as atualizações terminarem
       await Promise.all(updatePromises);
 
       setFeedItems(prevItems => prevItems.map(item =>
@@ -243,7 +251,7 @@ const handleNewEntry = async (entryData) => {
             onClose={() => setIsCompositorOpen(false)}
             onPost={handleNewEntry}
             isTerapeuta={isTerapeuta}
-            autor ={isTerapeuta ? terapeutaAuth?.nome : familiarAuth?.nome}
+            autor={isTerapeuta ? terapeutaAuth?.nome : familiarAuth?.nome}
           />
 
           <div className="filtro-diario-container">
@@ -283,6 +291,7 @@ const handleNewEntry = async (entryData) => {
 
           <section className="feed-container">
             {filteredFeedItems.map(item => {
+
               switch (item.type) {
                 case 'entrada':
                   return <CardEntrada key={item.id} autor={item.autor} data={item.data} texto={item.texto} attachments={item.attachments} />;

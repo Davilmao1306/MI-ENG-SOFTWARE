@@ -26,11 +26,11 @@ SQL_EXCLUIR_DIARIO = f"SELECT * FROM {SCHEMA}excluir_diario_compartilhado(%s)"
 SQL_LISTAR_MENSAGENS_FEED = f"SELECT * FROM {SCHEMA}listar_mensagens_feed(%s)"
 # SQL CHECKLIST E OBSERVAÇÃO
 SQL_ATUALIZAR_ITEM = f"SELECT {SCHEMA}atualizar_status_item_checklist(%s, %s)"
-SQL_ADICIONAR_OBSERVACAO = "INSERT INTO observacao (Descricao_Observacao, Data_Envio, Id_Checklist, Id_Familiar) VALUES (%s, CURRENT_DATE, %s, %s) RETURNING Id_Observacao"
+SQL_ADICIONAR_OBSERVACAO = "INSERT INTO observacao (Descricao_Observacao, Data_Envio, Id_Checklist, Id_Familiar) VALUES (%s, CURRENT_TIMESTAMP, %s, %s) RETURNING Id_Observacao"
 SQL_CRIAR_CHECKLIST = f"SELECT {SCHEMA}criar_checklist_com_titulo(%s, %s, %s)"
 SQL_ADD_ITEM = f"SELECT {SCHEMA}adicionar_item_checklist(%s, %s)"
 # SQL MENSAGEM
-SQL_ENVIAR_MENSAGEM = "INSERT INTO mensagem (Descricao_Mensagem, Data_Envio, Id_Diario, Id_Familiar, Id_Terapeuta) VALUES (%s, CURRENT_DATE, %s, %s, %s) RETURNING Id_Mensagem"
+SQL_ENVIAR_MENSAGEM = "INSERT INTO mensagem (Descricao_Mensagem, Data_Envio, Id_Diario, Id_Familiar, Id_Terapeuta) VALUES (%s, CURRENT_TIMESTAMP, %s, %s, %s) RETURNING Id_Mensagem"
 
 # SQL MÍDIA
 SQL_ADICIONAR_MIDIA = f"SELECT * FROM {SCHEMA}adicionar_midia(%s,%s,%s,%s,%s,%s,%s)"
@@ -39,6 +39,8 @@ SQL_LISTAR_MIDIAS_OBSERVACAO = f"SELECT * FROM {SCHEMA}listar_midias_por_observa
 SQL_LISTAR_MIDIAS_MENSAGEM = f"SELECT * FROM {SCHEMA}listar_midias_por_mensagem(%s)"
 SQL_LISTAR_CHECKLISTS_PACIENTE = f"SELECT * FROM {SCHEMA}listar_checklists_por_paciente(%s)"
 SQL_EXCLUIR_MIDIA = f"SELECT * FROM {SCHEMA}excluir_midia(%s)"
+SQL_ADD_LINK_MENSAGEM = f"SELECT {SCHEMA}adicionar_link_mensagem(%s, %s, %s)"
+SQL_LISTAR_LINKS_MENSAGEM = f"SELECT * FROM {SCHEMA}listar_links_mensagem(%s)"
 
 # SQL DIÁRIO TERAPEUTA/FAMILIAR
 SQL_VINCULAR_TERAPEUTA = "INSERT INTO diarioterapeuta (Id_Diario, Id_Terapeuta) VALUES (%s, %s)"
@@ -493,17 +495,13 @@ def listar_feed_completo(request, id_paciente):
 
     try:
         with get_conn() as conn, conn.cursor() as cur:
-            # --- PARTE 1: Buscar Mensagens (O que estava faltando) ---
-            # Antes você usava SQL_LISTAR_POR_PACIENTE (que lista Diários)
-            # Agora usamos SQL_LISTAR_MENSAGENS_FEED (que lista as mensagens dentro do diário)
             cur.execute(SQL_LISTAR_MENSAGENS_FEED, (id_paciente,))
             msg_rows = cur.fetchall()
 
             for row in msg_rows:
-                # O SQL retorna: id_mensagem, id_diario, autor_tipo, data, descricao, id_ter, id_fam
                 id_mensagem = row[0]
 
-                # Buscar mídias vinculadas a ESTA MENSAGEM
+                
                 cur.execute(SQL_LISTAR_MIDIAS_MENSAGEM, (id_mensagem,))
                 midias_rows = cur.fetchall()
                 attachments = []
@@ -519,7 +517,15 @@ def listar_feed_completo(request, id_paciente):
                         "url": url_imagem,  
                         "name": m[3]
                     })
-
+                cur.execute(SQL_LISTAR_LINKS_MENSAGEM, (id_mensagem,))
+                links_rows = cur.fetchall()
+                for l in links_rows:
+                    
+                    attachments.append({
+                        "type": "link",
+                        "url": l[1],
+                        "name": l[2]
+                    })
                 feed.append({
                     "id": f"m_{row[0]}",
                     "db_id": row[0],
@@ -608,3 +614,14 @@ def atualizar_status_item(request):
     except Exception as e:
         code, msg = _map_db_error(e)
         return Response({"detail": msg}, status=code)
+
+@api_view(["POST"])
+def adicionar_link_mensagem(request):
+    d = request.data
+    try:
+        with get_conn() as conn, conn.cursor() as cur:
+            cur.execute(SQL_ADD_LINK_MENSAGEM, (d["id_mensagem"], d["url"], d.get("nome")))
+            new_id = cur.fetchone()[0]
+            return Response({"id_link": new_id}, status=201)
+    except Exception as e:
+        return Response({"detail": str(e)}, status=500)

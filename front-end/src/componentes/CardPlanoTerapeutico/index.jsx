@@ -43,7 +43,7 @@ export function PlanoCard({ data, status, descricao, userRole, plano,onFeedback,
             </Link>
 
             {isTerapeuta && (
-              <Link to="/terapeuta/criar-plano" className="plano-card-botao-acao">
+              <Link to={`/editar-plano/${plano.id_plano}`} className="plano-card-botao-acao">
                 <FiEdit /> Editar Plano
               </Link>
             )}

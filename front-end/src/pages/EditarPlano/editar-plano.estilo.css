@@ -1,0 +1,184 @@
+/* Container Geral */
+.editar-plano-container {
+    max-width: 800px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #fff; /* Fundo branco do card */
+    font-family: 'Arial', sans-serif;
+}
+
+.form-group {
+    margin-bottom: 20px;
+}
+
+label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 8px;
+    color: #000;
+}
+
+/* 1. Input Fake Select (Paciente) */
+.input-fake-select {
+    background-color: #D9D9D9;
+    padding: 12px;
+    border-radius: 4px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #333;
+    font-weight: 500;
+}
+
+/* 2. Botões de Neurodivergência */
+.neuro-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+}
+
+.btn-neuro {
+    background: #fff;
+    border: 1px solid #ccc;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    color: #555;
+    transition: all 0.2s;
+}
+
+.btn-neuro:hover {
+    background-color: #f0f0f0;
+}
+
+.btn-neuro.active {
+    border: 2px solid #3b82f6; /* Azul */
+    color: #3b82f6;
+    background-color: #eef6ff;
+}
+
+/* 3. Inputs e Textareas Cinzas */
+.input-gray, .textarea-gray {
+    width: 100%;
+    background-color: #D9D9D9;
+    border: none;
+    border-radius: 6px;
+    padding: 12px;
+    font-size: 14px;
+    color: #333;
+    box-sizing: border-box; /* Garante que padding não estoure a largura */
+}
+
+.input-gray::placeholder, .textarea-gray::placeholder {
+    color: #777;
+}
+
+.textarea-gray {
+    height: 80px;
+    resize: vertical;
+}
+
+.textarea-gray.big {
+    height: 150px;
+}
+
+/* 4. Container de Métodos (Tags) */
+.metodos-container {
+    background-color: #D9D9D9;
+    border-radius: 6px;
+    padding: 12px;
+    min-height: 80px;
+}
+
+.input-transparent {
+    width: 100%;
+    background: transparent;
+    border: none;
+    outline: none;
+    margin-bottom: 10px;
+    font-size: 14px;
+    color: #333;
+}
+
+.tags-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.tag-roxa {
+    background-color: #7E72B3; /* Roxo da imagem */
+    color: white;
+    padding: 6px 12px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: 600;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+/* Assinaturas */
+.assinaturas-section {
+    margin-top: 30px;
+    margin-bottom: 40px;
+}
+.assinaturas-section p {
+    margin: 10px 0;
+}
+
+/* Footer Actions */
+.footer-actions {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 20px;
+}
+
+.left-icons {
+    display: flex;
+    gap: 10px;
+}
+
+.icon-box {
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 6px;
+    border: none;
+    font-size: 24px;
+    cursor: pointer;
+}
+
+.icon-box.blue {
+    background-color: #87CEEB; /* Azul claro */
+    color: #000;
+}
+
+.right-buttons {
+    display: flex;
+    gap: 15px;
+}
+
+.btn-cancelar {
+    background-color: #87CEEB; /* Azul claro */
+    border: none;
+    padding: 10px 25px;
+    border-radius: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #000;
+}
+
+.btn-salvar {
+    background-color: #E0E0E0; /* Cinza claro */
+    border: none;
+    padding: 10px 25px;
+    border-radius: 20px;
+    font-weight: bold;
+    cursor: pointer;
+    color: #000;
+}

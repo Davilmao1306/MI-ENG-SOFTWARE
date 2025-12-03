@@ -44,10 +44,10 @@ export function CriarPlanoPage() {
     if (id_paciente) {
       setPacienteInfo({ id: id_paciente, nome: `Paciente ${id_paciente}` });
     }
-    // TODO: Se isEditing, buscar os dados do plano com idDoPlano
-  }, [id_paciente, idDoPlano]); // Adicionado idDoPlano aqui também para efeito de edição
 
-  // FUNÇÕES DE MANIPULAÇÃO DE ESTADO
+  }, [id_paciente, idDoPlano]);
+
+
   const handleChipClick = (item) => {
     setNeuroSelecionadas(prev =>
       prev.includes(item)
@@ -68,11 +68,10 @@ export function CriarPlanoPage() {
 
   const handleAddLink = (newLink) => {
     setLinksAnexados(prev => [...prev, newLink]);
-    console.log("Link adicionado:", newLink);
+    
   };
 
   const handleUploadFile = (file) => {
-    // Simular o upload do arquivo
     setArquivosAnexados(prev => [
       ...prev,
       {
@@ -107,10 +106,8 @@ export function CriarPlanoPage() {
       abordagem_familia: abordagemFamiliares,
       mensagem_plano: sobrePlano,
       id_familiar: null,
-      // linksAnexados,
-      // arquivosAnexados
     };
-    console.log(dados)
+    
     try {
       const response = await fetch("http://127.0.0.1:8000/plano/plano/criar", {
         method: "POST",
@@ -125,7 +122,7 @@ export function CriarPlanoPage() {
         throw new Error(JSON.stringify(erroData));
       }
       const data = await response.json();
-      console.log("Plano criado com sucesso:", data);
+      
       alert(`Plano criado com sucesso! ID: ${data.id_plano}`);
       if (arquivosAnexados.length > 0) {
         for (const arquivoObj of arquivosAnexados) {
@@ -134,13 +131,26 @@ export function CriarPlanoPage() {
             formData.append("id_plano", data.id_plano);
             formData.append("nome_arquivo", arquivoObj.name);
             formData.append("tipo_mime", arquivoObj.fileOriginal.type);
-            formData.append("arquivo", arquivoObj.fileOriginal); // O blob binário
+            formData.append("arquivo", arquivoObj.fileOriginal); 
 
             await fetch("http://127.0.0.1:8000/plano/plano/anexar-arquivo", {
               method: "POST",
               body: formData
             });
           }
+        }
+      }
+      if (linksAnexados.length > 0) {
+        for (const linkUrl of linksAnexados) {
+          await fetch("http://localhost:8000/plano/plano/link/adicionar", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({
+              id_plano: data.id_plano,
+              url: linkUrl,
+              nome: "Link Externo" 
+            })
+          });
         }
       }
       navigate(`/terapeuta/paciente/${id_paciente}/plano-terapeutico-terapeuta`);
@@ -268,7 +278,7 @@ export function CriarPlanoPage() {
               ></textarea>
             </fieldset>
 
-            {/* Seção para exibir links e arquivos anexados */}
+
             {(linksAnexados.length > 0 || arquivosAnexados.length > 0) && (
               <fieldset className="form-section anexos-section">
                 <label>Anexos:</label>
@@ -298,7 +308,7 @@ export function CriarPlanoPage() {
               </fieldset>
             )}
 
-            {/* --- Barra de Ações Inferior --- */}
+
             <div className="action-bar">
               <div className="action-bar-left">
                 <button type="button" className="action-icon-btn" onClick={() => setIsUploadModalOpen(true)}>
@@ -318,7 +328,7 @@ export function CriarPlanoPage() {
         </div>
       </main>
 
-      {/* Renderiza os modais fora do formulário principal */}
+
       <AdicionarLinkModal
         isOpen={isLinkModalOpen}
         onClose={() => setIsLinkModalOpen(false)}

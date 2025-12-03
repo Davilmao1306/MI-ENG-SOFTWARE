@@ -1,6 +1,4 @@
 import './tela-inicio-terapeuta.estilo.css'
-import { IconSair } from '../../componentes/IconSair'
-import { Link } from 'react-router-dom';
 import { useExibirListas } from '../../hooks/useExibirListas';
 import { useState } from 'react';
 import { Navbar } from '../../componentes/Navbar';
@@ -16,12 +14,12 @@ export function TelaInicioTerapeuta() {
     const id = localStorage.getItem("id_usuario");
 
     const terapeutaAuth = terapeutas.find(t => String(t.id_usuario) === String(id));
-    // Vínculos deste terapeuta
+    
     const meusVinculos = vinculos.filter(v =>
         String(v.id_terapeuta) === String(terapeutaAuth?.id_terapeuta)
     );
 
-    // Pacientes atendidos por ele
+    
     const meusPacientes = pacientes.filter(p =>
         meusVinculos.some(v => v.id_paciente === p.id_paciente)
     );

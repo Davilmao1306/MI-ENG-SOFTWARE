@@ -17,6 +17,7 @@ export function PlanosFamiliar() {
   useExibirListas("http://localhost:8000/cadastro/lista-familiares", setListaFamiliares);
   useExibirListas("http://localhost:8000/cadastro/lista-planos", setPlanosTerapeuta);
   useExibirListas("http://localhost:8000/cadastro/lista-pacientes", setPacientes);
+
   const familiarLogado = listaFamiliares.find(f => String(f.id_usuario) === String(idUsuarioLogado));
   const planosfiltrados = planosTerapeuta?.filter(plano => String(plano.id_paciente) === String(id_paciente));
   const pacienteAtual = pacientes.find(p => String(p.id_paciente) === String(id_paciente));
@@ -27,7 +28,7 @@ export function PlanosFamiliar() {
 
   const showToast = () => {
     setToastVisible(true);
-    setTimeout(() => setToastVisible(false), 2000); // some em 2s
+    setTimeout(() => setToastVisible(false), 2000);
   };
 
   const handleOpenModal = (plano) => {
@@ -41,23 +42,22 @@ export function PlanosFamiliar() {
   };
 
   const handleSubmitFeedback = async (dadosDoFormulario) => {
-    // Validação básica
+    
     if (!planoSelecionado || !familiarLogado) {
         alert("Erro: Não foi possível identificar o plano ou o familiar logado.");
         return;
     }
     const payload = {
         id_plano: planoSelecionado.id_plano,
-        id_familiar: familiarLogado.id_familiar, // Envia o ID da tabela FAMILIAR
+        id_familiar: familiarLogado.id_familiar, 
         section: dadosDoFormulario.section,
-        sentiment: dadosDoFormulario.sentiment || "neutro", // Garante um valor padrão
+        sentiment: dadosDoFormulario.sentiment || "neutro", 
         comment: dadosDoFormulario.comment
     };
 
     console.log("Enviando feedback:", payload);
 
     try {
-        // 3. Fazer a requisição
         const response = await fetch("http://localhost:8000/plano/plano/feedback/adicionar", {
             method: "POST",
             headers: {
@@ -67,8 +67,8 @@ export function PlanosFamiliar() {
         });
 
         if (response.ok) {
-            showToast();      // Sucesso! Mostra aviso visual
-            handleCloseModal(); // Fecha o modal
+            showToast();      
+            handleCloseModal(); 
         } else {
             const erro = await response.json();
             alert("Erro ao enviar feedback: " + (erro.detail || "Erro desconhecido"));
@@ -90,7 +90,6 @@ export function PlanosFamiliar() {
       <div className="planos-terapeuta-main">
         <h1 className="titulo-principal">Planos terapêuticos sendo usado</h1>
         <div className="conteudo-dividido">
-          {/* Coluna da Lista de Planos */}
           <section className="coluna-planos">
             <h2 className="subtitulo-historico">Paciente {pacienteAtual?.nome}</h2>
             <div className="lista-de-planos-terapeuta">
@@ -99,7 +98,6 @@ export function PlanosFamiliar() {
                   key={plano.id_plano}
                   data={new Date(plano.datacriacao).toLocaleString()}
                   status={plano.grauneurodivergencia}
-                  // descricao={plano.mensagemplano + " Objetivos: " + plano.objetivostratamento}
                   descricao = {"Abordagem Familiar: " + plano.abordagemfamilia + ". Cronograma de Atividades: " + plano.cronogramaatividades + ". Objetivos: " + plano.objetivostratamento}
                   userRole={"familiar"}
                   plano={plano}

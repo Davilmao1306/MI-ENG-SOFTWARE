@@ -1,5 +1,4 @@
 import './diario-terapeuta.estilo.css'
-import { IconSair } from '../../componentes/IconSair';
 import { IconVoltar } from './../../componentes/IconVoltar/index';
 import { ExibeLista } from './../../componentes/Terapeutas/index';
 

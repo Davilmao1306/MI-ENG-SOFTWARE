@@ -31,12 +31,12 @@ export function SidebarTerapeuta({ terapeuta }) {
               <RiPsychotherapyLine /> Pacientes
             </Link>
           </li>
-          <li>
-            {/* Aplica 'active' se o pathname for '/pacientes' */}
+          {/* <li>
+            
             <Link to="/terapeuta/sessao" className={`sidebar-nav-item ${isActive('/terapeuta/sessao') ? 'active' : ''}`}>
               <FiUser /> Sessão
             </Link>
-          </li>
+          </li> */}
         </ul>
       </nav>
     </aside>

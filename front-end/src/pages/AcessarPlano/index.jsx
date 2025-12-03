@@ -27,34 +27,24 @@ export function AcessarPlano() {
         <IconVoltar to={voltarPara} />
         <IconSair to='/login' />
       </div>
-
       <div className="acessar-plano-main-container">
-
         <div className="acessar-plano-bordered-content">
-
           <header className="acessar-plano-header">
             <h1>Plano terapeutico paciente {plano.paciente_nome}</h1>
           </header>
-
-
           <main className="acessar-plano-content">
-
             <CampoDetalhes titulo="Neurodivergência">
-              {/* Verifica se a lista existe antes de fazer o map */}
               <ul>
                 {plano.lista_neurodivergencias?.map((item, index) => (
-                  // O backend manda um objeto {sigla: "TEA", ...}, então acessamos item.sigla
                   <li key={index}>
                     {typeof item === 'object' ? item.nome_completo + `(${item.sigla})` : item}
                   </li>
                 ))}
               </ul>
-              {/* Texto descritivo do grau */}
               <p style={{ marginTop: '10px' }}>
                 Descrição: {plano.grau_neurodivergencia_descricao || plano.grau_neurodivergencia}
               </p>
             </CampoDetalhes>
-
             <CampoDetalhes titulo="Metodologia de acompanhamento">
               <ul>
                 {plano.lista_metodos?.map((item, index) => (
@@ -65,15 +55,12 @@ export function AcessarPlano() {
             <CampoDetalhes titulo="Objetivos do tratamento">
               <p>{plano.objetivos_tratamento || "Nenhum objetivo definido."}</p>
             </CampoDetalhes>
-
             <CampoDetalhes titulo="Abordagem para família/cuidadores/responsáveis:">
               <p>{plano.abordagem_familia || "Nenhuma abordagem definida."}</p>
             </CampoDetalhes>
-
             <CampoDetalhes titulo="Instruções Gerais:">
               <p>{plano.mensagem_plano || "Sem mensagem adicional."}</p>
             </CampoDetalhes>
-
             <CampoDetalhes titulo="Cronograma das atividades">
               <p>{plano.cronograma_atividades || "Sem cronograma."}</p>
             </CampoDetalhes>
@@ -84,6 +71,18 @@ export function AcessarPlano() {
                   <div key={idx}>
                     <a href={`http://localhost:8000/plano/download/${anexo.id_anexo}`} target="_blank" rel="noopener noreferrer">
                       📄 {anexo.nome_arquivo}
+                    </a>
+                  </div>
+                ))}
+              </div>
+            )}
+            {plano.lista_links?.length > 0 && (
+              <div className="link-imagem-section">
+                <h3>Links:</h3>
+                {plano.lista_links.map((link, idx) => (
+                  <div key={idx}>
+                    <a href={`${link.url}`} target="_blank" rel="noopener noreferrer">
+                      📄 {link.url}
                     </a>
                   </div>
                 ))}

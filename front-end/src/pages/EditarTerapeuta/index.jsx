@@ -18,12 +18,9 @@ export function EditarTerapeuta() {
     crp: '',
     especialidade: '',
     data_nascimento: '',
-    senha: '',
-    confirmarSenha: ''
   });
 
   const [isLoading, setIsLoading] = useState(true);
-  const [erroSenha, setErroSenha] = useState('');
   const [usuarios, setUsuarios] = useState([]);
   useExibirListas("http://localhost:8000/cadastro/lista-usuarios", setUsuarios);
 
@@ -71,32 +68,15 @@ export function EditarTerapeuta() {
       ...prevState,
       [name]: value
     }));
-    // Limpa erro de senha ao digitar
-    if (name === 'senha' || name === 'confirmarSenha') {
-      setErroSenha('');
-    }
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
 
-    // Validação de senha
-    if (terapeuta.senha && terapeuta.senha !== terapeuta.confirmarSenha) {
-      setErroSenha('As senhas não coincidem.');
-      return;
-    }
-
     // Prepara os dados para envio
     const dadosParaEnviar = { ...terapeuta };
-    // Remove campos de senha se estiverem vazios
-    if (!dadosParaEnviar.senha) {
-      delete dadosParaEnviar.senha;
-      delete dadosParaEnviar.confirmarSenha;
-    } else {
-      delete dadosParaEnviar.confirmarSenha;
-    }
 
-    // Ajuste a URL para o seu endpoint de terapeutas
+    
     console.log('Enviando dados atualizados para a API:', dadosParaEnviar);
     fetch(`http://localhost:8000/cadastro/editar-terapeuta/${id_terapeuta}/`, {
       method: "PUT",
@@ -213,33 +193,6 @@ export function EditarTerapeuta() {
                 />
               </div>
             </div>
-
-            {/* Campos de Senha */}
-            <div className="form-row">
-              <div className="form-group col-md-6">
-                <label htmlFor="senha">Nova Senha (deixe em branco para não alterar)</label>
-                <input
-                  type="password"
-                  id="senha"
-                  name="senha"
-                  value={terapeuta.senha || ''}
-                  onChange={handleChange}
-                />
-              </div>
-              <div className="form-group col-md-6">
-                <label htmlFor="confirmarSenha">Confirmar Nova Senha</label>
-                <input
-                  type="password"
-                  id="confirmarSenha"
-                  name="confirmarSenha"
-                  value={terapeuta.confirmarSenha || ''}
-                  onChange={handleChange}
-                  required={!!terapeuta.senha}
-                />
-              </div>
-            </div>
-            {erroSenha && <div className="erro-senha">{erroSenha}</div>}
-
             <div className="form-actions">
               <button type="button" className="btn-cancelar" onClick={handleCancelar}>Cancelar</button>
               <button type="submit" className="btn-salvar">Salvar Alterações</button>

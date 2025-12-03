@@ -1,4 +1,4 @@
-import React, { useState, useEffect, use } from 'react';
+import { useState } from 'react';
 import { PacienteCard } from '../../componentes/PacienteCard';
 import { Sidebar } from '../../componentes/Sidebar';
 import { Navbar } from '../../componentes/Navbar';
@@ -33,7 +33,7 @@ export function GerenciarPacientes() {
   
 
 
-  // console.log(vinculosPt, vinculosPf)
+
 
   // Estados para o modal de familiar
   const [showVincularFamiliarModal, setShowVincularFamiliarModal] = useState(false);
@@ -69,7 +69,7 @@ export function GerenciarPacientes() {
     );
 
     if (confirmAction) {
-      // Chama a rota de exclusão
+
       fetch(`http://localhost:8000/cadastro/paciente/excluir/${paciente.id_paciente}`, {
         method: 'DELETE',
         headers: {
@@ -95,7 +95,7 @@ export function GerenciarPacientes() {
     }
   };
 
-  // Funções para abrir/fechar o modal de FAMILIAR
+
   const handleOpenVincularFamiliarModal = (paciente) => {
     setSelectedPacienteForVincularFamiliar(paciente);
     setShowVincularFamiliarModal(true);
@@ -138,8 +138,6 @@ export function GerenciarPacientes() {
     }
   };
 
-
-  // Funções para abrir/fechar o modal de TERAPEUTA
   const handleOpenVincularTerapeutaModal = (paciente) => {
     setSelectedPacienteForVincularTerapeuta(paciente);
     setShowVincularTerapeutaModal(true);
@@ -216,7 +214,7 @@ export function GerenciarPacientes() {
               const vinculosDoPacientePt = vinculosPt.filter(v => v.id_paciente === paciente.id_paciente);
               const familiaresDoPaciente = vinculosDoPaciente
                 .map(v => familiares.find(f => f.id_familiar === v.id_familiar))
-                .filter(Boolean); // remove undefined caso algum id não exista
+                .filter(Boolean); 
               const terapeutasDoPaciente = vinculosDoPacientePt
                 .map(v => terapeutas.find(f => f.id_terapeuta === v.id_terapeuta))
                 .filter(Boolean);
@@ -240,7 +238,7 @@ export function GerenciarPacientes() {
 
         </div>
 
-        {/* Modal de Vincular Familiar */}
+      
         {showVincularFamiliarModal && selectedPacienteForVincularFamiliar && (
           <VincularFamiliarModal
             paciente={selectedPacienteForVincularFamiliar}
@@ -249,7 +247,7 @@ export function GerenciarPacientes() {
           />
         )}
 
-        {/* Modal de Vincular Terapeuta */}
+       
         {showVincularTerapeutaModal && selectedPacienteForVincularTerapeuta && (
           <VincularTerapeutaModal
             paciente={selectedPacienteForVincularTerapeuta}

@@ -7,16 +7,15 @@ import { useExibirListas } from '../../hooks/useExibirListas';
 
 
 export function VincularFamiliarModal({ paciente, onClose, onSave }) {
-  const mockAllFamiliares = "http://localhost:8000/cadastro/lista-familiares"; 
+  const mockAllFamiliares = "http://localhost:8000/cadastro/lista-familiares";
   const [familiares, setFamiliares] = useState([]);
   const navigate = useNavigate();
   const [searchTerm, setSearchTerm] = useState('');
   const [selectedFamiliares, setSelectedFamiliares] = useState([]);
   const [familiaresAtuais, setFamiliaresAtuais] = useState([]);
-  let isSelected;
 
   useExibirListas(mockAllFamiliares, setFamiliares);
-  
+
   useEffect(() => {
     if (paciente && paciente.familiarVinculado) {
       setFamiliaresAtuais(paciente.familiarVinculado);
@@ -30,7 +29,7 @@ export function VincularFamiliarModal({ paciente, onClose, onSave }) {
 
   const filteredSearchFamiliares = familiares.filter(
     (f) =>
-    (f.nome.toLowerCase().includes(searchTerm.toLowerCase()) )
+      (f.nome.toLowerCase().includes(searchTerm.toLowerCase()))
     // ||      f.email.toLowerCase().includes(searchTerm.toLowerCase())
   );
 
@@ -90,7 +89,7 @@ export function VincularFamiliarModal({ paciente, onClose, onSave }) {
               <ul className="familiares-list current-familiares">
                 {familiaresAtuais.map((f) => (
                   <li key={f.id_familiar} className="familiares-item">
-                    <FiUser /> {f.nome} 
+                    <FiUser /> {f.nome}
                     {/* ({f.parentesco}) */}
                     <button className="remove-button" onClick={() => handleRemoveFamiliarAtual(f.id_familiar)}>
                       <FiX />
@@ -120,24 +119,13 @@ export function VincularFamiliarModal({ paciente, onClose, onSave }) {
               <ul className="familiares-list available-familiares">
                 {familiareaParaExibirNaListaDeSelecao.map((f) => (
                   <li key={f.id_familiar} className="familiares-item">
-                    <FiUser /> {f.nome} 
+                    <FiUser /> {f.nome}
                     {/* ({f.parentesco}) */}
                     <input
                       type="checkbox"
-                      checked={isSelected = selectedFamiliares.includes(f.id_familiar)}
+                      checked={selectedFamiliares.includes(f.id_familiar)}
                       onChange={() => handleCheckboxChange(f.id_familiar)}
                     />
-                    {isSelected && (
-                          <div className="parentesco-input-container">
-                              <input 
-                                type="text" 
-                                placeholder="Qual o parentesco? (Ex: Pai, Mãe)"
-                                className="parentesco-input"
-                                value={parentescos[f.id_familiar] || ''}
-                                onChange={(e) => handleParentescoChange(f.id_familiar, e.target.value)}
-                              />
-                          </div>
-                      )}
                   </li>
                 ))}
               </ul>

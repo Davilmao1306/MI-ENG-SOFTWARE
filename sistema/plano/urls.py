@@ -24,4 +24,5 @@ urlpatterns = [
     path("plano/excluir-arquivo", views.excluir_arquivo_plano),
     path("plano/feedback/adicionar", views.adicionar_feedback),
     path("plano/<int:id_plano>/feedbacks", views.listar_feedbacks),
+    path("plano/link/adicionar", views.adicionar_link_plano),
 ]

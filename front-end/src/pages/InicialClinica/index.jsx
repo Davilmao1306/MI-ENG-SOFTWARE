@@ -1,16 +1,13 @@
-import { useState, useEffect, use } from 'react';
+import './dashboard-clinica.estilo.css';
+import { useState, useEffect } from 'react';
 import { Sidebar } from '../../componentes/Sidebar';
 import { Navbar } from '../../componentes/Navbar';
-import './dashboard-clinica.estilo.css';
 import { RiPsychotherapyLine } from "react-icons/ri";
 import { FiUser, FiActivity, FiArrowUpCircle } from 'react-icons/fi';
 import { FiLink, FiUsers, FiUserMinus } from 'react-icons/fi';
 import { useExibirListas } from "../../hooks/useExibirListas";
-import { jwtDecode } from "jwt-decode";
-import { useNavigate } from 'react-router-dom';
 
 
-// Dados fictícios para simular a API
 const mockData = {
   terapeutasMes: 0,
   pacientesMes: 0,
@@ -21,22 +18,42 @@ const mockData = {
   atividadeRecente: []
 };
 function fetchDashboardData(terapeutas, familiares, pacientes, vinculospt, vinculospf) {
-  mockData.terapeutasMes = terapeutas.length;
-  mockData.pacientesMes = pacientes.length;
-  mockData.familiaresMes = familiares.length;
-  // Pacientes sem terapeuta
+  const hoje = new Date();
+  const mesAtual = hoje.getMonth();
+  const anoAtual = hoje.getFullYear();
+  
+  const novosPacientesMes = pacientes.filter(p => {
+    const dataCadastro = new Date(p.datacadastro); 
+    return dataCadastro.getMonth() === mesAtual && dataCadastro.getFullYear() === anoAtual;
+  }).length;
+
+  const novosTerapeutasMes = terapeutas.filter(t => {
+    const dataCadastro = new Date(t.datacadastro); 
+    return dataCadastro.getMonth() === mesAtual && dataCadastro.getFullYear() === anoAtual;
+  }).length;
+
+  const novosFamiliaresMes = familiares.filter(f => {
+    const dataCadastro = new Date(f.datacriacao);
+    return dataCadastro.getMonth() === mesAtual && dataCadastro.getFullYear() === anoAtual;
+  }).length;
+
+  mockData.terapeutasMes = novosTerapeutasMes;
+  mockData.pacientesMes = novosPacientesMes; 
+  mockData.familiaresMes = novosFamiliaresMes;
+  
   const pacientesComTerapeuta = new Set(vinculospt.map(v => v.id_paciente));
   mockData.pacientesSemTerapeuta = pacientes.filter(p => !pacientesComTerapeuta.has(p.id_paciente)).length;
-  // Pacientes sem familiar
+  
   const pacientesComFamiliar = new Set(vinculospf.map(v => v.id_paciente));
   mockData.pacientesSemFamiliar = pacientes.filter(p => !pacientesComFamiliar.has(p.id_paciente)).length;
-  // Distribuição de pacientes por terapeuta
+  
   const distribuicao = terapeutas.map(t => {
     const count = vinculospt.filter(v => v.id_terapeuta === t.id_terapeuta).length;
     return { nome: t.nome, pacientes: count };
   });
   mockData.distribuicaoPacientesTerapeuta = distribuicao;
 }
+
 export function DashboardInicial() {
 
   const [listTerapeutas, setListTerapeutas] = useState([])
@@ -52,7 +69,12 @@ export function DashboardInicial() {
   const [data, setData] = useState(mockData);
   
 
-  fetchDashboardData(listTerapeutas, listFamiliares, listPacientes, listVinculospt, listVinculospf);
+  useEffect(() => {
+    if(listPacientes.length > 0 || listTerapeutas.length > 0) {
+        fetchDashboardData(listTerapeutas, listFamiliares, listPacientes, listVinculospt, listVinculospf);
+        setData({...mockData}); 
+    }
+  }, [listTerapeutas, listFamiliares, listPacientes, listVinculospt, listVinculospf]);
   
 
   return (
@@ -121,8 +143,6 @@ export function DashboardInicial() {
               <p className="no-items">Todos os pacientes estão vinculados.</p>
             )}
           </div>
-
-          {/* Atividade Recente */}
           <div className="activity-card">
             <h2 className="section-subtitle">Atividade Recente</h2>
             {data.atividadeRecente.length > 0 ? (

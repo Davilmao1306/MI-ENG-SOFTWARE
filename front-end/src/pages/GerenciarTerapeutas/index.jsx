@@ -1,10 +1,11 @@
+import './gerenciar-terapeutas.estilo.css'; 
 import { useState } from 'react';
 import { Sidebar } from '../../componentes/Sidebar';
 import { Navbar } from '../../componentes/Navbar';
-import { TerapeutaCard } from '../../componentes/TerapeutaCard'; // Importe o TerapeutaCard
+import { TerapeutaCard } from '../../componentes/TerapeutaCard'; 
 import { FiPlusCircle, FiSearch } from 'react-icons/fi';
 import { Link } from 'react-router-dom';
-import './gerenciar-terapeutas.estilo.css'; // O CSS da tela principal
+
 import { useExibirListas } from '../../hooks/useExibirListas';
 
 export function GerenciarTerapeutas() { 
@@ -20,12 +21,12 @@ export function GerenciarTerapeutas() {
     return (
       terapeuta.nome.toLowerCase().includes(termo) ||
       idTerapeuta.includes(termo) ||
-      (terapeuta.especialidade && terapeuta.especialidade.toLowerCase().includes(termo)) || // Verifique se especialidade existe
-      (terapeuta.email && terapeuta.email.toLowerCase().includes(termo)) // Ex: buscar por email
+      (terapeuta.especialidade && terapeuta.especialidade.toLowerCase().includes(termo)) || 
+      (terapeuta.email && terapeuta.email.toLowerCase().includes(termo)) 
     );
   });
 
-  // Função para lidar com a ação de Remover/Inativar
+ 
   const handleRemoverOuInativarTerapeuta = (terapeuta) => {
     const confirmAction = window.confirm(
       `Deseja realmente remover/inativar o terapeuta ${terapeuta.nome} (ID: ${terapeuta.id_terapeuta})?`

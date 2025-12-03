@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { Sidebar } from '../../componentes/Sidebar';
 import { Navbar } from '../../componentes/Navbar';
-import './editar-paciente.estilo.css'; // Importe o CSS que criamos antes
+import './editar-paciente.estilo.css'; 
 
 
 export function EditarPaciente() {
@@ -20,7 +20,7 @@ export function EditarPaciente() {
   const [isLoading, setIsLoading] = useState(true);
 
 
-  // Busca os dados do paciente na API
+  
   useEffect(() => {
     const urlGetPaciente = "http://localhost:8000/cadastro/lista-pacientes";
 
@@ -64,7 +64,7 @@ export function EditarPaciente() {
     console.log('Enviando dados atualizados para a API:', paciente);
 
     fetch(urlUpdatePaciente, {
-      method: 'PUT', // Ou 'PATCH', dependendo da API
+      method: 'PUT', 
       headers: {
         'Content-Type': 'application/json',
       },
@@ -89,7 +89,6 @@ export function EditarPaciente() {
   };
 
   const handleCancelar = () => {
-    // Redireciona de volta para a lista de pacientes sem salvar
     navigate('/clinica/lista-de-pacientes');
   };
 
@@ -127,7 +126,7 @@ export function EditarPaciente() {
                 id="cpf"
                 name="cpf"
                 value={paciente.cpf || ''}
-                disabled // Campo bloqueado
+                disabled 
                 className="input-disabled"
               />
             </div>

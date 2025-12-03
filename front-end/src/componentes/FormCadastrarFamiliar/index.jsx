@@ -52,8 +52,6 @@ export function FormCadastrarFamiliar() {
             setErroCpf(""); // limpa o erro se estiver tudo certo
         }
 
-
-
         const dados = {
             nome: formData.get('cadastrarNomeFamiliar'),
             email: formData.get('loginEmail'),

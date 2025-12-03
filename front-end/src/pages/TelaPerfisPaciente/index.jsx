@@ -6,9 +6,6 @@ import { useExibirListas } from '../../hooks/useExibirListas';
 import { useState } from 'react';
 
 
-
-
-
 export function TelaPerfilPaciente() {
     const [familiares, setPacientesDoFamiliar] = useState([]);
     const [vinculos, setVinculos] = useState([]);

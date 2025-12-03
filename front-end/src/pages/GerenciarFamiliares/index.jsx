@@ -1,5 +1,5 @@
-// src/paginas/GerenciarFamiliares/index.jsx
-import { useState, useEffect } from 'react';
+
+import { useState } from 'react';
 import { Sidebar } from '../../componentes/Sidebar';
 import { Navbar } from '../../componentes/Navbar';
 import { FamiliarCard } from '../../componentes/FamiliarCard';
