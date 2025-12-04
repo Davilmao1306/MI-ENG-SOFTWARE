@@ -7,6 +7,12 @@ SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'changeme-in-production')
 DEBUG = os.getenv('DEBUG', '1') == '1'
 ALLOWED_HOSTS = os.getenv('ALLOWED_HOSTS', '*').split(',')
 
+import os
+from dotenv import load_dotenv
+from urllib.parse import urlparse, parse_qsl
+
+load_dotenv()
+
 
 INSTALLED_APPS = [
     'django.contrib.admin',
@@ -67,19 +73,16 @@ TEMPLATES = [
 
 WSGI_APPLICATION = 'sistema.wsgi.application'
 
-
+tmpPostgres = urlparse(os.getenv("DATABASE_URL"))
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        # Use as variáveis de ambiente que o Docker está injetando
-        'NAME': os.getenv('POSTGRES_DB', 'meu_projeto_db'),
-        'USER': os.getenv('POSTGRES_USER', 'admin'),
-        'PASSWORD': os.getenv('POSTGRES_PASSWORD', 'admin_password'),
-        'HOST': os.getenv('POSTGRES_HOST', 'localhost'),  
-        'PORT': os.getenv('POSTGRES_PORT', '5432'),
-         'TEST': {
-            'NAME': 'test_meu_projeto_db',  
-        }
+        'NAME': tmpPostgres.path.replace('/', ''),
+        'USER': tmpPostgres.username,
+        'PASSWORD': tmpPostgres.password,
+        'HOST': tmpPostgres.hostname,
+        'PORT': 5432,
+        'OPTIONS': dict(parse_qsl(tmpPostgres.query)),
     }
 }
 

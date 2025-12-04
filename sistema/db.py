@@ -1,21 +1,30 @@
 import os
 import psycopg
-from contextlib import contextmanager
+from dotenv import load_dotenv
+from contextlib import contextmanager # Importante!
 
+load_dotenv()
 
 @contextmanager
 def get_conn():
-    """
-    Conexão simples (uma por requisição).
-    Se quiser performance maior, depois troque para psycopg_pool.
-    """
-    host = os.getenv("POSTGRES_HOST", "localhost")
-    port = os.getenv("POSTGRES_PORT", "5432")
-    db = os.getenv("POSTGRES_DB",   "meu_projeto_db")
-    user = os.getenv("POSTGRES_USER", "admin")
-    pwd = os.getenv("POSTGRES_PASSWORD", "admin_password")
+    # Pega a URL do .env
+    dsn = os.getenv('DATABASE_URL')
+    
+    if not dsn:
+        raise ValueError("DATABASE_URL não definida no .env")
 
-    dsn = f"host={host} port={port} dbname={db} user={user} password={pwd}"
-    conexao = psycopg.connect(dsn, autocommit=True)
-    yield conexao
-    conexao.close()
+    conexao = None
+    try:
+        # Conecta ao banco
+        conexao = psycopg.connect(dsn, autocommit=True)
+        
+        # O 'yield' entrega a conexão para o 'with' lá na view
+        yield conexao 
+        
+    except psycopg.Error as e:
+        print(f"Erro no banco de dados: {e}")
+        raise e
+    finally:
+        # Garante que a conexão feche ao sair do 'with', mesmo se der erro
+        if conexao:
+            conexao.close()
