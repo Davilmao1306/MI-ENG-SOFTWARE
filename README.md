@@ -2,7 +2,7 @@
 
 ## 📋 Descrição do Projeto
 
-O **NeuroLink** é uma aplicação completa desenvolvida para clínicas e terapeutas que buscam otimizar a gestão de pacientes, planos terapêuticos e o envolvimento familiar no tratamento. O sistema oferece interfaces dedicadas para Clínicas, Terapeutas e Familiares, permitindo o cadastro de usuários, a vinculação de pacientes a seus responsáveis/terapeutas e a criação de um diário de acompanhamento compartilhado para que tanto familiares quanto terapeutas possam se comunicar em prol do tratamento do paciente.
+O **NeuroLink** é uma aplicação completa desenvolvida para clínicas e terapeutas que buscam otimizar a gestão de pacientes, planos terapêuticos e o envolvimento familiar no tratamento. O sistema oferece interfaces dedicadas para Clínicas, Terapeutas e Familiares, permitindo o cadastro de usuários, a vinculação de pacientes a seus responsáveis/terapeutas e a criação de um diário de acompanhamento compartilhado para que tanto familiares quanto terapeutas possam se comunicar em prol do tratamento do paciente. Nele o usuário poderá mandar fotos, links, documentos que irão auxiliar a comunicação e o tratamento do paciente.
 
 O projeto é dividido em um *frontend* (aplicação web) e um *backend* (API RESTful) que se comunicam para persistir e gerenciar os dados.
 
@@ -62,7 +62,12 @@ Certifique-se de ter instalado em sua máquina:
     git clone [https://www.youtube.com/watch?v=BEsAXYPulBo](https://www.youtube.com/watch?v=BEsAXYPulBo)
     cd MI-ENG-SOFTWARE
     ```
-2.  **Crie e Ative o Ambiente Virtual:**
+   
+2. **É importante caso esteja rodando no powershel do windows utilizar o código abaixo**
+   ```bash
+   Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+   ```
+3.   **Crie e Ative o Ambiente Virtual:**
     ```bash
     python -m venv venv
     # No Windows
@@ -70,19 +75,18 @@ Certifique-se de ter instalado em sua máquina:
     # No Linux/macOS
     source venv/bin/activate
     ```
-3.  **Instale as Dependências Python:**
+4.  **Instale as Dependências Python:**
     ```bash
     # Se você tiver um requirements.txt
     pip install -r requirements.txt
     # Ou instale as dependências conhecidas (Django, djangorestframework, psycopg)
     # pip install django djangorestframework psycopg
     ```
-4.  **Configuração do Banco de Dados:**
-    * Crie um banco de dados PostgreSQL (ex: `neurolink_db`).
-    * Edite o arquivo de configurações do Django (provavelmente `sistema/settings.py`) para apontar para o seu banco de dados local.
-    * *Nota: Se o seu projeto usa funções SQL diretas (como o `vincular_paciente_familiar` sugere), você deve garantir que essas funções SQL estão criadas no seu banco de dados PostgreSQL.*
+5.  **Configuração do Banco de Dados:**
+    * Rode o docker-compose.yml
+    
 
-5.  **Rodar o Servidor:**
+6.  **Rodar o Servidor:**
     ```bash
     # Se aplicável:
     # python manage.py migrate
@@ -96,13 +100,17 @@ Certifique-se de ter instalado em sua máquina:
     ```bash
     cd front-end
     ```
-2.  **Instale as Dependências Node:**
+2. **É importante caso esteja rodando no powershel do windows utilizar o código abaixo**
+   ```bash
+   Set-ExecutionPolicy -Scope Process -ExecutionPolicy Bypass
+   ```
+3.    **Instale as Dependências Node:**
     ```bash
     npm install
     # ou
     yarn install
     ```
-3.  **Rodar a Aplicação:**
+4.  **Rodar a Aplicação:**
     ```bash
     npm run dev
     # ou
@@ -115,19 +123,52 @@ Certifique-se de ter instalado em sua máquina:
 ## 🗺️ Rotas de API Importantes
 
 Aqui estão alguns *endpoints* inferidos com base na funcionalidade do projeto:
-
+1. **Endpoints /login**
 | Método | Endpoint | Descrição |
 | :--- | :--- | :--- |
-| `POST` | `/cadastro/familiar/` | Cadastra um novo familiar. |
-| `POST` | `/cadastro/terapeuta/` | Cadastra um novo terapeuta. |
-| `POST` | `/cadastro/paciente/` | Cadastra um novo paciente. |
-| `POST` | `/vincular/pacientes/vincular-familiar/` | Vincula um ou mais familiares a um paciente. (Corpo espera `id_paciente` e `id_familiar`: Lista de IDs) |
-| `GET` | `/cadastro/lista-pacientes` | Lista todos os pacientes e seus detalhes. |
-| `GET` | `/cadastro/lista-vinculos` | Lista todos os vínculos (paciente-familiar, paciente-terapeuta). |
-| `POST` | `/login/` | Autenticação do usuário. |
+|`POST`|	`/login/api/login/` |	Realiza o login do usuário (retorna tokens). |
+|`POST`|	`/login/auth/esqueci-senha` |	Solicita recuperação de senha. |
+|`POST`|	`/login/auth/redefinir-senha` |	Confirma a redefinição de senha. |
+2. **Endpoints /cadastro**
+| Método | Endpoint | Descrição |
+| :--- | :--- | :--- |
+| `POST` |	`/cadastro/pacientes` | Cadastra um novo paciente. |
+| `POST` |	`/cadastro/terapeutas ` |	Cadastra um novo terapeuta. |
+| `POST` |	`/cadastro/familiares` |	Cadastra um novo familiar. |
+| `POST` |	`/cadastro/clinicas`	|Cadastra uma nova clínica. |
+| `GET` |	`/cadastro/lista-pacientes`|	Lista todos os pacientes cadastrados. |
+| `GET` |	`/cadastro/lista-terapeutas`|	Lista todos os terapeutas. |
+| `GET` |	`/cadastro/lista-usuarios` |	Lista geral de usuários. |
+| `PUT` |	`/cadastro/editar-paciente/<id>`	|Atualiza dados de um paciente específico. |
+| `DELETE` |	`/cadastro/paciente/excluir/<id>`|	Remove um paciente do sistema.|
+3. **Endpoints /vincular**
+| Método | Endpoint | Descrição |
+| :--- | :--- | :--- |
+| `POST` | `/vincular/pacientes/vincular-familiar/` | Cria vínculo entre Paciente e Familiar. |
+| `POST` | `/vincular/pacientes/vincular-terapeuta/` |Cria vínculo entre Paciente e Terapeuta. |
+4. **Endpoints /plano**
+| Método | Endpoint | Descrição |
+| :--- | :--- | :--- |
+| `POST` | `/plano/criar` | Cria um novo plano terapêutico. |
+| `POST` | `/plano/feedback/adicionar` | Adiciona um feedback ao plano. |
+| `POST` | `/plano/anexar-arquivo` | Anexa arquivos (PDF/Img) ao plano. |
+| `POST` | `/plano/adicionar-neuro` | Adiciona neurodivergência ao plano. |
+| `POST` | `/plano/adicionar-metodo` | Adiciona método terapêutico ao plano. |
+| `PUT` | `/plano/editar/<id>` | Edita as informações de um plano existente. |
+| `GET` | `/plano/<id>` | Busca os detalhes completos de um plano. |
+5. **Endpoints /diario**
+| Método | Endpoint | Descrição |
+| :--- | :--- | :--- |
+| `POST` | `/diario/midia/adicionar` | Adiciona foto/vídeo ao diário. |
+| `POST` | `/diario/mensagem/enviar` | Envia uma mensagem no feed. |
+| `POST` | `/diario/checklist/criar` | Cria um novo checklist no diário. |
+| `GET` | `/diario/listar` | Lista diários (geral). |
+| `GET` | `/diario/paciente/<id>` | Lista diários de um paciente específico. |
+| `GET` | `/diario/<id>` | Visualiza um diário específico. |
+| `GET` | `/diario/feed/<id_paciente>` | Retorna o feed completo do paciente. |
 
 ---
 
-## 🤝 Contribuição
+## 🤝 Equipe de Desenvolvimento
 
 Detalhes sobre como contribuir para o projeto (se aplicável).
