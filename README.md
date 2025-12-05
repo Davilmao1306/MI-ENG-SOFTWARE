@@ -123,13 +123,13 @@ Certifique-se de ter instalado em sua máquina:
 ## 🗺️ Rotas de API Importantes
 
 Aqui estão alguns *endpoints* inferidos com base na funcionalidade do projeto:
-1. **Endpoints /login**
+### **Endpoints /login**
 | Método | Endpoint | Descrição |
 | :--- | :--- | :--- |
 | `POST` |	`/login/api/login/` |	Realiza o login do usuário (retorna tokens). |
 | `POST` |	`/login/auth/esqueci-senha` |	Solicita recuperação de senha. |
 | `POST` |	`/login/auth/redefinir-senha` |	Confirma a redefinição de senha. |
-2. **Endpoints /cadastro**
+### **Endpoints /cadastro**
 | Método | Endpoint | Descrição |
 | :--- | :--- | :--- |
 | `POST` |	`/cadastro/pacientes` | Cadastra um novo paciente. |
@@ -141,12 +141,12 @@ Aqui estão alguns *endpoints* inferidos com base na funcionalidade do projeto:
 | `GET` |	`/cadastro/lista-usuarios` |	Lista geral de usuários. |
 | `PUT` |	`/cadastro/editar-paciente/<id>`	|Atualiza dados de um paciente específico. |
 | `DELETE` |	`/cadastro/paciente/excluir/<id>` |	Remove um paciente do sistema. |
-3. **Endpoints /vincular**
+### **Endpoints /vincular**
 | Método | Endpoint | Descrição |
 | :--- | :--- | :--- |
 | `POST` | `/vincular/pacientes/vincular-familiar/` | Cria vínculo entre Paciente e Familiar. |
 | `POST` | `/vincular/pacientes/vincular-terapeuta/` | Cria vínculo entre Paciente e Terapeuta. |
-4. **Endpoints /plano**
+### **Endpoints /plano**
 | Método | Endpoint | Descrição |
 | :--- | :--- | :--- |
 | `POST` | `/plano/criar` | Cria um novo plano terapêutico. |
@@ -156,7 +156,7 @@ Aqui estão alguns *endpoints* inferidos com base na funcionalidade do projeto:
 | `POST` | `/plano/adicionar-metodo` | Adiciona método terapêutico ao plano. |
 | `PUT` | `/plano/editar/<id>` | Edita as informações de um plano existente. |
 | `GET` | `/plano/<id>` | Busca os detalhes completos de um plano. |
-5. **Endpoints /diario**
+### **Endpoints /diario**
 | Método | Endpoint | Descrição |
 | :--- | :--- | :--- |
 | `POST` | `/diario/midia/adicionar` | Adiciona foto/vídeo ao diário. |
