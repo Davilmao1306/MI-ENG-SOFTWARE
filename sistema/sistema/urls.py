@@ -5,20 +5,22 @@ from django.conf.urls.static import static
 from django.contrib.auth import get_user_model
 from django.http import HttpResponse
 
-# --- FUNÇÃO TEMPORÁRIA PARA CRIAR ADMIN ---
+# --- FUNÇÃO TEMPORÁRIA PARA CRIAR ADMIN (CORRIGIDA) ---
 def criar_superusuario_view(request):
     User = get_user_model()
     email = "admin@neurolink.com"
     senha = "AdminNeuro123!" # Senha forte
     
     if not User.objects.filter(email=email).exists():
-        # Cria o usuário se não existir
-        User.objects.create_superuser(
-            email=email,
-            password=senha,
-            nome="Administrador Geral" # Ajuste se seu model pedir outros campos
-        )
-        return HttpResponse(f"Sucesso! Admin criado.<br>Email: {email}<br>Senha: {senha}")
+        try:
+            # Tenta criar APENAS com email e senha (padrão mais seguro)
+            User.objects.create_superuser(
+                email=email,
+                password=senha
+            )
+            return HttpResponse(f"Sucesso! Admin criado.<br>Email: {email}<br>Senha: {senha}")
+        except Exception as e:
+            return HttpResponse(f"Erro ao criar admin: {str(e)}")
     else:
         return HttpResponse("O Admin já existe!")
 # ------------------------------------------
