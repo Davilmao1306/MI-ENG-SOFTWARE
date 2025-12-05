@@ -126,9 +126,9 @@ Aqui estão alguns *endpoints* inferidos com base na funcionalidade do projeto:
 1. **Endpoints /login**
 | Método | Endpoint | Descrição |
 | :--- | :--- | :--- |
-|`POST`|	`/login/api/login/` |	Realiza o login do usuário (retorna tokens). |
-|`POST`|	`/login/auth/esqueci-senha` |	Solicita recuperação de senha. |
-|`POST`|	`/login/auth/redefinir-senha` |	Confirma a redefinição de senha. |
+| `POST` |	`/login/api/login/` |	Realiza o login do usuário (retorna tokens). |
+| `POST` |	`/login/auth/esqueci-senha` |	Solicita recuperação de senha. |
+| `POST` |	`/login/auth/redefinir-senha` |	Confirma a redefinição de senha. |
 2. **Endpoints /cadastro**
 | Método | Endpoint | Descrição |
 | :--- | :--- | :--- |
@@ -136,16 +136,16 @@ Aqui estão alguns *endpoints* inferidos com base na funcionalidade do projeto:
 | `POST` |	`/cadastro/terapeutas ` |	Cadastra um novo terapeuta. |
 | `POST` |	`/cadastro/familiares` |	Cadastra um novo familiar. |
 | `POST` |	`/cadastro/clinicas`	|Cadastra uma nova clínica. |
-| `GET` |	`/cadastro/lista-pacientes`|	Lista todos os pacientes cadastrados. |
-| `GET` |	`/cadastro/lista-terapeutas`|	Lista todos os terapeutas. |
+| `GET` |	`/cadastro/lista-pacientes` |	Lista todos os pacientes cadastrados. |
+| `GET` |	`/cadastro/lista-terapeutas` |	Lista todos os terapeutas. |
 | `GET` |	`/cadastro/lista-usuarios` |	Lista geral de usuários. |
 | `PUT` |	`/cadastro/editar-paciente/<id>`	|Atualiza dados de um paciente específico. |
-| `DELETE` |	`/cadastro/paciente/excluir/<id>`|	Remove um paciente do sistema.|
+| `DELETE` |	`/cadastro/paciente/excluir/<id>` |	Remove um paciente do sistema. |
 3. **Endpoints /vincular**
 | Método | Endpoint | Descrição |
 | :--- | :--- | :--- |
 | `POST` | `/vincular/pacientes/vincular-familiar/` | Cria vínculo entre Paciente e Familiar. |
-| `POST` | `/vincular/pacientes/vincular-terapeuta/` |Cria vínculo entre Paciente e Terapeuta. |
+| `POST` | `/vincular/pacientes/vincular-terapeuta/` | Cria vínculo entre Paciente e Terapeuta. |
 4. **Endpoints /plano**
 | Método | Endpoint | Descrição |
 | :--- | :--- | :--- |
