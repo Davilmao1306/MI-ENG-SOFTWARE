@@ -63,8 +63,12 @@ export function FormCadastrarFamiliar() {
         }
         console.log("dados do familiar", dados)
 
+        // Define a URL da API baseada no ambiente (Vercel ou Local)
+        const apiUrl = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000";
+
         try {
-            const response = await fetch("http://127.0.0.1:8000/cadastro/familiares", {
+            // URL corrigida para usar a variável apiUrl
+            const response = await fetch(`${apiUrl}/cadastro/familiares`, {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
