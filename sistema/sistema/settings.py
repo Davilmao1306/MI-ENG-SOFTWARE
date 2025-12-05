@@ -5,7 +5,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 
 SECRET_KEY = os.getenv('DJANGO_SECRET_KEY', 'changeme-in-production')
 DEBUG = os.getenv('DEBUG', '1') == '1'
-ALLOWED_HOSTS = ['https://neurolink-74zp.onrender.com´]
+ALLOWED_HOSTS = ['https://neurolink-74zp.onrender.com']
 
 INSTALLED_APPS = [
     'django.contrib.admin',
