@@ -1,4 +1,3 @@
-// src/componentes/FormLogin/index.jsx
 import { Link, useNavigate } from 'react-router-dom';
 import { CampoDeEntrada } from '../CampoDeEntrada';
 import { CampoDeFormulario } from '../CampoDeFormulario';
@@ -11,6 +10,9 @@ import { IoEye, IoEyeOff } from 'react-icons/io5';
 
 export function FormLogin() {
   const navigate = useNavigate();
+
+  // Define a URL da API baseada no ambiente (Vercel ou Local)
+  const apiUrl = import.meta.env.VITE_API_URL || "http://127.0.0.1:8000";
 
   // estados do formulário
   const [erroLogin, setErroLogin] = useState('');
@@ -37,7 +39,8 @@ export function FormLogin() {
     };
 
     try {
-      const response = await fetch("http://127.0.0.1:8000/login/api/login/", {
+      // Alterado para usar a URL dinâmica
+      const response = await fetch(`${apiUrl}/login/api/login/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -67,13 +70,11 @@ export function FormLogin() {
         return;
       }
 
-      // Detecta se é "primeiro acesso" —  a nomes diferentes que o backend possa usar
-      // (ex.: primeiro_acesso, primeiroAcesso, primeiroAcesso, termoAceito boolean invertido, etc.)
+      // Detecta se é "primeiro acesso"
       const primeiroAcesso =
         data.primeiro_acesso === true ||
         data.primeiroAcesso === true ||
         data.primeiro === true ||
-        // ou se o backend retornar um campo 'termoAceito' que seja false
         data.termoAceito === false ||
         data.consentido === false ||
         data.first_login === true;
@@ -105,8 +106,8 @@ export function FormLogin() {
         throw new Error("ID do usuário não encontrado para registrar consentimento.");
       }
 
-
-      const resp = await fetch("http://127.0.0.1:8000/login/api/aceitar-termo/", {
+      // Alterado para usar a URL dinâmica
+      const resp = await fetch(`${apiUrl}/login/api/aceitar-termo/`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
