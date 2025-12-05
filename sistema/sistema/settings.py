@@ -125,8 +125,15 @@ EMAIL_HOST_PASSWORD = 'ehsm jkkw xrqc dacr' # Não é a senha normal, é a App P
 
 
 CORS_ALLOWED_ORIGINS = [
-    "http://localhost:5173",  # Ex: se seu front é React/Vue
+    "http://localhost:5173",
     "http://localhost:5174",
     "http://localhost:5175",
     "http://127.0.0.1:3000",
+    "https://neurolink-sistema.vercel.app", 
+]
+
+
+CSRF_TRUSTED_ORIGINS = [
+    "https://neurolink-sistema.vercel.app", 
+    "https://neurolink-74zp.onrender.com", 
 ]
