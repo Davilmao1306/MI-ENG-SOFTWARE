@@ -74,17 +74,22 @@ TEMPLATES = [
 WSGI_APPLICATION = 'sistema.wsgi.application'
 
 tmpPostgres = urlparse(os.getenv("DATABASE_URL"))
+# Configuração Padrão (Local)
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': tmpPostgres.path.replace('/', ''),
-        'USER': tmpPostgres.username,
-        'PASSWORD': tmpPostgres.password,
-        'HOST': tmpPostgres.hostname,
-        'PORT': 5432,
-        'OPTIONS': dict(parse_qsl(tmpPostgres.query)),
+        'NAME': os.getenv('POSTGRES_DB', 'meu_projeto_db'),
+        'USER': os.getenv('POSTGRES_USER', 'admin'),
+        'PASSWORD': os.getenv('POSTGRES_PASSWORD', 'admin_password'),
+        'HOST': os.getenv('POSTGRES_HOST', 'localhost'),
+        'PORT': os.getenv('POSTGRES_PORT', '5432'),
     }
 }
+
+# Configuração para o Render
+database_url = os.getenv('DATABASE_URL')
+if database_url:
+    DATABASES['default'] = dj_database_url.parse(database_url, conn_max_age=600)
 
 
 AUTH_PASSWORD_VALIDATORS = [
